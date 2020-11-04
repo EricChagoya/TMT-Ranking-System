@@ -12,7 +12,7 @@
     
  WeeklyScoreLadderN.txt
  
-        SmasherID   SmashTag    Wins    Losses (Future)     Prospect    Rookie  Pro
+        SmasherID   SmashTag    Wins    Losses (Future)     Prospect    Rookie  Pro Placement
         
  WeeklyScoreBracketN.txt
  
