@@ -135,6 +135,7 @@ def get_tier(placement, pro, rookie):
 
 
 if __name__ == '__main__':
+    # 528834
     eventId = input('Enter the eventId: ')
     ladder = input('Is this a ladder event? (Y) or (N): ').upper()
     if ladder == 'Y':
@@ -154,6 +155,11 @@ if __name__ == '__main__':
     pageCounts = get_page_counts(eventId)
     standings = (get_event_standings(eventId, pageCounts))
     f = open('WeeklyScoreLadderN.txt', 'w')
+    f.write('SmasherID\tSmashTag\tWins\tLosses\t')
+    if l:
+        f.write('Prospect\tRookie\tPro\t')
+    f.write('Placement\n')
+
     for key, element in standings.items():
         f.write(str(key) + '\t' +
                 str(element[0]) + '\t' +

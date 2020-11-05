@@ -1,3 +1,4 @@
+SmasherID	SmashTag	Wins	Losses	Prospect	Rookie	Pro	Placement
 6196230	S2J	13	0	0	0	1	1
 6197845	Tenacity | Albert	14	2	0	0	1	2
 6197302	Mango's Friend | Lucky	9	2	0	0	1	3
