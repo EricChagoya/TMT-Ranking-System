@@ -61,7 +61,8 @@
  
  These will be posted on the website. It will be a subset of the columns for it was named after.
  
- SubsetWeeklyRankScoreN.txt
+ SubsetWeeklyRankScoreN.txt -  
+ Maybe v1 and v2 for knowing which one is ladder.
  
     SmashTag    Wins    Losses (Future)     Tier
 	It's input is WeeklyRankLadderN.txt.
