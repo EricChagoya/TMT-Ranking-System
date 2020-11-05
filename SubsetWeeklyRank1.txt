@@ -1,0 +1,10 @@
+Rank	SmashTag	Wins	Losses	WinPercentage
+1.0	Tenacity | Albert	14	2	0.875
+2.0	S2J	13	0	1.0
+4.0	Mango's Friend | Lucky	9	2	0.818
+4.0	KoDoRiN	9	4	0.692
+6.0	ALP	9	4	0.692
+6.0	TPN	9	4	0.692
+7.0	MegaXmas	8	2	0.8
+8.0	GUG | Kürv	13	8	0.619
+9.0	PnS | Andymosity	7	5	0.583
