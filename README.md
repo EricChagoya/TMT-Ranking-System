@@ -13,7 +13,7 @@
  WeeklyScoresLadderN.txt
  
         SmasherID   SmashTag    Wins    Losses     Prospect    Rookie  Pro Placement
-		This will be done after Ladder finishes but before bracket.
+	This will be done after Ladder finishes but before bracket.
 		
  Option 1- Only lists wins from Bracket.
  WeeklyScoresBracketN.txt
@@ -38,6 +38,7 @@
 
  
  Output Files
+ 
  TotalPointN.txt
  
  	SmasherID   SmasherTag  Wins    Losses Prospect    Rookie  Pro TimesBracket    [AllPlacements]  NumberTourneysEntered
