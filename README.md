@@ -6,7 +6,7 @@
 
  Each text file with have N to show what week it was created.
  
- Tim's File
+ CollectData.py
  
     It gets the pure data from smash.gg without applying any formula to it. 
     
