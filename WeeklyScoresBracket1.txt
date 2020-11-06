@@ -1,0 +1,13 @@
+SmasherID	SmashTag	Wins	Losses	Placement
+6196230	S2J	13	0	1
+6197845	Tenacity | Albert	14	2	2
+6197302	Mango's Friend | Lucky	9	2	3
+6187376	KoDoRiN	9	4	4
+6198091	MegaXmas	8	2	5
+6197968	ALP	9	4	5
+6191215	TPN	9	4	7
+6197953	GUG | Kürv	13	8	7
+6192151	PnS | Andymosity	7	5	9
+6198059	Aura	11	6	9
+6197297	TreyTheTrashman	0	2	39
+6198395	Egsid	0	1	39

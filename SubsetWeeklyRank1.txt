@@ -1,10 +1,43 @@
 Rank	SmashTag	Wins	Losses	WinPercentage
-1.0	Tenacity | Albert	14	2	0.875
-2.0	S2J	13	0	1.0
-4.0	Mango's Friend | Lucky	9	2	0.818
-4.0	KoDoRiN	9	4	0.692
-6.0	ALP	9	4	0.692
-6.0	TPN	9	4	0.692
-7.0	MegaXmas	8	2	0.8
-8.0	GUG | Kürv	13	8	0.619
-9.0	PnS | Andymosity	7	5	0.583
+1.0	S2J	26	0	1.0
+2.0	Tenacity | Albert	28	4	0.875
+3.0	Mango's Friend | Lucky	18	4	0.818
+4.0	KoDoRiN	18	8	0.692
+5.0	ALP	18	8	0.692
+6.0	MegaXmas	16	4	0.8
+7.0	GUG | Kürv	26	16	0.619
+8.0	TPN	18	8	0.692
+9.0	Aura	22	12	0.647
+10.0	PnS | Andymosity	14	10	0.583
+11.0	Connor	9	2	0.818
+12.0	Hulka	5	3	0.625
+13.0	Bean	9	8	0.529
+15.0	cliché	8	4	0.667
+15.0	ROFL	8	7	0.533
+16.0	RB | Cum Fox	7	5	0.583
+17.0	Stiv	3	1	0.75
+18.0	winismine	8	7	0.533
+20.0	Twin	9	10	0.474
+20.0	Otto_Zone	9	8	0.529
+21.0	ChewKiF	8	8	0.5
+23.0	exzachly	6	10	0.375
+23.0	Culture | BaseJustice	6	10	0.375
+24.0	Chadwicc	4	3	0.571
+25.0	Solo Climber	3	1	0.75
+26.0	Veni	2	1	0.667
+29.0	DPIII	6	8	0.429
+29.0	Bladee	6	8	0.429
+29.0	Hentai Boi	6	11	0.353
+30.0	WOMB#619 | Wombat	5	9	0.357
+33.0	KatBot	4	10	0.286
+33.0	YBBT | leroydankins	4	10	0.286
+33.0	RB | PeachIcedT	4	5	0.444
+35.0	Old McJonald	3	9	0.25
+35.0	EyeQuill	3	5	0.375
+36.0	Dandy	2	12	0.143
+38.0	Veths	1	10	0.091
+38.0	CxC | Lutra	1	12	0.077
+42.0	TreyTheTrashman	0	4	0.0
+42.0	K.H.D | Reign	0	12	0.0
+42.0	Serafin	0	2	0.0
+42.0	Egsid	0	2	0.0
