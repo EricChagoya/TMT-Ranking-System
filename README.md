@@ -74,7 +74,9 @@
 	It's input is TotalRanksN.txt.
  
  
+ Future Development Ideas
  
+ https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing
  
  
  
