@@ -6,24 +6,24 @@ import pandas as pd
 # pip install pandas
 
 
-# We will change this
-# These are temporary values
-POINT_WIN = 1
-POINT_PROSPECT = 10
-POINT_ROOKIE = 20
-POINT_PRO = 50
+POINT_WIN = 1   # Need to change this so max is 20
+POINT_PROSPECT = 0
+POINT_ROOKIE = 5
+POINT_PRO = 10
+POINT_ALL_STAR = 15
+POINT_HALL_OF_FAME = 20
+POINT_FLOATED_PLAYER = 15
 
-PLACEMENTS = {1: 250,
-              2: 200,
+PLACEMENTS = {1: 200,
+              2: 175,
               3: 150,
               4: 125,
-              5: 100,
+              5: 95,
               7: 75,
-              9: 50,
-              13: 30,
-              17: 20,
-              25: 10,
-              33: 5}
+              9: 45,
+              13: 25,
+              17: 10,
+              25: 0}
 # We need to manually change what placing 0-2 for final bracket
 # Or else people in ladder can get points for being in final bracket
 
@@ -35,52 +35,41 @@ PLACEMENTS = {1: 250,
 # I need to document it better.
 
 
-def TotalPointsFirstWeekLadder(WSL1file:str, TPv1file:str) -> None:
-    """For the first week there hasn't been a TotalPoints so we create it."""
-    # I think delete
-    WSL = pd.read_csv(WSL1file, sep = "\t")  # df- dataframe
-    WSL['NumTimesBracket'] = 0
-    WSL['Placement'] = -1
-    WSL['NumTourneysEntered'] = 1
-    #print(df.shape)
-    #print(type(df))
-    print(df)
-    print(df.columns)
-    df.to_csv(TPv1file, sep = "\t", index= False)
+def PrintWelcomeMessage() -> None:
+    print("Hi There!")
+    print("The Architect here! OmegaLUL\n")
+    print("Which option would you like? (Press the number you want)")
+    print("\t1. Update the Ladder Rankings")
+    print("\t2. Update the Bracket Rankings")
 
 
-def TotalPointBracket(TPv1file:str, WSBfile:str, outputFile:str) -> None:
-    # I think delete
-    """Add final bracket results to the points."""
-    TPv1 = pd.read_csv(TPv1file, sep = "\t")
-    WSB = pd.read_csv(WSBfile, sep = "\t")
+def UserChoice() -> int:
+    """The user decides what option they want"""
+    while True:
+        option = input("")
+        try:
+            option = int(option)
+        except:
+            pass
+        if option in (1, 2):
+            return option
+        else:
+            print("Choose 1 or 2\n")
 
 
-    # append WSB to TPv1
-    # If they are in bracket, identical SmasherID, then replace Wins, Placements,
-    # increment NumTimesBracket
-    TPv1.to_csv(outputFile, sep = "\t")
+def UserWeek() -> int:
+    """The user decides what week it is"""
+    while True:
+        week = input("What week is it? (Week of the Season) ")
+        try:
+            week = int(week)
+            if week > 0:
+                return week
+            else:
+                print("Please choose an integer greater than 0")
+        except:
+            print("Please Choose an integer\n")       
 
-
-def RankLadder(WSLfile:str, WRLfile:str) -> None:
-    """Rank ladder for that week. """
-    WSL = pd.read_csv(WSLfile, sep = "\t")
-
-    WSL['Points']= WSL.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
-                             row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO, axis= 1)
-    WSL['Rank'] = (WSL['Points'] * -1).rank(method= 'max')
-    WSL['WinPercentage'] = WSL['Wins']/ (WSL['Wins'] + WSL['Losses'])
-    WSL.to_csv(WRLfile, sep = "\t", index= False)
-
-
-def WebsiteWeeklyLadderRank(WRLfile:str, SWRfile:str) -> None:
-    """ It does not change anything about the data. It moves and removes columns
-    so it is more presentable for the website."""
-    WRL = pd.read_csv(WRLfile, sep = "\t")
-    WRL = WRL[['Rank', 'SmashTag', 'Wins', 'Losses', 'WinPercentage']]
-    WRL= WRL.sort_values(by= 'Rank')
-    WRL = WRL.round(3)
-    WRL.to_csv(SWRfile, sep = "\t", index= False)
 
 
 def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) -> None:
@@ -98,15 +87,28 @@ def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) ->
         WTP.at[index, 'Losses']= WTP['Losses'][index] + WSB['Losses'][i]
 
     WTP['WinPercentage'] = WTP['Wins']/ (WTP['Wins'] + WTP['Losses'])
-    WTP.to_csv(WTPfile, sep = "\t", index= False)
+    WTP.to_csv(WTPfile, index= False)
     
     WTP['AllPlacements'] = WSL['Placement']
     WTP['AllPlacements'] = WTP['AllPlacements'].astype(str)
-    WTP.to_csv(TPfile, sep = "\t", index= False)
+    WTP.to_csv(TPfile, index= False)
+
+
+
+def RankLadder(WSLfile:str, WRLfile:str) -> None:
+    """Rank ladder for that week. """
+    WSL = pd.read_csv(WSLfile, sep = "\t")
+
+    WSL['Points']= WSL.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
+                             row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO, axis= 1)
+    WSL['Rank'] = (WSL['Points'] * -1).rank(method= 'max')
+    WSL['WinPercentage'] = WSL['Wins']/ (WSL['Wins'] + WSL['Losses'])
+    WSL.to_csv(WRLfile, index= False)
 
 
 def RankWeeklyBoth(WTPfile: str, WRBfile: str) -> None:
-    WTP = pd.read_csv(WTPfile, sep= "\t")
+    """Rank Ladder and Bracket for that week."""
+    WTP = pd.read_csv(WTPfile)
     WTP["PlacePoints"] = WTP['Placement']
     WTP["PlacePoints"] = WTP["PlacePoints"].map(PLACEMENTS)
     WTP["PlacePoints"] = WTP["PlacePoints"].fillna(0)
@@ -115,96 +117,92 @@ def RankWeeklyBoth(WTPfile: str, WRBfile: str) -> None:
                              row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO + \
                              row.PlacePoints, axis= 1)
     WTP['Rank'] = (WTP['Points'] * -1).rank(method= 'max')
+    WTP.to_csv(WRBfile, index= False)
 
-    WTP.to_csv(WRBfile, sep = "\t", index= False)
+
+def RankTotalPoints(TPfile:str, TRfile:str) -> None:
+    """It will give value to each column to determine the ranks for
+    the entire season."""
+    pass
     
 
 
-def WebsiteWeeklyRank(WRLfile:str, SWRfile:str) -> None:
-    # We only need of these functions. Change these to make more sense
+def WebsiteWeeklyRank(WRfile:str, SWRfile:str) -> None:
+    """ It does not change anything about the data. It moves and removes columns
+    so it is more presentable for the website. This is used by both the weekly
+    ladder and bracket rank."""
+    WR = pd.read_csv(WRfile)
+    WR = WR.rename(columns = {'Points':'BankRoll Bills'})
+    WR = WR[['Rank', 'BankRoll Bills', 'SmashTag',
+             'Wins', 'Losses', 'WinPercentage']]
+    WR= WR.sort_values(by= 'Rank')
+    WR = WR.round(3)
+    WR.to_csv(SWRfile, index= False)
+
+
+def WebsiteWeeklyTotalRank(TRfile:str, STRfile:str) -> None:
+    # Keep for now. We might want different columns for each file.
+    # The total can include more information
     """ It does not change anything about the data. It moves and removes columns
     so it is more presentable for the website."""
-    WRL = pd.read_csv(WRLfile, sep = "\t")
-    WRL = WRL[['Rank', 'SmashTag', 'Wins', 'Losses', 'WinPercentage']]
-    WRL= WRL.sort_values(by= 'Rank')
-    WRL = WRL.round(3)
-    WRL.to_csv(SWRfile, sep = "\t", index= False)
+    TR = pd.read_csv(TRfile)
+    TR = TR.rename(columns = {'Points':'BankRoll Bills'})
+    TR = TR[['Rank', 'BankRoll Bills', 'SmashTag',
+             'Wins', 'Losses', 'WinPercentage']]
+    TR= TR.sort_values(by= 'Rank')
+    TR = TR.round(3)
+    TR.to_csv(STRfile, index= False)
 
 
 
 
 def main():
-    #week = int(input("What week is it? ") )
-    # Make some type of interface when I only have ladder, or add ladder and bracket.
-
-
+    PrintWelcomeMessage()
+    #choice = UserChoice()
+    #week = UserWeek()
+    choice = 2
     week = 1
-    
-    WSL = "WeeklyScoresLadder" + str(week) + ".txt"
+
+    # Input files    
+    WSL = "WeeklyScoresLadder" + str(week) + ".txt"     
     WSB = "WeeklyScoresBracket" + str(week) + ".txt"
 
-    WTP = "WeeklyTotalPoint" + str(week) + ".txt"   # It combines the points from Ladder and Bracket
-    TP = "TotalPoint" + str(week) + ".txt"          # Counts all the points from all cummulative weeks
-    oldTP = "TotalPoint" + str(week - 1) + ".txt"   # Last week's Total Points
+    # Total Points
+    WTP = "WeeklyTotalPoint" + str(week) + ".csv"   # It combines the points from Ladder and Bracket
+    oldTP = "TotalPoint" + str(week - 1) + ".csv"   # Last week's Total Points
+    TP = "TotalPoint" + str(week) + ".csv"          # Counts all the points from all cummulative weeks
     
     # These next two apply the ranking formula
-    WRL = "WeeklyRankLadder" + str(week) + ".txt"
-    WRB = "WeeklyRankBoth" + str(week) + ".txt"
-    TR = "TotalRank" + str(week) + ".txt"
+    WRL = "WeeklyRankLadder" + str(week) + ".csv"   # Points for ladder that week's ladder
+    WRB = "WeeklyRankBoth" + str(week) + ".csv"     # Points for ladder and bracket for the week
+    TR = "TotalRank" + str(week) + ".csv"           # Points for the entire season
 
-    # These next two will go on the website
-    SWLR = "SubsetWeeklyLadderRank" + str(week) + ".txt"
-    SWBR = "SubsetWeeklyBracketRank" + str(week) + ".txt"
-    STR = "SubsetTotalRanks" + str(week) + ".txt"
+    # These three will go on the website
+    SWLR = "SubsetWeeklyLadderRank" + str(week) + ".csv"
+    SWBR = "SubsetWeeklyBracketRank" + str(week) + ".csv"
+    STR = "SubsetTotalRanks" + str(week) + ".csv"
     
-    category = "both"
-    changeRankOnly = True  # used if you only want to change the formula
 
-    if category == "ladder":
-        # I don't need to include changeRankOnly bc I can only a ranking formula to it. Nothing else
+
+    if choice == 1:
         RankLadder(WSL, WRL)
         WebsiteWeeklyLadderRank(WRL, SWLR)
+    else:
+        if week == 1:
+            WeeklyScorePointsWeek1(WSL, WSB, WTP, TP)   # 2 inputs, 2 outputs
+        else:
+            #WeeklyScorePoints(WSL, WSB, oldTP, WTP, TP) # 3 inputs, 2 outputs   # Not Done
+            pass
 
-    elif (category == "both") and (week == 1) and (changeRankOnly == False):
-        WeeklyScorePointsWeek1(WSL, WSB, WTP, TP)  #2 inputs, 2 outputs
-        
-        # RankWeeklyBoth(WTP, WRB)
-        # RankTotalPoints(TP, TR)
+        RankWeeklyBoth(WTP, WRB)
+        # RankTotalPoints(TP, TR)     # Not Done
 
-        # WebsiteWeeklyRank(WRB, SWR)
-        # WebsiteTotalRank(TR, STR)
-        pass
-
-    
-    elif (category == "both") and (changeRankOnly == False):
-        # WeeklyScorePoints(WSL, WSB, oldTP, WTP, TP)  3 inputs, 2 outputs
-        
-        # RankWeeklyBoth(WTP, WRB)
-        # RankTotalPoints(TP, TR)
-
-        # WebsiteWeeklyRank(WRB, SWR)
-        # WebsiteTotalRank(TR, STR)
-        pass
-
-    elif (category == "both") and (changeRankOnly):     # Used for change Formula
-        # RankWeeklyBoth(WTP, WRB)       # Done
-        RankTotalPoints(TP, TR)
-
-        # WebsiteWeeklyRank(WRB, SWBR)    # Done
-        # WebsiteTotalRank(TR, STR)
-        pass
-        
-    # I am going to fix this awful if elif
-
-
+        WebsiteWeeklyRank(WRB, SWBR)
+        # WebsiteTotalRank(TR, STR)  # Not Done
 
 
 
 main()
-
-# I might be able to combine RankTotalPoints
-# Or just change inputs
-
 
 
 """
@@ -215,5 +213,7 @@ These I need to work on\
 4. Document the github better
 5. List of terminology
 6. Learn Github 
-Work 
 """
+
+
+
