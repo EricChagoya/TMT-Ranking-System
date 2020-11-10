@@ -125,13 +125,17 @@ def get_event_standings(eventId, pageCounts, perPage=100):
 
 # Return a string of 0s and 1s that determine what tier a player is in by
 # where the 1 is.
-def get_tier(placement, pro, rookie):
-    if placement <= pro:
-        return '0\t0\t1'
+def get_tier(placement, hof, allstar, pro, rookie):
+    if placement <= hof:
+        return '0\t0\t0\t0\t1'
+    elif placement <= allstar:
+        return '0\t0\t0\t1\t0'
+    elif placement <= pro:
+        return '0\t0\t1\t0\t0'
     elif placement <= rookie:
-        return '0\t1\t0'
+        return '0\t1\t0\t0\t0'
     else:
-        return '1\t0\t0'
+        return '1\t0\t0\t0\t0'
 
 
 if __name__ == '__main__':
@@ -147,6 +151,10 @@ if __name__ == '__main__':
         quit()
 
     if l:
+        hof = int(input(
+            'Input the lowest placement with the Hall of Fame Rank (0 if NA): '))
+        allstar = int(input(
+            'Input the lowest placement with the All-Star Rank (Roughly): '))
         pro = int(input(
             'Input the lowest placement with the Pro Rank (Roughly): '))
         rookie = int(input(
@@ -157,7 +165,7 @@ if __name__ == '__main__':
     f = open('WeeklyScoreLadderN.txt', 'w')
     f.write('SmasherID\tSmashTag\tWins\tLosses\t')
     if l:
-        f.write('Prospect\tRookie\tPro\t')
+        f.write('Prospect\tRookie\tPro\tAll-Star\tHall of Fame\t')
     f.write('Placement\n')
 
     for key, element in standings.items():
@@ -166,5 +174,6 @@ if __name__ == '__main__':
                 str(element[2]) + '\t' +
                 str(element[3]) + '\t')
         if l:
-            f.write(get_tier(element[1], pro, rookie) + '\t')
+            f.write(get_tier(element[1], hof, allstar, pro, rookie) + '\t')
         f.write(str(element[1]) + '\n')
+
