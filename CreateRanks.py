@@ -89,7 +89,7 @@ def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) ->
     WTP['WinPercentage'] = WTP['Wins']/ (WTP['Wins'] + WTP['Losses'])
     WTP.to_csv(WTPfile, index= False)
     
-    WTP['AllPlacements'] = WSL['Placement']
+    WTP['AllPlacements'] = WSL['Placement']     # Placement for that week
     WTP['AllPlacements'] = WTP['AllPlacements'].astype(str)
     WTP.to_csv(TPfile, index= False)
 
@@ -168,9 +168,9 @@ def main():
     WSB = "WeeklyScoresBracket" + str(week) + ".txt"
 
     # Total Points
-    WTP = "WeeklyTotalPoint" + str(week) + ".csv"   # It combines the points from Ladder and Bracket
-    oldTP = "TotalPoint" + str(week - 1) + ".csv"   # Last week's Total Points
-    TP = "TotalPoint" + str(week) + ".csv"          # Counts all the points from all cummulative weeks
+    WTP = "WeeklyTotalPoints" + str(week) + ".csv"   # It combines the points from Ladder and Bracket
+    oldTP = "TotalPoints" + str(week - 1) + ".csv"   # Last week's Total Points
+    TP = "TotalPoints" + str(week) + ".csv"          # Counts all the points from all cummulative weeks
     
     # These next two apply the ranking formula
     WRL = "WeeklyRankLadder" + str(week) + ".csv"   # Points for ladder that week's ladder
