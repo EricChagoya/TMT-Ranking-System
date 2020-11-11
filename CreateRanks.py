@@ -7,7 +7,7 @@ import pandas as pd
 
 
 POINT_WIN = 1   # Need to change this so max is 20
-POINT_PROSPECT = 0
+POINT_PROSPECT = 1
 POINT_ROOKIE = 5
 POINT_PRO = 10
 POINT_ALL_STAR = 15
@@ -73,34 +73,45 @@ def UserWeek() -> int:
 
 
 def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) -> None:
-    WSL = pd.read_csv(WSLfile, sep = "\t")
-    WSB = pd.read_csv(WSBfile, sep = "\t")
+    WSL = pd.read_csv(WSLfile, encoding = "ISO-8859-1")
+    WSB = pd.read_csv(WSBfile, encoding = "ISO-8859-1")
     
     WTP = WSL
     WTP['SmasherID'] = WTP['SmasherID'].astype(str)
     WSB['SmasherID'] = WSB['SmasherID'].astype(str)
-    
-    for i, SmasherID in enumerate(WSB['SmasherID']):    # I think this can be faster (future)
-        t= WTP[WTP['SmasherID'].isin([SmasherID])]
+
+    # bandaid
+    WTP['Placement'] = -1
+
+    for i, SmashTag in enumerate(WSB['SmashTag']):    # I think this can be faster (future)
+    #for i, SmasherID in enumerate(WSB['SmasherID']):    # I think this can be faster (future)
+        #print(i, SmasherID)
+        t= WTP[WTP['SmashTag'].isin([SmashTag])]
+        #print(t, SmashTag)
+        #t= WTP[WTP['SmasherID'].isin([SmasherID])]
+        #print(t)
         index= t.index[0]
         WTP.at[index, 'Wins']= WTP['Wins'][index] + WSB['Wins'][i]
         WTP.at[index, 'Losses']= WTP['Losses'][index] + WSB['Losses'][i]
+        WTP.at[index, 'Placement']= WSB['Placement'][i]
 
     WTP['WinPercentage'] = WTP['Wins']/ (WTP['Wins'] + WTP['Losses'])
     WTP.to_csv(WTPfile, index= False)
     
-    WTP['AllPlacements'] = WSL['Placement']     # Placement for that week
-    WTP['AllPlacements'] = WTP['AllPlacements'].astype(str)
+    # WTP['AllPlacements'] = WSL['Placement']     # Placement for that week
+    # WTP['AllPlacements'] = WTP['AllPlacements'].astype(str)
     WTP.to_csv(TPfile, index= False)
 
 
 
 def RankLadder(WSLfile:str, WRLfile:str) -> None:
     """Rank ladder for that week. """
-    WSL = pd.read_csv(WSLfile, sep = "\t")
+    WSL = pd.read_csv(WSLfile)
+    print(WSLfile)
 
     WSL['Points']= WSL.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
-                             row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO, axis= 1)
+                             row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO + \
+                             row.AllStar*POINT_ALL_STAR + row.HallOfFame*POINT_HALL_OF_FAME, axis= 1)
     WSL['Rank'] = (WSL['Points'] * -1).rank(method= 'max')
     WSL['WinPercentage'] = WSL['Wins']/ (WSL['Wins'] + WSL['Losses'])
     WSL.to_csv(WRLfile, index= False)
@@ -115,7 +126,9 @@ def RankWeeklyBoth(WTPfile: str, WRBfile: str) -> None:
 
     WTP['Points']= WTP.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
                              row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO + \
+                             row.AllStar*POINT_ALL_STAR + row.HallOfFame*POINT_HALL_OF_FAME + \
                              row.PlacePoints, axis= 1)
+
     WTP['Rank'] = (WTP['Points'] * -1).rank(method= 'max')
     WTP.to_csv(WRBfile, index= False)
 
@@ -157,15 +170,15 @@ def WebsiteWeeklyTotalRank(TRfile:str, STRfile:str) -> None:
 
 
 def main():
-    PrintWelcomeMessage()
+    #PrintWelcomeMessage()
     #choice = UserChoice()
     #week = UserWeek()
     choice = 2
     week = 1
 
     # Input files    
-    WSL = "WeeklyScoresLadder" + str(week) + ".txt"     
-    WSB = "WeeklyScoresBracket" + str(week) + ".txt"
+    WSL = "WeeklyScoresLadder" + str(week) + ".csv"     
+    WSB = "WeeklyScoresBracket" + str(week) + ".csv"
 
     # Total Points
     WTP = "WeeklyTotalPoints" + str(week) + ".csv"   # It combines the points from Ladder and Bracket
@@ -186,7 +199,7 @@ def main():
 
     if choice == 1:
         RankLadder(WSL, WRL)
-        WebsiteWeeklyLadderRank(WRL, SWLR)
+        WebsiteWeeklyRank(WRL, SWLR)
     else:
         if week == 1:
             WeeklyScorePointsWeek1(WSL, WSB, WTP, TP)   # 2 inputs, 2 outputs
