@@ -165,7 +165,7 @@ if __name__ == '__main__':
     f = open('WeeklyScores.csv', 'w')
     f.write('SmasherID,SmashTag,Wins,Losses,')
     if l:
-        f.write('Prospect,Rookie,Pro,All-Star,Hall of Fame,')
+        f.write('Prospect,Rookie,Pro,All-Star,Hall-Of-Fame,')
     f.write('Placement\n')
 
     for key, element in standings.items():
