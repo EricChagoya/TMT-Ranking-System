@@ -47,7 +47,7 @@ def get_page_counts(eventId, perPage=100):
             result['data']['event']['sets']['pageInfo']['totalPages']]
 
 
-# Returns a dict {player ID: [player name, placement, wins, losses]}
+# Returns a dict {entrantID: [player name, placement, wins, losses, playerID]}
 def get_event_standings(eventId, pageCounts, perPage=100):
     query = '''
     query EventStandings($eventId: ID!, $page: Int!, $perPage: Int!) {
@@ -63,6 +63,11 @@ def get_event_standings(eventId, pageCounts, perPage=100):
             entrant{
               id
               name
+              participants {
+                player {
+                  id
+                }
+              }
             }
           }
         }
@@ -81,7 +86,8 @@ def get_event_standings(eventId, pageCounts, perPage=100):
         playersList = run_query(query, variables)
         for player in playersList['data']['event']['standings']['nodes']:
             standings[player['entrant']['id']] = [player['entrant']['name'],
-                                                  player['placement'], 0, 0]
+                                                  player['placement'], 0, 0,
+                                                  player['entrant']['participants'][0]['player']['id']]
 
     query = '''
     query EventSets($eventId: ID!, $page: Int!, $perPage: Int!) {
@@ -169,7 +175,7 @@ if __name__ == '__main__':
     f.write('Placement\n')
 
     for key, element in standings.items():
-        f.write(str(key) + ',' +
+        f.write(str(element[4]) + ',' +
                 str(element[0]) + ',' +
                 str(element[2]) + ',' +
                 str(element[3]) + ',')
