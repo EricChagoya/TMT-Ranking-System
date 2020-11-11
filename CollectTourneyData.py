@@ -127,15 +127,15 @@ def get_event_standings(eventId, pageCounts, perPage=100):
 # where the 1 is.
 def get_tier(placement, hof, allstar, pro, rookie):
     if placement <= hof:
-        return '0\t0\t0\t0\t1'
+        return '0,0,0,0,1'
     elif placement <= allstar:
-        return '0\t0\t0\t1\t0'
+        return '0,0,0,1,0'
     elif placement <= pro:
-        return '0\t0\t1\t0\t0'
+        return '0,0,1,0,0'
     elif placement <= rookie:
-        return '0\t1\t0\t0\t0'
+        return '0,1,0,0,0'
     else:
-        return '1\t0\t0\t0\t0'
+        return '1,0,0,0,0'
 
 
 if __name__ == '__main__':
@@ -162,18 +162,18 @@ if __name__ == '__main__':
 
     pageCounts = get_page_counts(eventId)
     standings = (get_event_standings(eventId, pageCounts))
-    f = open('WeeklyScoreLadderN.txt', 'w')
-    f.write('SmasherID\tSmashTag\tWins\tLosses\t')
+    f = open('WeeklyScores.csv', 'w')
+    f.write('SmasherID,SmashTag,Wins,Losses,')
     if l:
-        f.write('Prospect\tRookie\tPro\tAll-Star\tHall of Fame\t')
+        f.write('Prospect,Rookie,Pro,All-Star,Hall of Fame,')
     f.write('Placement\n')
 
     for key, element in standings.items():
-        f.write(str(key) + '\t' +
-                str(element[0]) + '\t' +
-                str(element[2]) + '\t' +
-                str(element[3]) + '\t')
+        f.write(str(key) + ',' +
+                str(element[0]) + ',' +
+                str(element[2]) + ',' +
+                str(element[3]) + ',')
         if l:
-            f.write(get_tier(element[1], hof, allstar, pro, rookie) + '\t')
+            f.write(get_tier(element[1], hof, allstar, pro, rookie) + ',')
         f.write(str(element[1]) + '\n')
 
