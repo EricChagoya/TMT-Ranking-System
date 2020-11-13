@@ -60,6 +60,8 @@
  
  [To Do List and Future Feature Ideas](https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing)
  
+ [Past TMTs links](https://docs.google.com/document/d/1Ze3aTZklszRjjHdqVtS7hS2tbIED5M_s3A5Vy_1_P6k/edit?usp=sharing)
+ 
  [Ranking Website](https://ucimelee.wixsite.com/tmtmelee)
  :shipit:
  
