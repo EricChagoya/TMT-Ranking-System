@@ -9,9 +9,8 @@
  	- WeeklyScoresBracket.txt
  
  CreateRanks.py
- 
 - This will take this week's scores from a text file and add it to the total
-- It will assign some type of formula to determine points. It will then use those points and put it as a ranking
+- It will assign some type of formula to determine points. It will then use those points to determine a ranking
 - Output Files
 	- WeeklyTotalPoints.csv
 	- TotalPoints.csv
