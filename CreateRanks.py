@@ -24,15 +24,6 @@ PLACEMENTS = {1: 200,
               13: 25,
               17: 10,
               25: 0}
-# We need to manually change what placing 0-2 for final bracket
-# Or else people in ladder can get points for being in final bracket
-
-
-# Make some type of chart for abbreviations
-# Placement. -1 means they didn't place that week. Any number above 0 is what they placed.
-# Placements will have a string of all placeings. -2 means they didn't enter that week.
-# Still need to make these changes
-# I need to document it better.
 
 
 def PrintWelcomeMessage() -> None:
@@ -75,10 +66,9 @@ def UserWeek() -> int:
 def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) -> None:
     WSL = pd.read_csv(WSLfile, encoding = "ISO-8859-1")
     WSB = pd.read_csv(WSBfile, encoding = "ISO-8859-1")
-    
     WTP = WSL
-    WTP['SmasherID'] = WTP['SmasherID'].astype(str)
-    WSB['SmasherID'] = WSB['SmasherID'].astype(str)
+    WTP['SmasherID'] = WTP['SmasherID'].astype(str) # I might need these two
+    WSB['SmasherID'] = WSB['SmasherID'].astype(str) # Forgot why
 
     WTP['Placement'] = -1
     WTP['Floated'] = 0
@@ -107,6 +97,8 @@ def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) ->
             
     WTP['WinPercentage'] = WTP['Wins']/ (WTP['Wins'] + WTP['Losses'])
     WTP.to_csv(WTPfile, index= False)
+    
+    WTP = WTP.rename({'Placement': 'PlaceWeek1'}, axis= 'columns')
     WTP.to_csv(TPfile, index= False)
 
 
@@ -152,8 +144,8 @@ def WebsiteWeeklyRank(WRfile:str, SWRfile:str) -> None:
     ladder and bracket rank."""
     WR = pd.read_csv(WRfile)
     WR = WR.rename(columns = {'Points':'BankRoll Bills'})
-    WR = WR[['Rank', 'BankRoll Bills', 'SmashTag',
-             'Wins', 'Losses', 'WinPercentage']]
+    WR = WR[['Rank', 'BankRoll Bills', 'SmashTag', 'Wins',
+             'Losses', 'WinPercentage', 'BankRoll Bills']]
     WR= WR.sort_values(by= 'Rank')
     WR = WR.round(3)
     WR.to_csv(SWRfile, index= False)
@@ -166,8 +158,8 @@ def WebsiteWeeklyTotalRank(TRfile:str, STRfile:str) -> None:
     so it is more presentable for the website."""
     TR = pd.read_csv(TRfile)
     TR = TR.rename(columns = {'Points':'BankRoll Bills'})
-    TR = TR[['Rank', 'BankRoll Bills', 'SmashTag',
-             'Wins', 'Losses', 'WinPercentage']]
+    TR = TR[['Rank', 'SmashTag', 'Wins', 'Losses',
+             'WinPercentage', 'BankRoll Bills',]]
     TR= TR.sort_values(by= 'Rank')
     TR = TR.round(3)
     TR.to_csv(STRfile, index= False)
@@ -185,10 +177,11 @@ def main():
     
 
     # Input files
-    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'
-    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'
+    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'     # Placement
+    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'    # Placement
 
     # Total Points
+    # WTP should also be Placement
     WTP = f'S{season}W{week}WeeklyTotalPoints.csv'  # It combines the points from Ladder and Bracket
     oldTP = f'S{season}W{week}TotalPoints.csv'      # Last week's Total Points
     TP = f'S{season}W{week}TotalPoints.csv'         # Counts all the points from all cummulative weeks
@@ -199,8 +192,8 @@ def main():
     TR = f'S{season}W{week}TotalRank.csv'           # Points for the entire season
 
     # These three will go on the website
-    SWLR = f'S{season}W{week}SubsetWeeklyLadderRank.csv'
-    SWBR = f'S{season}W{week}SubsetWeeklyBracketRank.csv'
+    SWLR = f'S{season}W{week}SubsetWeeklyLadderRank.csv'    # Placement
+    SWBR = f'S{season}W{week}SubsetWeeklyBracketRank.csv'   # Placement
     STR = f'S{season}W{week}SubsetTotalRanks.csv'
     
 
@@ -211,12 +204,13 @@ def main():
     else:
         if week == 1:
             WeeklyScorePointsWeek1(WSL, WSB, WTP, TP)   # 2 inputs, 2 outputs
+            # I don't need week as an input bc it is always week 1
         else:
-            #WeeklyScorePoints(WSL, WSB, oldTP, WTP, TP) # 3 inputs, 2 outputs   # Not Done
+            #WeeklyScorePoints(WSL, WSB, oldTP, week, WTP, TP) # 4 inputs, 2 outputs   # Not Done
             pass
 
         RankWeeklyBoth(WTP, WRB)
-        # RankTotalPoints(TP, TR)     # Not Done
+        # RankTotalPoints(TP, week, TR)     # Not Done. 2 inputs, 1 output
 
         WebsiteWeeklyRank(WRB, SWBR)
         # WebsiteTotalRank(TR, STR)  # Not Done
@@ -224,17 +218,5 @@ def main():
 
 
 main()
-
-
-"""
-These I need to work on\
-1. WeeklyScorePoint() So I can add this week's ranking to the last couple
-2. Document better
-3. Make the code cleaner
-4. Document the github better
-5. List of terminology
-6. Learn Github
-"""
-
 
 
