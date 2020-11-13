@@ -1,5 +1,8 @@
+# Output Files
 All Output files will have S(N)W(n) as a prefix.
+
 S(N) being what season we are on.
+
 W(n) being which week is it.
 
 CollectData.py Output Files
