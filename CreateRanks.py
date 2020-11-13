@@ -80,34 +80,40 @@ def WeeklyScorePointsWeek1(WSLfile:str, WSBfile:str, WTPfile:str, TPfile:str) ->
     WTP['SmasherID'] = WTP['SmasherID'].astype(str)
     WSB['SmasherID'] = WSB['SmasherID'].astype(str)
 
-    # bandaid
     WTP['Placement'] = -1
+    WTP['Floated'] = 0
 
-    for i, SmashTag in enumerate(WSB['SmashTag']):    # I think this can be faster (future)
-    #for i, SmasherID in enumerate(WSB['SmasherID']):    # I think this can be faster (future)
-        #print(i, SmasherID)
-        t= WTP[WTP['SmashTag'].isin([SmashTag])]
-        #print(t, SmashTag)
-        #t= WTP[WTP['SmasherID'].isin([SmasherID])]
-        #print(t)
-        index= t.index[0]
-        WTP.at[index, 'Wins']= WTP['Wins'][index] + WSB['Wins'][i]
-        WTP.at[index, 'Losses']= WTP['Losses'][index] + WSB['Losses'][i]
-        WTP.at[index, 'Placement']= WSB['Placement'][i]
-
+    count = 0
+    for index, row in WSB.iterrows():
+        inLadder= WTP[WTP['SmasherID'].isin([row['SmasherID']])]
+        if len(inLadder) > 0:
+            index= inLadder.index[0]
+            WTP.at[index, 'Wins']= WTP['Wins'][index] + row['Wins']
+            WTP.at[index, 'Losses']= WTP['Losses'][index] + row['Losses']
+            WTP.at[index, 'Placement']= row['Placement']
+        else:
+            new_row = {'SmasherID': row['SmasherID'],
+                       'SmashTag': row['SmashTag'],
+                       'Wins': row['Wins'],
+                       'Losses': row['Losses'],
+                       'Prospect': 0,
+                       'Rookie': 0,
+                       'Pro': 0,
+                       'AllStar': 0,
+                       'HallOfFame': 0,
+                       'Floated': 1,
+                       'Placement':row['Placement']}
+            WTP = WTP.append(new_row, ignore_index= True)
+            
     WTP['WinPercentage'] = WTP['Wins']/ (WTP['Wins'] + WTP['Losses'])
     WTP.to_csv(WTPfile, index= False)
-    
-    # WTP['AllPlacements'] = WSL['Placement']     # Placement for that week
-    # WTP['AllPlacements'] = WTP['AllPlacements'].astype(str)
     WTP.to_csv(TPfile, index= False)
 
 
 
 def RankLadder(WSLfile:str, WRLfile:str) -> None:
     """Rank ladder for that week. """
-    WSL = pd.read_csv(WSLfile)
-    print(WSLfile)
+    WSL = pd.read_csv(WSLfile, encoding = "ISO-8859-1")
 
     WSL['Points']= WSL.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
                              row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO + \
@@ -127,7 +133,7 @@ def RankWeeklyBoth(WTPfile: str, WRBfile: str) -> None:
     WTP['Points']= WTP.apply(lambda row: row.Wins + row.Prospect*POINT_PROSPECT + \
                              row.Rookie*POINT_ROOKIE + row.Pro*POINT_PRO + \
                              row.AllStar*POINT_ALL_STAR + row.HallOfFame*POINT_HALL_OF_FAME + \
-                             row.PlacePoints, axis= 1)
+                             row.Floated*POINT_FLOATED_PLAYER + row.PlacePoints, axis= 1)
 
     WTP['Rank'] = (WTP['Points'] * -1).rank(method= 'max')
     WTP.to_csv(WRBfile, index= False)
@@ -174,26 +180,28 @@ def main():
     #choice = UserChoice()
     #week = UserWeek()
     choice = 2
+    season = 0
     week = 1
+    
 
-    # Input files    
-    WSL = "WeeklyScoresLadder" + str(week) + ".csv"     
-    WSB = "WeeklyScoresBracket" + str(week) + ".csv"
+    # Input files
+    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'
+    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'
 
     # Total Points
-    WTP = "WeeklyTotalPoints" + str(week) + ".csv"   # It combines the points from Ladder and Bracket
-    oldTP = "TotalPoints" + str(week - 1) + ".csv"   # Last week's Total Points
-    TP = "TotalPoints" + str(week) + ".csv"          # Counts all the points from all cummulative weeks
+    WTP = f'S{season}W{week}WeeklyTotalPoints.csv'  # It combines the points from Ladder and Bracket
+    oldTP = f'S{season}W{week}TotalPoints.csv'      # Last week's Total Points
+    TP = f'S{season}W{week}TotalPoints.csv'         # Counts all the points from all cummulative weeks
     
     # These next two apply the ranking formula
-    WRL = "WeeklyRankLadder" + str(week) + ".csv"   # Points for ladder that week's ladder
-    WRB = "WeeklyRankBoth" + str(week) + ".csv"     # Points for ladder and bracket for the week
-    TR = "TotalRank" + str(week) + ".csv"           # Points for the entire season
+    WRL = f'S{season}W{week}WeeklyRankLadder.csv'   # Points for ladder that week's ladder
+    WRB = f'S{season}W{week}WeeklyRankBoth.csv'     # Points for ladder and bracket for the week
+    TR = f'S{season}W{week}TotalRank.csv'           # Points for the entire season
 
     # These three will go on the website
-    SWLR = "SubsetWeeklyLadderRank" + str(week) + ".csv"
-    SWBR = "SubsetWeeklyBracketRank" + str(week) + ".csv"
-    STR = "SubsetTotalRanks" + str(week) + ".csv"
+    SWLR = f'S{season}W{week}SubsetWeeklyLadderRank.csv'
+    SWBR = f'S{season}W{week}SubsetWeeklyBracketRank.csv'
+    STR = f'S{season}W{week}SubsetTotalRanks.csv'
     
 
 
@@ -225,7 +233,7 @@ These I need to work on\
 3. Make the code cleaner
 4. Document the github better
 5. List of terminology
-6. Learn Github 
+6. Learn Github
 """
 
 
