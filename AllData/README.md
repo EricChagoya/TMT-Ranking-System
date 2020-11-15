@@ -20,15 +20,15 @@ CreateRanks.py Output Files
 - WeeklyTotalPoints.csv
 	- It combines this week's lader and bracket results to one file
 	- If a player did not make it into final bracket, their placement is -1
-	- Column Names: SmasherID, SmashTag, Wins, Losses, Prospect, Rookie, Pro, AllStar, HallOfFame, Floated, Placement, WinPercentage
+	- Column Names: SmasherID, SmashTag, Wins, Losses, LimitLadderWins, Prospect, Rookie, Pro, AllStar, HallOfFame, Floated, Placement, WinPercentage
 - TotalPoints.csv
 	- It adds WeeklyTotalPoints.csv to last week's W(n-1)TotalPoints.csv
 	- If a player didn't enter that week, there placement is -2
-	- Column Names: SmasherID, SmasherTag, Wins, Losses, Prospect, Rookie, Pro, AllStar, HallOfFame, Floated, PlaceWeek1, ..., PlaceWeekN, WinPercentage
+	- Column Names: SmasherID, SmasherTag, Wins, Losses, LimitLadderWins, Prospect, Rookie, Pro, AllStar, HallOfFame, Floated, PlaceWeek1, ..., PlaceWeekN, WinPercentage
 
 - WeeklyRankLadder.csv
 	- It applies the Ranking formula to this week's ladder
-	- Column Names: SmasherID, SmashTag, Wins, Losses, Prospect, Rookie, Pro, AllStar, HallOfFame, Placement, Rank, WinPercentage
+	- Column Names: SmasherID, SmashTag, Wins, Losses, LimitLadderWins, Prospect, Rookie, Pro, AllStar, HallOfFame, Placement, Rank, WinPercentage
 - WeeklyRankBoth.csv
 	- It applies the Ranking formula to this week's ladder and bracket
 	- Column Names: SmasherID, SmashTag, Wins, Losses, Prospect, Rookie, Pro, AllStar, HallOfFame, Floated, Placement, Points, Rank, WinPercentage
