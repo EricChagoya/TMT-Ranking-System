@@ -1,11 +1,19 @@
-import json
 import requests
+#pip install requests
 
-# This is FTSTimSin's API key
+# The smash.gg API has 2 rate limits:
+# 80 requests per minute
+# 1000 objects per request
+# At the top of each query, the number of objects per query will be shown in a
+# comment (only an estimation).
+
+
+# FTSTimSin's API Key
 HEADERS = {'Authorization': 'Bearer bbc80775130117d4ecb1b0eedc00db7d'}
 
-# Sends the request to the API given the query and variables. Returns the json
-def run_query(query, variables):
+def run_query(query: str, variables: {str, int or str}) -> dict:
+    """Sends the request to the API given the query and variables. Returns the
+    json response. If there is a problem, it raises an exception"""
     request = requests.post('https://api.smash.gg/gql/alpha',
                             json={'query': query, 'variables': variables},
                             headers=HEADERS)
@@ -16,12 +24,50 @@ def run_query(query, variables):
                         .format(request.status_code, query))
 
 
-# Gets page counts for both the number of valid players (1st item in the list)
-# and sets (2nd item in the list) depending on the number of items per page.
-def get_page_counts(eventId, perPage=100):
+def get_event_info(slug: str) -> {str: int}:
+    """Gets the id and name of all events in the tournament (given the smash.gg
+    slug, and returns a dict with either 'East', 'West', or 'Bracket'
+    (depending on which event), as the key and the eventID as the value. Prints
+    information so the user can see what events are going to be returned."""
+    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: 6
     query = '''
-    query PageCounts($eventId: ID!, $perPage: Int!) {
-      event(id: $eventId) {
+    query GetEventInfo($tourneySlug: String!){
+      tournament(slug: $tourneySlug){
+        events{
+          id
+          name
+        }
+      }
+    }
+    '''
+    variables = {'tourneySlug': slug}
+    result = run_query(query, variables)
+
+    info = dict()
+    for event in result['data']['tournament']['events']:
+        if 'East' in event['name']:
+            info['East'] = event['id']
+            print('East Coast Ladder Found!:', event['name'])
+        elif 'West' in event['name']:
+            info['West'] = event['id']
+            print('West Coast Ladder Found!:', event['name'])
+        elif 'Main' in event['name']:
+            info['Bracket'] = event['id']
+            print('Main Bracket Found!:', event['name'])
+        else:
+            print('UNKNOWN EVENT:', event['name'])
+    return info
+
+
+def get_page_counts(eventId: int, perPage: int = 100) -> (int, int, int):
+    """Gets page counts for both the number of valid players (1st item in the
+    tuple) and sets (2nd item in the tuple) depending on the number of items
+    per page. The 3rd item of the tuple is the number of items per page
+    (perPage)."""
+    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: 4
+    query = '''
+    query PageCounts($eventId: ID!, $perPage: Int!){
+      event(id: $eventId){
         id
         name
         standings(query:{
@@ -37,21 +83,30 @@ def get_page_counts(eventId, perPage=100):
           }
         }
       }
-    }'''
-    variables = {
-        'eventId': eventId,
-        'perPage': perPage
     }
+    '''
+    variables = { 'eventId': eventId, 'perPage': perPage}
     result = run_query(query, variables)
-    return [result['data']['event']['standings']['pageInfo']['totalPages'],
-            result['data']['event']['sets']['pageInfo']['totalPages']]
+
+    return (result['data']['event']['standings']['pageInfo']['totalPages'],
+            result['data']['event']['sets']['pageInfo']['totalPages'],
+            perPage)
 
 
-# Returns a dict {entrantID: [player name, placement, wins, losses, playerID]}
-def get_event_standings(eventId, pageCounts, perPage=100):
+def get_event_stats(eventId: int, pageCounts: (int, int, int)) -> \
+        {int: (str, int, int, int)}:
+    """Gets the standings of all players in the event and information on every
+    set played in the event and returns a dict in this format:
+    {playerId (NOT entrantId): (gamertag, wins, losses, placement)}"""
+
+    # entrantId != playerId. entrantId is the ID of the player for a specific
+    # event (a player's entrantId changes per event). A playerId is constant
+    # for that particular player.
+
+    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: 402 at most
     query = '''
     query EventStandings($eventId: ID!, $page: Int!, $perPage: Int!) {
-      event(id: $eventId) {
+      event(id: $eventId){
         id
         name
         standings(query:{
@@ -63,8 +118,8 @@ def get_event_standings(eventId, pageCounts, perPage=100):
             entrant{
               id
               name
-              participants {
-                player {
+              participants{
+                player{
                   id
                 }
               }
@@ -72,23 +127,29 @@ def get_event_standings(eventId, pageCounts, perPage=100):
           }
         }
       }
-    }'''
-    variables = {
-        'eventId': eventId,
-        'perPage': perPage
     }
-    standings = dict()
+    '''
+    variables = {       # 'page' will be incremented in a for loop
+        'eventId': eventId,
+        'perPage': pageCounts[2]
+    }
 
-    # Loops 'pageCount' amount of times to ensure that all players are looped
-    # through, not just the top ones.
+    # This dict is not the same dict that is returned. This dict is:
+    # {entrantId: [gamertag, placement, wins, losses, playerID]}
+    stats = dict()
+
     for i in range(pageCounts[0]):
-        variables['page'] = (i + 1)
+        variables['page'] = (i + 1)     # loops through pages to bypass 1000
+                                        # objects per request limit
         playersList = run_query(query, variables)
         for player in playersList['data']['event']['standings']['nodes']:
-            standings[player['entrant']['id']] = [player['entrant']['name'],
-                                                  player['placement'], 0, 0,
-                                                  player['entrant']['participants'][0]['player']['id']]
 
+            stats[player['entrant']['id']] = [
+                player['entrant']['name'], player['placement'], 0, 0,
+                player['entrant']['participants'][0]['player']['id']
+            ]
+
+    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: 302 at most
     query = '''
     query EventSets($eventId: ID!, $page: Int!, $perPage: Int!) {
       event(id: $eventId) {
@@ -102,21 +163,22 @@ def get_event_standings(eventId, pageCounts, perPage=100):
           nodes {
             winnerId
             slots{
-                entrant{
-                    id
-                }
+              entrant{
+                id
+              }
             }
           }
         }
       }
-    }'''
+    }
+    '''
 
-    # Loops 'pageCount' amount of times to ensure that all sets are looped
-    # through, not just the top ones.
     for i in range(pageCounts[1]):
-        variables['page'] = (i + 1)
+        variables['page'] = (i + 1)     # loops through pages to bypass 1000
+                                        # objects per request limit
         playersList = run_query(query, variables)
         for player in playersList['data']['event']['sets']['nodes']:
+            # Determines the entrantId of the winner and loser
             winner = player['winnerId']
             entrants = [player['slots'][0]['entrant']['id'],
                         player['slots'][1]['entrant']['id']]
@@ -124,62 +186,100 @@ def get_event_standings(eventId, pageCounts, perPage=100):
                 loser = entrants[1]
             else:
                 loser = entrants[0]
-            standings[winner][2] += 1
-            standings[loser][3] += 1
-    return standings
+
+            stats[winner][2] += 1
+            stats[loser][3] += 1
+
+    playerIdDict = dict()
+    for player in stats.values():
+        playerIdDict[player[4]] = (player[0], player[2], player[3], player[1])
+
+    return playerIdDict
 
 
-# Return a string of 0s and 1s that determine what tier a player is in by
-# where the 1 is.
 def get_tier(placement, hof, allstar, pro, rookie):
+    """Return a string of 0s and 1s that determine what tier a player is in by
+    where the 1 is."""
     if placement <= hof:
-        return '0,0,0,0,1'
+        return '0,0,0,0,1,'
     elif placement <= allstar:
-        return '0,0,0,1,0'
+        return '0,0,0,1,0,'
     elif placement <= pro:
-        return '0,0,1,0,0'
+        return '0,0,1,0,0,'
     elif placement <= rookie:
-        return '0,1,0,0,0'
+        return '0,1,0,0,0,'
     else:
-        return '1,0,0,0,0'
+        return '1,0,0,0,0,'
 
 
 if __name__ == '__main__':
-    # 528834
-    eventId = input('Enter the eventId: ')
-    ladder = input('Is this a ladder event? (Y) or (N): ').upper()
-    if ladder == 'Y':
-        l = True
-    elif ladder == 'N':
-        l = False
-    else:
-        print('Not a valid response')
-        quit()
+    season = input('Please input the season number: ')
+    week = input('Please input the week number: ')
 
-    if l:
-        hof = int(input(
-            'Input the lowest placement with the Hall of Fame Rank (0 if NA): '))
-        allstar = int(input(
-            'Input the lowest placement with the All-Star Rank (Roughly): '))
-        pro = int(input(
-            'Input the lowest placement with the Pro Rank (Roughly): '))
-        rookie = int(input(
-            'Input the lowest placement with the Rookie Rank (Roughly): '))
+    ladderLink = f'S{season}W{week}WeeklyScoresLadder.csv'
+    bracketLink = f'S{season}W{week}WeeklyScoresBracket.csv'
 
-    pageCounts = get_page_counts(eventId)
-    standings = (get_event_standings(eventId, pageCounts))
-    f = open('WeeklyScores.csv', 'w')
-    f.write('SmasherID,SmashTag,Wins,Losses,')
-    if l:
-        f.write('Prospect,Rookie,Pro,AllStar,HallOfFame,')
-    f.write('Placement\n')
+    slug = input('Please input the smash.gg tournament slug: ')
+    print()
+    info = get_event_info(slug)
+    print()
 
-    for key, element in standings.items():
-        f.write(str(element[4]) + ',' +
-                str(element[0]) + ',' +
-                str(element[2]) + ',' +
-                str(element[3]) + ',')
-        if l:
-            f.write(get_tier(element[1], hof, allstar, pro, rookie) + ',')
-        f.write(str(element[1]) + '\n')
+    choice = int(input('Enter 1 to just get ladder results or 2 to get both ladder and bracket results: '))
+    if choice not in {1, 2}:
+        print('INVALID INPUT! Ending program.')
 
+    print()
+    hofE = int(input(
+        'Input the lowest placement in East Coast Ladder with the Hall of Fame Rank (0 if NA): '))
+    allstarE = int(input(
+        'Input the lowest placement in East Coast Ladder with the All-Star Rank (Roughly): '))
+    proE = int(input(
+        'Input the lowest placement in East Coast Ladder with the Pro Rank (Roughly): '))
+    rookieE = int(input(
+        'Input the lowest placement in East Coast Ladder with the Rookie Rank (Roughly): '))
+
+    print()
+    hofW = int(input(
+        'Input the lowest placement in West Coast Ladder with the Hall of Fame Rank (0 if NA): '))
+    allstarW = int(input(
+        'Input the lowest placement in West Coast Ladder with the All-Star Rank (Roughly): '))
+    proW = int(input(
+        'Input the lowest placement in West Coast Ladder with the Pro Rank (Roughly): '))
+    rookieW = int(input(
+        'Input the lowest placement in West Coast Ladder with the Rookie Rank (Roughly): '))
+
+    print()
+    ladderFile = open(ladderLink, 'w')
+    ladderFile.write('SmasherID,SmashTag,Wins,Losses,'
+                     'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement\n')
+    for eventName, eventId in info.items():
+        pageCounts = get_page_counts(eventId)
+        stats = get_event_stats(eventId, pageCounts)
+        if eventName in {'East', 'West'}:
+            for playerId, value in stats.items():
+                ladderFile.write(str(playerId) + ',')
+                ladderFile.write(value[0] + ',')
+                ladderFile.write(str(value[1]) + ',')
+                ladderFile.write(str(value[2]) + ',')
+                if eventName == 'East':
+                    ladderFile.write(
+                        get_tier(value[3], hofE, allstarE, proE, rookieE))
+                else:
+                    ladderFile.write(
+                        get_tier(value[3], hofW, allstarW, proW, rookieW))
+
+                ladderFile.write(str(value[3]) + '\n')
+            print(f'Inputted {eventName} Coast Ladder results to {ladderLink}')
+        elif choice == 2:
+            bracketFile = open(bracketLink, 'w')
+            bracketFile.write('SmasherID,SmashTag,Wins,Losses,Placement\n')
+            for playerId, value in stats.items():
+                bracketFile.write(str(playerId) + ',')
+                bracketFile.write(value[0] + ',')
+                bracketFile.write(str(value[1]) + ',')
+                bracketFile.write(str(value[2]) + ',')
+                bracketFile.write(str(value[3]) + '\n')
+            bracketFile.close()
+            print(f'Inputted Main Bracket results to {bracketLink}')
+
+    ladderFile.close()
