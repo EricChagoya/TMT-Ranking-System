@@ -52,7 +52,6 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
 
         for index, row in WTP.iterrows():
             inThisWeek = TP[TP['SmasherID'].isin([row['SmasherID']])]
-            print(TP[TP['SmasherID'].isin([row['SmasherID']])])
             if len(inThisWeek) > 0:
                 index = inThisWeek.index[0]
                 TP.at[index, 'Wins'] = \

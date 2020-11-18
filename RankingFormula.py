@@ -67,6 +67,7 @@ def FormulaWeekly(WTP : 'df') -> None:
                     WTP['Pro'] * POINT_PRO + \
                     WTP['AllStar'] * POINT_ALL_STAR + \
                     WTP['HallOfFame'] * POINT_HALL_OF_FAME + \
+                    WTP['Floated'] * POINT_FLOATED_PLAYER + \
                     WTP['PlacePoints']
 
 
@@ -79,6 +80,7 @@ def FormulaTotalSeason(TP : 'df') -> None:
                    TP['Pro'] * POINT_PRO + \
                    TP['AllStar'] * POINT_ALL_STAR + \
                    TP['HallOfFame'] * POINT_HALL_OF_FAME + \
+                   TP['Floated'] * POINT_FLOATED_PLAYER + \
                    TP['PlacePoints']
 
 
