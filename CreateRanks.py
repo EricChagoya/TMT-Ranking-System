@@ -4,8 +4,8 @@ import UserInterface as UI
 import RankingFormula as RF
 
 
-
-def WeeklyScorePoints(WSLfile: str, WSBfile: str, WTPfile: str, week: int) -> None:
+def WeeklyScorePoints(WSLfile: str, WSBfile: str, WTPfile: str,
+                      week: int) -> None:
     WSL = pd.read_csv(WSLfile, encoding="ISO-8859-1")
     WSB = pd.read_csv(WSBfile, encoding="ISO-8859-1")
     WTP = WSL
@@ -49,8 +49,10 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
     if week != 1:
         TP = pd.read_csv(oldTPfile, encoding="ISO-8859-1")
         TP[f'PlaceWeek{week}'] = -2
+
         for index, row in WTP.iterrows():
             inThisWeek = TP[TP['SmasherID'].isin([row['SmasherID']])]
+            print(TP[TP['SmasherID'].isin([row['SmasherID']])])
             if len(inThisWeek) > 0:
                 index = inThisWeek.index[0]
                 TP.at[index, 'Wins'] = \
@@ -71,6 +73,8 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
                     TP['HallOfFame'][index] + row['HallOfFame']
                 TP.at[index, 'Floated'] = \
                     TP['Floated'][index] + row['Floated']
+                TP.at[index, f'PlaceWeek{week}'] = \
+                    row['Placement']
             else:
                 new_row = {'SmasherID': row['SmasherID'],
                            'SmashTag': row['SmashTag'],
@@ -88,14 +92,11 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
                     new_row[f'PlaceWeek{i}'] = -2
                 TP = TP.append(new_row, ignore_index=True)
 
-            TP.at[index, f'PlaceWeek{week}'] = row['Placement']
-
         TP['WinPercentage'] = TP['Wins'] / (TP['Wins'] + TP['Losses'])
     else:
         TP = WTP.rename({'Placement': 'PlaceWeek1'}, axis='columns')
 
     TP.to_csv(TPfile, index=False)
-
 
 
 def RankLadder(WSLfile: str, WRLfile: str) -> None:
@@ -155,13 +156,13 @@ def WebsiteTotalRank(TRfile: str, STRfile: str) -> None:
 
 
 def main():
-    #UI.PrintWelcomeMessage()
-    #choice = UI.UserChoice()
-    #season = UI.UserSeason()
-    #week = UI.UserWeek()
-    choice = 1
+    # UI.PrintWelcomeMessage()
+    # choice = UI.UserChoice()
+    # season = UI.UserSeason()
+    # week = UI.UserWeek()
+    choice = 2
     season = 0
-    week = 1
+    week = 2
 
     # Input files
     WSL = f'S{season}W{week}WeeklyScoresLadder.csv'  # Placement
@@ -188,16 +189,17 @@ def main():
         WebsiteWeeklyRank(WRL, SWLR)
     else:
         WeeklyScorePoints(WSL, WSB, WTP, week)
-        TotalScorePoints(WTP, oldTP, TP, week)  # Update LimitLadderWins column for non week 1
-                                                
+        TotalScorePoints(WTP, oldTP, TP,
+                         week)  # Update LimitLadderWins column for non week 1
+
         RankWeekly(WTP, WRB)
         RankTotalPoints(TP, week, TR)
 
         WebsiteWeeklyRank(WRB, SWBR)
         WebsiteTotalRank(TR, STR)
 
-main()
 
+main()
 
 # Add LadderWinsLimit to Github ReadMe
 # Split this file into 3 files. Another for UserInterface and Rankings
