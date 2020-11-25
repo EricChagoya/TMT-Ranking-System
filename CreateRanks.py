@@ -4,8 +4,8 @@ import UserInterface as UI
 import RankingFormula as RF
 
 
-def WeeklyScorePoints(WSLfile: str, WSBfile: str, WTPfile: str,
-                      week: int) -> None:
+def WeeklyScores(WSLfile: str, WSBfile: str, WTPfile: str,week: int) -> None:
+    """It combines the scores from ladder and bracket into one file."""
     WSL = pd.read_csv(WSLfile, encoding="ISO-8859-1")
     WSB = pd.read_csv(WSBfile, encoding="ISO-8859-1")
     WTP = WSL
@@ -25,6 +25,7 @@ def WeeklyScorePoints(WSLfile: str, WSBfile: str, WTPfile: str,
         else:
             new_row = {'SmasherID': row['SmasherID'],
                        'SmashTag': row['SmashTag'],
+                       'Coast': 'NOTAV',
                        'Wins': row['Wins'],
                        'Losses': row['Losses'],
                        'LimitLadderWins': 0,
@@ -37,10 +38,10 @@ def WeeklyScorePoints(WSLfile: str, WSBfile: str, WTPfile: str,
                        'Placement': row['Placement']}
             WTP = WTP.append(new_row, ignore_index=True)
 
-    WTP['WinPercentage'] = WTP['Wins'] / (WTP['Wins'] + WTP['Losses'])
-    WTP = WTP[['SmasherID', 'SmashTag', 'Wins', 'Losses', 'LimitLadderWins',
-               'Prospect', 'Rookie', 'Pro', 'AllStar', 'HallOfFame',
-               'Floated', 'WinPercentage', 'Placement']]
+    WTP = WTP[['SmasherID', 'SmashTag', 'Coast', 'Wins', 'Losses',
+               'LimitLadderWins', 'Prospect', 'Rookie', 'Pro',
+               'AllStar', 'HallOfFame', 'Floated', 'Placement']]
+    WTP = WTP.sort_values(by = 'SmasherID')
     WTP.to_csv(WTPfile, index=False)
 
 
@@ -48,35 +49,24 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
     WTP = pd.read_csv(WTPfile, encoding="ISO-8859-1")
     if week != 1:
         TP = pd.read_csv(oldTPfile, encoding="ISO-8859-1")
-        TP[f'PlaceWeek{week}'] = -2
-
         for index, row in WTP.iterrows():
             inThisWeek = TP[TP['SmasherID'].isin([row['SmasherID']])]
             if len(inThisWeek) > 0:
                 index = inThisWeek.index[0]
-                TP.at[index, 'Wins'] = \
-                    TP['Wins'][index] + row['Wins']
-                TP.at[index, 'Losses'] = \
-                    TP['Losses'][index] + row['Losses']
-                TP.at[index, 'LimitLadderWins'] = \
-                    TP['LimitLadderWins'][index] + row['LimitLadderWins']
-                TP.at[index, 'Prospect'] = \
-                    TP['Prospect'][index] + row['Prospect']
-                TP.at[index, 'Rookie'] = \
-                    TP['Rookie'][index] + row['Rookie']
-                TP.at[index, 'Pro'] = \
-                    TP['Pro'][index] + row['Pro']
-                TP.at[index, 'AllStar'] = \
-                    TP['AllStar'][index] + row['AllStar']
-                TP.at[index, 'HallOfFame'] = \
-                    TP['HallOfFame'][index] + row['HallOfFame']
-                TP.at[index, 'Floated'] = \
-                    TP['Floated'][index] + row['Floated']
-                TP.at[index, f'PlaceWeek{week}'] = \
-                    row['Placement']
+                TP.at[index, 'SmashTag'] = row['SmashTag']  # If someone changes their tag
+                TP.at[index, 'Wins'] = TP['Wins'][index] + row['Wins']
+                TP.at[index, 'Losses'] = TP['Losses'][index] + row['Losses']
+                TP.at[index, 'LimitLadderWins'] = TP['LimitLadderWins'][index] + row['LimitLadderWins']
+                TP.at[index, 'Prospect'] = TP['Prospect'][index] + row['Prospect']
+                TP.at[index, 'Rookie'] = TP['Rookie'][index] + row['Rookie']
+                TP.at[index, 'Pro'] = TP['Pro'][index] + row['Pro']
+                TP.at[index, 'AllStar'] = TP['AllStar'][index] + row['AllStar']
+                TP.at[index, 'HallOfFame'] = TP['HallOfFame'][index] + row['HallOfFame']
+                TP.at[index, 'Floated'] = TP['Floated'][index] + row['Floated']
             else:
                 new_row = {'SmasherID': row['SmasherID'],
                            'SmashTag': row['SmashTag'],
+                           'Coast': row['Coast'],
                            'Wins': row['Wins'],
                            'Losses': row['Losses'],
                            'LimitLadderWins': row['LimitLadderWins'],
@@ -85,17 +75,43 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
                            'Pro': row['Pro'],
                            'AllStar': row['AllStar'],
                            'HallOfFame': row['HallOfFame'],
-                           'Floated': row['Floated'],
-                           f'PlaceWeek{week}': row['Placement']}
-                for i in range(1, week):
-                    new_row[f'PlaceWeek{i}'] = -2
+                           'Floated': row['Floated']}
                 TP = TP.append(new_row, ignore_index=True)
-
-        TP['WinPercentage'] = TP['Wins'] / (TP['Wins'] + TP['Losses'])
     else:
-        TP = WTP.rename({'Placement': 'PlaceWeek1'}, axis='columns')
-
+        TP = WTP[['SmasherID', 'SmashTag', 'Coast', 'Wins', 'Losses',
+                  'LimitLadderWins', 'Prospect', 'Rookie', 'Pro',
+                  'AllStar', 'HallOfFame', 'Floated']]
+    TP = TP.sort_values(by = 'SmasherID')
     TP.to_csv(TPfile, index=False)
+
+
+def Placements(WTPfile, oldPfile:str, Pfile:str, week:int):
+    """It updates everybody's placements to include this weeks.
+    -1 means they did not make bracket.
+    -2 means they did not enter that week."""
+    WTP = pd.read_csv(WTPfile, encoding="ISO-8859-1")
+    
+    if week != 1:
+        oldP = pd.read_csv(oldPfile, encoding="ISO-8859-1")
+        oldP[f'PWeek{week}'] = -2
+        for index, row in WTP.iterrows():
+            oldPlayer = oldP[oldP['SmasherID'].isin([row['SmasherID']])]
+            if len(oldPlayer) > 0:
+                index = oldPlayer.index[0]
+                oldP.at[index, 'SmashTag'] = row['SmashTag']  # If someone changes their tag
+                oldP.at[index, f'PWeek{week}'] = row['Placement']
+            else:
+                new_row = {'SmasherID': row['SmasherID'],   # New TMT Entrant
+                           'SmashTag': row['SmashTag'],
+                           f'PWeek{week}': row['Placement']}
+                for i in range(1, week):
+                    new_row[f'PWeek{i}'] = -2
+                oldP = oldP.append(new_row, ignore_index = True)
+    else:
+        oldP = WTP[['SmasherID', 'SmashTag', 'Placement']]
+        oldP = oldP.rename(columns={'Placement': 'PWeek1'})
+    oldP = oldP.sort_values(by = 'SmasherID')
+    oldP.to_csv(Pfile, index=False)
 
 
 def RankLadder(WSLfile: str, WRLfile: str) -> None:
@@ -103,9 +119,8 @@ def RankLadder(WSLfile: str, WRLfile: str) -> None:
     WSL = pd.read_csv(WSLfile, encoding="ISO-8859-1")
     RF.LimitLadderWins(WSL)
     RF.FormulaLadder(WSL)
-    WSL['Rank'] = (WSL['Points'] * -1).rank(method='max')
-    WSL['WinPercentage'] = WSL['Wins'] / (WSL['Wins'] + WSL['Losses'])
-    WSL.to_csv(WRLfile, index=False)
+    WSL['Rank'] = (WSL['Points'] * -1).rank(method = 'min')
+    WSL.to_csv(WRLfile, index = False)
 
 
 def RankWeekly(WTPfile: str, WRBfile: str) -> None:
@@ -113,18 +128,50 @@ def RankWeekly(WTPfile: str, WRBfile: str) -> None:
     WTP = pd.read_csv(WTPfile)
     RF.PlacementPointsWeekly(WTP)
     RF.FormulaWeekly(WTP)
-    WTP['Rank'] = (WTP['Points'] * -1).rank(method='min')
-    WTP.to_csv(WRBfile, index=False)
+    WTP['Rank'] = (WTP['Points'] * -1).rank(method = 'min')
+    WTP.to_csv(WRBfile, index = False)
 
 
-def RankTotalPoints(TPfile: str, week: int, TRfile: str) -> None:
+def RankTotalPoints(TPfile: str, Pfile: str, week: int, TRfile: str) -> None:
     """It will give value to each column to determine the ranks for
     the entire season."""
     TP = pd.read_csv(TPfile)
-    RF.PlacementPointsSeason(TP, week)
-    RF.FormulaTotalSeason(TP)
-    TP['Rank'] = (TP['Points'] * -1).rank(method='min')
-    TP.to_csv(TRfile, index=False)
+    P = pd.read_csv(Pfile)
+    RF.PlacementPointsSeason(P, week)
+    RF.FormulaTotalSeason(TP, P)
+    TP['Rank'] = (TP['Points'] * -1).rank(method = 'min')
+    TP.to_csv(TRfile, index = False)
+
+
+def RankChange(TRfile: str, oldPRfile: str, week: int, PRfile: str):
+    """It keeps track of someone's rank for each week."""
+    TR = pd.read_csv(TRfile)
+    if week != 1:
+        oldPR = pd.read_csv(oldPRfile)
+        for index, row in TR.iterrows():
+            oldPlayer = oldPR[oldPR['SmasherID'].isin([row['SmasherID']])]
+            if len(oldPlayer) > 0:
+                index = oldPlayer.index[0]
+                oldPR.at[index, 'SmashTag'] = row['SmashTag']  # If someone changes their tag
+                oldPR.at[index, f'RWeek{week}'] = row['Rank']
+                oldPR.at[index, 'RankChange'] = oldPR.at[index, f'RWeek{week - 1}'] - oldPR.at[index, f'RWeek{week}']
+            else:
+                new_row = {'SmasherID': row['SmasherID'],   # New TMT Entrant
+                           'SmashTag': row['SmashTag'],
+                           f'RWeek{week}': row['Rank'],
+                           'RankChange': 'New'}
+                for i in range(1, week):
+                    new_row[f'RWeek{i}'] = 'NAN'
+                oldPR = oldPR.append(new_row, ignore_index = True)
+        t= oldPR['RankChange']
+        oldPR = oldPR.drop(['RankChange'], axis = 1)
+        oldPR['RankChange'] = t
+    else:
+        oldPR = TR[['SmasherID', 'SmashTag', 'Rank']]
+        oldPR = oldPR.rename(columns={'Rank': 'RWeek1'})
+        oldPR['RankChange'] = 'New'
+    oldPR = oldPR.sort_values(by = 'SmasherID')
+    oldPR.to_csv(PRfile, index = False)
 
 
 def WebsiteWeeklyRank(WRfile: str, SWRfile: str) -> None:
@@ -133,22 +180,29 @@ def WebsiteWeeklyRank(WRfile: str, SWRfile: str) -> None:
     ladder and bracket rank."""
     WR = pd.read_csv(WRfile)
     WR = WR.rename(columns={'Points': 'BankRoll Bills'})
+    WR['WinPercentage'] = WR['Wins'] / (WR['Wins'] + WR['Losses'])
     WR = WR[['Rank', 'SmashTag', 'Wins', 'Losses',
              'WinPercentage', 'BankRoll Bills']]
+    
     WR = WR.sort_values(by='Rank')
     WR = WR.round(3)
     WR.to_csv(SWRfile, index=False)
 
 
-def WebsiteTotalRank(TRfile: str, STRfile: str) -> None:
+def WebsiteTotalRank(TRfile: str, PRfile: str, STRfile: str) -> None:
     # Keep for now. We might want different columns for each file.
     # The total can include more information
     """ It does not change anything about the data. It moves and removes columns
     so it is more presentable for the website."""
     TR = pd.read_csv(TRfile)
+    PR = pd.read_csv(PRfile)
+
+    TR['RankChange'] = PR['RankChange']
     TR = TR.rename(columns={'Points': 'BankRoll Bills'})
-    TR = TR[['Rank', 'SmashTag', 'Wins', 'Losses',
+    TR['WinPercentage'] = TR['Wins'] / (TR['Wins'] + TR['Losses'])
+    TR = TR[['Rank', 'RankChange', 'SmashTag', 'Wins', 'Losses',
              'WinPercentage', 'BankRoll Bills', ]]
+    
     TR = TR.sort_values(by='Rank')
     TR = TR.round(3)
     TR.to_csv(STRfile, index=False)
@@ -160,8 +214,8 @@ def main():
     # season = UI.UserSeason()
     # week = UI.UserWeek()
     choice = 2
-    season = 0
-    week = 2
+    season = 1
+    week = 3
 
     # Input files
     WSL = f'S{season}W{week}WeeklyScoresLadder.csv'  # Placement
@@ -173,10 +227,16 @@ def main():
     oldTP = f'S{season}W{week - 1}TotalPoints.csv'  # Last week's Total Points
     TP = f'S{season}W{week}TotalPoints.csv'  # Counts all the points from all cummulative weeks
 
+    oldP = f'S{season}W{week - 1}Placements.csv'
+    P = f'S{season}W{week}Placements.csv'
+
     # These next two apply the ranking formula
-    WRL = f'S{season}W{week}WeeklyRankLadder.csv'  # Points for ladder that week's ladder
+    WRL = f'S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
     WRB = f'S{season}W{week}WeeklyRankBoth.csv'  # Points for ladder and bracket for the week
     TR = f'S{season}W{week}TotalRank.csv'  # Points for the entire season
+
+    oldPR = f'S{season}W{week - 1}PastRanks.csv'
+    PR = f'S{season}W{week}PastRanks.csv'
 
     # These three will go on the website
     SWLR = f'S{season}W{week}SubsetWeeklyLadderRank.csv'  # Placement
@@ -187,23 +247,26 @@ def main():
         RankLadder(WSL, WRL)
         WebsiteWeeklyRank(WRL, SWLR)
     else:
-        WeeklyScorePoints(WSL, WSB, WTP, week)
-        TotalScorePoints(WTP, oldTP, TP,
-                         week)  # Update LimitLadderWins column for non week 1
+        WeeklyScores(WSL, WSB, WTP, week)
+        TotalScorePoints(WTP, oldTP, TP, week)
+        
+        Placements(WTP, oldP, P, week)
+
 
         RankWeekly(WTP, WRB)
-        RankTotalPoints(TP, week, TR)
+        RankTotalPoints(TP, P, week, TR)
+
+        RankChange(TR, oldPR, week, PR)
 
         WebsiteWeeklyRank(WRB, SWBR)
-        WebsiteTotalRank(TR, STR)
+        WebsiteTotalRank(TR, PR, STR)
 
 
 main()
 
-# Add LadderWinsLimit to Github ReadMe
-# Split this file into 3 files. Another for UserInterface and Rankings
 
 
 
+# If a person switches their tag, their new tag will be reflected in the rankings.
 
-
+# I need to do week 1 and week 2

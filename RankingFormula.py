@@ -24,10 +24,8 @@ PLACEMENTS = {1: 200,
 
 def LimitLadderWins(df: 'df') -> None:
     """It limits how many points a player can get by grinding wins on ladder"""
-    #df['LimitLadderWins']
     t = df['Wins'] - LIMIT_LADDER_WINS
     df.insert(4, 'LimitLadderWins', t)
-#    df['LimitLadderWins'] = df['Wins'] - LIMIT_LADDER_WINS
     df['LimitLadderWins'] = np.where((df.LimitLadderWins < 1), 0, df.LimitLadderWins)
 
 
@@ -38,15 +36,15 @@ def PlacementPointsWeekly(WTP: 'df') -> None:
     WTP["PlacePoints"] = WTP["PlacePoints"].fillna(0)
 
 
-def PlacementPointsSeason(TP: 'df', week: int) -> None:
+def PlacementPointsSeason(P: 'df', week: int) -> None:
     """It gives players points for their placement in bracket
     for every tournament"""
-    TP['PlacePoints'] = 0
+    P['PlacePoints'] = 0
+    t= pd.DataFrame()
     for i in range(1, week + 1):
-        TP[f"PlacePoints{i}"] = TP[f'PlaceWeek{i}']
-        TP[f"PlacePoints{i}"] = TP[f"PlacePoints{i}"].map(PLACEMENTS)
-        TP[f"PlacePoints{i}"] = TP[f"PlacePoints{i}"].fillna(0)
-        TP['PlacePoints'] += TP[f"PlacePoints{i}"]
+        t['PlacePoints'] = P[f'PWeek{i}'].map(PLACEMENTS)
+        t['PlacePoints'] = t['PlacePoints'].fillna(0)
+        P['PlacePoints'] += t['PlacePoints']
 
 
 def FormulaLadder(WSL : 'df') -> None:
@@ -71,9 +69,10 @@ def FormulaWeekly(WTP : 'df') -> None:
                     WTP['PlacePoints']
 
 
-def FormulaTotalSeason(TP : 'df') -> None:
+def FormulaTotalSeason(TP : 'df', P: 'df') -> None:
     """Ranking formula for the entire season"""
     # We will add stuff to this later for a more complicated ranking formula
+    # I'm assuming SmashID's will be in the same order for both
     TP['Points'] = TP['Wins'] - TP['LimitLadderWins'] + \
                    TP['Prospect'] * POINT_PROSPECT + \
                    TP['Rookie'] * POINT_ROOKIE + \
@@ -81,7 +80,7 @@ def FormulaTotalSeason(TP : 'df') -> None:
                    TP['AllStar'] * POINT_ALL_STAR + \
                    TP['HallOfFame'] * POINT_HALL_OF_FAME + \
                    TP['Floated'] * POINT_FLOATED_PLAYER + \
-                   TP['PlacePoints']
+                   P['PlacePoints']
 
 
 
