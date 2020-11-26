@@ -2,9 +2,11 @@ import numpy as np
 import pandas as pd
 import UserInterface as UI
 import RankingFormula as RF
+import os
 
+DEBUG_ON = True
 
-def WeeklyScores(WSLfile: str, WSBfile: str, WTPfile: str,week: int) -> None:
+def CreateWeeklyResults(WSLfile: str, WSBfile: str, WTPfile: str,week: int) -> None:
     """It combines the scores from ladder and bracket into one file."""
     WSL = pd.read_csv(WSLfile, encoding="ISO-8859-1")
     WSB = pd.read_csv(WSBfile, encoding="ISO-8859-1")
@@ -45,7 +47,7 @@ def WeeklyScores(WSLfile: str, WSBfile: str, WTPfile: str,week: int) -> None:
     WTP.to_csv(WTPfile, index=False)
 
 
-def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
+def UpdateTiers(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
     WTP = pd.read_csv(WTPfile, encoding="ISO-8859-1")
     if week != 1:
         TP = pd.read_csv(oldTPfile, encoding="ISO-8859-1")
@@ -85,7 +87,7 @@ def TotalScorePoints(WTPfile: str, oldTPfile: str, TPfile: str, week: int):
     TP.to_csv(TPfile, index=False)
 
 
-def Placements(WTPfile, oldPfile:str, Pfile:str, week:int):
+def UpdatePlacements(WTPfile, oldPfile:str, Pfile:str, week:int):
     """It updates everybody's placements to include this weeks.
     -1 means they did not make bracket.
     -2 means they did not enter that week."""
@@ -132,7 +134,7 @@ def RankWeekly(WTPfile: str, WRBfile: str) -> None:
     WTP.to_csv(WRBfile, index = False)
 
 
-def RankTotalPoints(TPfile: str, Pfile: str, week: int, TRfile: str) -> None:
+def RankSeason(TPfile: str, Pfile: str, week: int, TRfile: str) -> None:
     """It will give value to each column to determine the ranks for
     the entire season."""
     TP = pd.read_csv(TPfile)
@@ -143,7 +145,7 @@ def RankTotalPoints(TPfile: str, Pfile: str, week: int, TRfile: str) -> None:
     TP.to_csv(TRfile, index = False)
 
 
-def RankChange(TRfile: str, oldPRfile: str, week: int, PRfile: str):
+def ChangeRank(TRfile: str, oldPRfile: str, week: int, PRfile: str):
     """It keeps track of someone's rank for each week."""
     TR = pd.read_csv(TRfile)
     if week != 1:
@@ -200,8 +202,8 @@ def WebsiteTotalRank(TRfile: str, PRfile: str, STRfile: str) -> None:
     TR['RankChange'] = PR['RankChange']
     TR = TR.rename(columns={'Points': 'BankRoll Bills'})
     TR['WinPercentage'] = TR['Wins'] / (TR['Wins'] + TR['Losses'])
-    TR = TR[['Rank', 'RankChange', 'SmashTag', 'Wins', 'Losses',
-             'WinPercentage', 'BankRoll Bills', ]]
+    TR = TR[['Rank', 'RankChange', 'SmashTag', 'Coast',
+             'Wins', 'Losses', 'WinPercentage', 'BankRoll Bills', ]]
     
     TR = TR.sort_values(by='Rank')
     TR = TR.round(3)
@@ -218,48 +220,47 @@ def main():
     week = 3
 
     # Input files
-    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'  # Placement
-    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'  # Placement
+    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'
+    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'
 
-    # Total Points
-    # WTP should also be Placement
-    WTP = f'S{season}W{week}WeeklyTotalPoints.csv'  # It combines the points from Ladder and Bracket
-    oldTP = f'S{season}W{week - 1}TotalPoints.csv'  # Last week's Total Points
-    TP = f'S{season}W{week}TotalPoints.csv'  # Counts all the points from all cummulative weeks
+    WeeklyResults= f'S{season}W{week}WeeklyResults.csv'    # It combines the results of Ladders and Bracket
+    oldFeatures = f'S{season}W{week - 1}Features.csv'
+    Features = f'S{season}W{week}Features.csv'
 
-    oldP = f'S{season}W{week - 1}Placements.csv'
-    P = f'S{season}W{week}Placements.csv'
+    oldPlacements = f'S{season}W{week - 1}Placements.csv'
+    Placements = f'S{season}W{week}Placements.csv'
 
-    # These next two apply the ranking formula
-    WRL = f'S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
-    WRB = f'S{season}W{week}WeeklyRankBoth.csv'  # Points for ladder and bracket for the week
-    TR = f'S{season}W{week}TotalRank.csv'  # Points for the entire season
-
-    oldPR = f'S{season}W{week - 1}PastRanks.csv'
-    PR = f'S{season}W{week}PastRanks.csv'
+    WRankLadder = f'S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
+    WeeklyRank = f'S{season}W{week}WeeklyRank.csv'
+    
+    oldRankRecords = f'S{season}W{week - 1}RankRecords.csv'
+    RankRecords = f'S{season}W{week}RankRecords.csv'
 
     # These three will go on the website
-    SWLR = f'S{season}W{week}SubsetWeeklyLadderRank.csv'  # Placement
-    SWBR = f'S{season}W{week}SubsetWeeklyBracketRank.csv'  # Placement
-    STR = f'S{season}W{week}SubsetTotalRanks.csv'
+    WebWLR = f'S{season}W{week}WebsiteWeeklyLadderRank.csv'
+    WebWR = f'S{season}W{week}WebsiteWeeklyRank.csv'    # Ladders and Bracket Ranks
+    WebTR = f'S{season}W{week}WebsiteTotalRanks.csv'    # Rank for the entire season
 
     if choice == 1:
-        RankLadder(WSL, WRL)
-        WebsiteWeeklyRank(WRL, SWLR)
+        RankLadder(WSL, WRankLadder)
+        WebsiteWeeklyRank(WRankLadder, WebWLR)
     else:
-        WeeklyScores(WSL, WSB, WTP, week)
-        TotalScorePoints(WTP, oldTP, TP, week)
+        CreateWeeklyResults(WSL, WSB, WeeklyResults, week)
+        UpdateTiers(WeeklyResults, oldFeatures, Features, week)
+        UpdatePlacements(WeeklyResults, oldPlacements, Placements, week)
         
-        Placements(WTP, oldP, P, week)
+        RankWeekly(WeeklyResults, WeeklyRank)
+        RankSeason(Features, Placements, week, Features)
 
+        ChangeRank(Features, oldRankRecords, week, RankRecords)
+        
+        WebsiteWeeklyRank(WeeklyRank, WebWR)
+        WebsiteTotalRank(Features, RankRecords, WebTR)
 
-        RankWeekly(WTP, WRB)
-        RankTotalPoints(TP, P, week, TR)
-
-        RankChange(TR, oldPR, week, PR)
-
-        WebsiteWeeklyRank(WRB, SWBR)
-        WebsiteTotalRank(TR, PR, STR)
+        if DEBUG_ON == False:
+            os.remove(WeeklyResults)
+            os.remove(WeeklyRank)
+        
 
 
 main()
@@ -267,6 +268,4 @@ main()
 
 
 
-# If a person switches their tag, their new tag will be reflected in the rankings.
-
-# I need to do week 1 and week 2
+# Update functions parameters
