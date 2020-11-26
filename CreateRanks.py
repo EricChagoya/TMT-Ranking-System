@@ -180,12 +180,12 @@ def WebsiteWeeklyRank(WRfile: str, SWRfile: str) -> None:
     ladder and bracket rank."""
     WR = pd.read_csv(WRfile)
     WR = WR.rename(columns={'Points': 'BankRoll Bills'})
-    WR['Win%'] = WR['Wins'] / (WR['Wins'] + WR['Losses'])
+    WR['Win%'] = 100*WR['Wins'] / (WR['Wins'] + WR['Losses'])
     WR = WR[['Rank', 'SmashTag', 'Wins', 'Losses',
              'Win%', 'BankRoll Bills']]
     
     WR = WR.sort_values(by='Rank')
-    WR = WR.round(3)
+    WR = WR.round(2)
     WR.to_csv(SWRfile, index=False)
 
 
@@ -199,12 +199,12 @@ def WebsiteTotalRank(TRfile: str, PRfile: str, STRfile: str) -> None:
 
     TR['RankChange'] = PR['RankChange']
     TR = TR.rename(columns={'Points': 'BankRoll Bills'})
-    TR['Win%'] = TR['Wins'] / (TR['Wins'] + TR['Losses'])
+    TR['Win%'] = 100*TR['Wins'] / (TR['Wins'] + TR['Losses'])
     TR = TR[['Rank', 'RankChange', 'SmashTag', 'Coast',
              'Wins', 'Losses', 'Win%', 'BankRoll Bills', ]]
     
     TR = TR.sort_values(by='Rank')
-    TR = TR.round(3)
+    TR = TR.round(2)
     TR.to_csv(STRfile, index=False)
 
 
