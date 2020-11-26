@@ -5,21 +5,25 @@ CollectData.py
 - It gets the pure data from smash.gg without applying any formula to it
 - These files produce every other file in CreateRanks.py
 - Output Files
- 	- WeeklyScoresLadder.txt
- 	- WeeklyScoresBracket.txt
+ 	- WeeklyScoresLadder.csv
+ 	- WeeklyScoresBracket.csv
  
 CreateRanks.py
 - This will take this week's scores from a text file and add it to the total
 - It will assign some type of formula to determine points. It will then use those points to determine a ranking
 - Output Files
-	- WeeklyTotalPoints.csv
-	- TotalPoints.csv
+	- WeeklyResults.csv
+	- Features.csv
+	- Placements.csv
 	- WeeklyRankLadder.csv
-	- WeeklyRankBoth.csv
-	- TotalRank.csv
-	- SubsetWeeklyLadderRank.csv	(Goes on Website)
-	- SubsetWeeklyBracketRank.csv	(Goes on Website)
-	- SubsetTotalRanks.csv		(Goes on Website)
+	- WeeklyRank.csv
+	- RankRecords.csv
+	- PastPoints.csv (Future)
+	- WebsiteWeeklyLadderRank.csv
+	- WebsiteWeeklyRank.csv
+	- WebsiteTotalRanks.csv
+	
+
 
 UserInterface.py
 - Small interface details
