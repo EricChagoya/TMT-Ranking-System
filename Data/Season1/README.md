@@ -3,6 +3,7 @@
 - Mostly used to debug
 - Files
   - WeeklyRank.csv
+  - WeeklyRankLadder.csv
   - WeeklyResults.csv
 
 #### Records
@@ -15,7 +16,7 @@
 #### Website
 - The most update files go on the website
 - Files
-  - WebsiteWeelyRank.csv
+  - WebsiteWeeklyRank.csv
   - WebsiteTotalRank.csv
 
 #### WeeklyLadderBracket
