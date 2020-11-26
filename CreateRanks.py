@@ -2,9 +2,7 @@ import numpy as np
 import pandas as pd
 import UserInterface as UI
 import RankingFormula as RF
-import os
 
-DEBUG_ON = True
 
 def CreateWeeklyResults(WSLfile: str, WSBfile: str, WTPfile: str,week: int) -> None:
     """It combines the scores from ladder and bracket into one file."""
@@ -182,9 +180,9 @@ def WebsiteWeeklyRank(WRfile: str, SWRfile: str) -> None:
     ladder and bracket rank."""
     WR = pd.read_csv(WRfile)
     WR = WR.rename(columns={'Points': 'BankRoll Bills'})
-    WR['WinPercentage'] = WR['Wins'] / (WR['Wins'] + WR['Losses'])
+    WR['Win%'] = WR['Wins'] / (WR['Wins'] + WR['Losses'])
     WR = WR[['Rank', 'SmashTag', 'Wins', 'Losses',
-             'WinPercentage', 'BankRoll Bills']]
+             'Win%', 'BankRoll Bills']]
     
     WR = WR.sort_values(by='Rank')
     WR = WR.round(3)
@@ -201,9 +199,9 @@ def WebsiteTotalRank(TRfile: str, PRfile: str, STRfile: str) -> None:
 
     TR['RankChange'] = PR['RankChange']
     TR = TR.rename(columns={'Points': 'BankRoll Bills'})
-    TR['WinPercentage'] = TR['Wins'] / (TR['Wins'] + TR['Losses'])
+    TR['Win%'] = TR['Wins'] / (TR['Wins'] + TR['Losses'])
     TR = TR[['Rank', 'RankChange', 'SmashTag', 'Coast',
-             'Wins', 'Losses', 'WinPercentage', 'BankRoll Bills', ]]
+             'Wins', 'Losses', 'Win%', 'BankRoll Bills', ]]
     
     TR = TR.sort_values(by='Rank')
     TR = TR.round(3)
@@ -220,32 +218,33 @@ def main():
     week = 3
 
     # Input files
-    WSL = f'S{season}W{week}WeeklyScoresLadder.csv'
-    WSB = f'S{season}W{week}WeeklyScoresBracket.csv'
+    WSL = f'WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
+    WSB = f'WeeklyLadderBracket/S{season}W{week}WeeklyScoresBracket.csv'
 
-    WeeklyResults= f'S{season}W{week}WeeklyResults.csv'    # It combines the results of Ladders and Bracket
-    oldFeatures = f'S{season}W{week - 1}Features.csv'
-    Features = f'S{season}W{week}Features.csv'
+    WeeklyResults= f'Debug/S{season}W{week}WeeklyResults.csv'    # It combines the results of Ladders and Bracket
+    oldFeatures = f'Records/S{season}W{week - 1}Features.csv'
+    Features = f'Records/S{season}W{week}Features.csv'
 
-    oldPlacements = f'S{season}W{week - 1}Placements.csv'
-    Placements = f'S{season}W{week}Placements.csv'
+    oldPlacements = f'Records/S{season}W{week - 1}Placements.csv'
+    Placements = f'Records/S{season}W{week}Placements.csv'
 
-    WRankLadder = f'S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
-    WeeklyRank = f'S{season}W{week}WeeklyRank.csv'
+    WRankLadder = f'Debug/S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
+    WeeklyRank = f'Debug/S{season}W{week}WeeklyRank.csv'
     
-    oldRankRecords = f'S{season}W{week - 1}RankRecords.csv'
-    RankRecords = f'S{season}W{week}RankRecords.csv'
+    oldRankRecords = f'Records/S{season}W{week - 1}RankRecords.csv'
+    RankRecords = f'Records/S{season}W{week}RankRecords.csv'
 
     # These three will go on the website
-    WebWLR = f'S{season}W{week}WebsiteWeeklyLadderRank.csv'
-    WebWR = f'S{season}W{week}WebsiteWeeklyRank.csv'    # Ladders and Bracket Ranks
-    WebTR = f'S{season}W{week}WebsiteTotalRanks.csv'    # Rank for the entire season
+    WebWLR = f'Website/S{season}W{week}WebsiteWeeklyLadderRank.csv'
+    WebWR = f'Website/S{season}W{week}WebsiteWeeklyRank.csv'    # Ladders and Bracket Ranks
+    WebTR = f'Website/S{season}W{week}WebsiteTotalRanks.csv'    # Rank for the entire season
 
     if choice == 1:
         RankLadder(WSL, WRankLadder)
         WebsiteWeeklyRank(WRankLadder, WebWLR)
     else:
         CreateWeeklyResults(WSL, WSB, WeeklyResults, week)
+        
         UpdateTiers(WeeklyResults, oldFeatures, Features, week)
         UpdatePlacements(WeeklyResults, oldPlacements, Placements, week)
         
@@ -257,10 +256,6 @@ def main():
         WebsiteWeeklyRank(WeeklyRank, WebWR)
         WebsiteTotalRank(Features, RankRecords, WebTR)
 
-        if DEBUG_ON == False:
-            os.remove(WeeklyResults)
-            os.remove(WeeklyRank)
-        
 
 
 main()
