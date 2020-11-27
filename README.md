@@ -31,10 +31,15 @@
 ##### RankingFormula.py
 - Details about the rankings
 
+##### graphs.py
+- Makes graphs about Ranks, Points, and Placement for the entire season
+
  
  [To Do List and Future Feature Ideas](https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing)
  
  [Past TMTs links](https://docs.google.com/document/d/1Ze3aTZklszRjjHdqVtS7hS2tbIED5M_s3A5Vy_1_P6k/edit?usp=sharing)
+ 
+ [People's Mains](https://docs.google.com/spreadsheets/d/1Shm6NOZ2m3Pm1QA9ETA8CdUAJfbqA0Vl3DEPIoTtYrc/edit?usp=sharing)
  
  [Ranking Website](https://ucimelee.wixsite.com/tmtmelee)
  :shipit:
