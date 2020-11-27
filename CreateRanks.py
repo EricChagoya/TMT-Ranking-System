@@ -209,10 +209,10 @@ def WebsiteTotalRank(TRfile: str, PRfile: str, STRfile: str) -> None:
 
 
 def main():
-    # UI.PrintWelcomeMessage()
-    # choice = UI.UserChoice()
-    # season = UI.UserSeason()
-    # week = UI.UserWeek()
+    #UI.PrintRankWelcomeMessage()
+    #choice = UI.rankChoice()
+    #season = UI.UserSeason()
+    #week = UI.UserWeek()
     choice = 2
     season = 1
     week = 3
