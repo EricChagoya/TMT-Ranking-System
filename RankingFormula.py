@@ -29,44 +29,46 @@ def LimitLadderWins(df: 'df') -> None:
     df['LimitLadderWins'] = np.where((df.LimitLadderWins < 1), 0, df.LimitLadderWins)
 
 
-def PlacementPointsWeekly(WTP: 'df') -> None:
+def PlacementPointsWeekly(WeeklyResults: 'df') -> None:
     """It gives players points for their placement in bracket"""
-    WTP["PlacePoints"] = WTP['Placement']
-    WTP["PlacePoints"] = WTP["PlacePoints"].map(PLACEMENTS)
-    WTP["PlacePoints"] = WTP["PlacePoints"].fillna(0)
+    WeeklyResults["PlacePoints"] = WeeklyResults['Placement']
+    WeeklyResults["PlacePoints"] = WeeklyResults["PlacePoints"].map(PLACEMENTS)
+    WeeklyResults["PlacePoints"] = WeeklyResults["PlacePoints"].fillna(0)
 
 
 def PlacementPointsSeason(P: 'df', week: int) -> None:
     """It gives players points for their placement in bracket
     for every tournament"""
     P['PlacePoints'] = 0
-    t= pd.DataFrame()
+    temp= pd.DataFrame()
     for i in range(1, week + 1):
-        t['PlacePoints'] = P[f'PWeek{i}'].map(PLACEMENTS)
-        t['PlacePoints'] = t['PlacePoints'].fillna(0)
-        P['PlacePoints'] += t['PlacePoints']
+        temp['PlacePoints'] = P[f'PWeek{i}'].map(PLACEMENTS)
+        temp['PlacePoints'] = temp['PlacePoints'].fillna(0)
+        P['PlacePoints'] += temp['PlacePoints']
 
 
-def FormulaLadder(WSL : 'df') -> None:
+def FormulaLadder(WSLadder : 'df') -> None:
     """Ranking formula for ladder"""
-    WSL['Points'] = WSL['Wins'] - WSL['LimitLadderWins'] + \
-                    WSL['Prospect'] * POINT_PROSPECT + \
-                    WSL['Rookie'] * POINT_ROOKIE + \
-                    WSL['Pro'] * POINT_PRO + \
-                    WSL['AllStar'] * POINT_ALL_STAR + \
-                    WSL['HallOfFame'] * POINT_HALL_OF_FAME
+    # WeeklyScoresLadder
+    WSLadder['Points'] = WSLadder['Wins'] - WSLadder['LimitLadderWins'] + \
+                         WSLadder['Prospect'] * POINT_PROSPECT + \
+                         WSLadder['Rookie'] * POINT_ROOKIE + \
+                         WSLadder['Pro'] * POINT_PRO + \
+                         WSLadder['AllStar'] * POINT_ALL_STAR + \
+                         WSLadder['HallOfFame'] * POINT_HALL_OF_FAME
 
 
-def FormulaWeekly(WTP : 'df') -> None:
+def FormulaWeekly(WR : 'df') -> None:
     """Ranking formula for ladder and bracket for the week"""
-    WTP['Points'] = WTP['Wins'] - WTP['LimitLadderWins'] + \
-                    WTP['Prospect'] * POINT_PROSPECT + \
-                    WTP['Rookie'] * POINT_ROOKIE + \
-                    WTP['Pro'] * POINT_PRO + \
-                    WTP['AllStar'] * POINT_ALL_STAR + \
-                    WTP['HallOfFame'] * POINT_HALL_OF_FAME + \
-                    WTP['Floated'] * POINT_FLOATED_PLAYER + \
-                    WTP['PlacePoints']
+    # WeeklyResults
+    WR['Points'] = WR['Wins'] - WR['LimitLadderWins'] + \
+                   WR['Prospect'] * POINT_PROSPECT + \
+                   WR['Rookie'] * POINT_ROOKIE + \
+                   WR['Pro'] * POINT_PRO + \
+                   WR['AllStar'] * POINT_ALL_STAR + \
+                   WR['HallOfFame'] * POINT_HALL_OF_FAME + \
+                   WR['Floated'] * POINT_FLOATED_PLAYER + \
+                   WR['PlacePoints']
 
 
 def FormulaTotalSeason(TP : 'df', P: 'df') -> None:
