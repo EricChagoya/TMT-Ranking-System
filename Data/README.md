@@ -58,4 +58,11 @@ W(n) being which week is it
 ##### WebsiteTotalRanks.csv
 - Everybody's points for the entire season
 - Column Names: Rank, RankChange, SmashTag, Coast, Wins, Losses, WinPercentage, BankRollBills
+
+
+## Manualy Update Files
+##### Mains.csv
+- A player's main. No dual main. Most played character
+- This will be updates manually
+- Column Names: SmashTag, Main
   
