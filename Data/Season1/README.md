@@ -12,6 +12,7 @@
   - Features.csv
   - Placements.csv
   - RankRecords.csv
+  - Mains.csv (Future)
 
 #### Website
 - The most update files go on the website
