@@ -41,6 +41,8 @@
  
  [People's Mains](https://docs.google.com/spreadsheets/d/1Shm6NOZ2m3Pm1QA9ETA8CdUAJfbqA0Vl3DEPIoTtYrc/edit?usp=sharing)
  
+ [Graphs](https://docs.google.com/document/d/1mZGRhtXdH3q-9BXAvBiqj9glfS-gsg1wG1LHA4ce_LA/edit?usp=sharing)
+ 
  [Ranking Website](https://ucimelee.wixsite.com/tmtmelee)
  :shipit:
  
