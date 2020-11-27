@@ -8,7 +8,7 @@ import RankingFormula as RF
 # Records
 # Website
 # WeeklyLadderBracket
-# Maybe programm it to create this directory if they don't exist
+# Maybe program it to create this directory if they don't exist
 
 def CreateWeeklyResults(WeeklyScoresLadderfile: str, WeeklyScoresBracketfile: str,
                         WeeklyResultsfile: str,week: int) -> None:
@@ -172,7 +172,7 @@ def ChangeRank(Featuresfile: str, oldRankRecordsfile: str, week: int, RankRecord
                 new_row = {'SmasherID': row['SmasherID'],   # New TMT Entrant
                            'SmashTag': row['SmashTag'],
                            f'RWeek{week}': row['Rank'],
-                           'ChangeInRank': 'New'}
+                           'ChangeInRank': 'NAN'}
                 for i in range(1, week):
                     new_row[f'RWeek{i}'] = 'NAN'
                 RankRecords = RankRecords.append(new_row, ignore_index = True)
@@ -205,12 +205,25 @@ def WebsiteWeeklyRank(WeeklyRankfile: str, WebWeeklyRankfile: str) -> None:
 def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str, WebTotalRankfile: str) -> None:
     # Keep for now. We might want different columns for each file.
     # The total can include more information
-    """ It does not change anything about the data. It moves and removes columns
+    """It moves and removes columns. Changes how values are displayed
     so it is more presentable for the website."""
     Features = pd.read_csv(Featuresfile)
     RankRecords = pd.read_csv(RankRecordsfile)
 
     Features['ChangeInRank'] = RankRecords['ChangeInRank']
+    Features.loc[(Features.ChangeInRank == '0.0'), 'ChangeInRank'] = "-"
+    Features.loc[(Features.ChangeInRank == 'NAN'), 'ChangeInRank'] = "New"
+    for index, row in Features.iterrows():
+        try:
+            change = float(row['ChangeInRank'])
+            if change > 0:
+                Features.at[index, 'ChangeInRank'] = "++ " + row['ChangeInRank']
+            elif change < 0:
+                Features.at[index, 'ChangeInRank'] = "-- " + str(-1 * change)
+        except:
+            pass
+        
+    
     Features = Features.rename(columns={'Points': 'BankRoll Bills'})
     Features['Win%'] = 100*Features['Wins'] / (Features['Wins'] + Features['Losses'])
     Features = Features[['Rank', 'ChangeInRank', 'SmashTag', 'Coast',
