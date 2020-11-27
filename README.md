@@ -39,7 +39,7 @@
  
  [Past TMTs links](https://docs.google.com/document/d/1Ze3aTZklszRjjHdqVtS7hS2tbIED5M_s3A5Vy_1_P6k/edit?usp=sharing)
  
- [People's Mains](https://docs.google.com/spreadsheets/d/1Shm6NOZ2m3Pm1QA9ETA8CdUAJfbqA0Vl3DEPIoTtYrc/edit?usp=sharing)
+ [People's Mains](https://drive.google.com/file/d/1sordRvRwXjrGbftJNfb60wXZ1dC3yUD2/view?usp=sharing)
  
  [Graphs](https://docs.google.com/document/d/1mZGRhtXdH3q-9BXAvBiqj9glfS-gsg1wG1LHA4ce_LA/edit?usp=sharing)
  
