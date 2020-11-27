@@ -32,7 +32,7 @@
 - Details about the rankings
 
 ##### graphs.py
-- Makes graphs about Ranks, Points, and Placement for the entire season
+- Makes graphs about Ranks, Points, and Placements for the entire season
 
  
  [To Do List and Future Feature Ideas](https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing)
