@@ -18,12 +18,28 @@ CHARACTERS = {'Fox': 0,
               'Puff': 5,
               'Peach': 6,
               'Pikachu' : 7,
-              'NA': 8}
+              'unknown': 8}
 
-COLORS = []
+# Change these colors later
+COLORS = ['#ffc34d', '#0000ff', '#1aff1a', '#ff1a1a', '#4d4d4d',
+          '#6600cc', '#ff66ff', '#ffff00', '#666699']
+#        [Yellow/Orange, Blue, Lime Green, Red, Dark Gray,
+#         Purple, Pink, Yellow, Gray]
 
 # Colors should be based off player's main
 # Should be gray if we don't know their main
+
+
+def getPlayerMains() -> {'Main': 'Tag'}:
+    Mains = 'Records/PlayerMains.csv'
+    Mains = pd.read_csv(Mains, encoding='utf-8-sig')    # Not sure why ISO encoding doesn't work    
+    AllPlayerMains = dict()
+    for index, row in Mains.iterrows():
+        if row['Main'] in AllPlayerMains:
+            AllPlayerMains[row['Main']].add(row['SmashTag'])
+        else:
+            AllPlayerMains[row['Main']] = {row['SmashTag']}
+    return AllPlayerMains
 
 
 def getCoastData(season: int, week: int) -> 'df':
@@ -31,9 +47,9 @@ def getCoastData(season: int, week: int) -> 'df':
     for each week. The last column is for people we aren't sure of.
     [Total, WC, EC, NA]"""
     Features = f'Records/S{season}W{week}Features.csv'
-    Features = pd.read_csv(Features)
+    Features = pd.read_csv(Features, encoding = "ISO-8859-1")
     Placements = f'Records/S{season}W{week}Placements.csv'
-    Placements = pd.read_csv(Placements)
+    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
     coasts= dict()
     for index, row in Features.iterrows():
         if row['Coast'] == "WC":
@@ -66,7 +82,7 @@ def getBracketNewData(season, week) -> 'df':
     number of unique players for each tournament in the season.
     [TotalnumAttendees, numBracket, newPlayers] """
     Placements = f'Records/S{season}W{week}Placements.csv'
-    Placements = pd.read_csv(Placements)
+    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
     players = {row['SmasherID'] for index, row in Placements.iterrows()}
     # Used to determine new players
 
@@ -91,25 +107,43 @@ def getBracketNewData(season, week) -> 'df':
     return df.rename(columns = column_names)    
 
 
-def CreateRankGraph(season : int, week: int) -> None:
-    """It plots all players weekly rank"""
+
+
+def SetupRank(season: int, week: int) -> None:
     RankRecords = f'Records/S{season}W{week}RankRecords.csv'
-    RankRecords = pd.read_csv(RankRecords)
+    RankRecords = pd.read_csv(RankRecords, encoding = 'ISO-8859-1')
     RankRecords = RankRecords.sort_values(f'RWeek{week}')
 
-    colors = ['aquamarine', 'crimson', 'hotpink', 'goldenrod', 'navy']
-    len_colors= len(colors)
+    AllPlayerMains = getPlayerMains()
+    
+    for character, v in sorted(CHARACTERS.items(), key = lambda item: item[1]):
+        if character in AllPlayerMains:
+            if v == 8:
+                break
+            CreateRankGraph(RankRecords, AllPlayerMains[character],
+                            COLORS[v], character, season, week)
+            #break
 
+
+def CreateRankGraph(RankRecords: 'df', players: {'str'}, color: str,
+                    character: str, season : int, week: int) -> None:
+    """It plots the ranks of all the players of one main on a week to
+    week basis."""
+    print(players)
+    print(color)
+    print(character)
     x_range = [i for i in range(1, week + 1)]
 
     fig = go.Figure()
     for index, row in RankRecords.iterrows():
         playerTag = row[1]
-        playerRank = [row[f'RWeek{week}'] for i in range(1, week + 1)]
-        fig.add_trace(go.Scatter(x = x_range, y = playerRank, name = playerTag,
-                         line = dict(color = colors[index % len_colors], width = 4)))
+        if playerTag in players:
+            playerRank = [row[f'RWeek{i}'] for i in range(1, week + 1)]
+            print(playerRank)
+            fig.add_trace(go.Scatter(x = x_range, y = playerRank, name = playerTag,
+                             line = dict(color = color, width = 4)))
 
-    fig.update_layout(title = f'Season {season} Ranks')
+    fig.update_layout(title = f'Season {season} {character} Ranks')
     fig.update_layout(xaxis_title = 'Week Number')
     fig.update_layout(yaxis_title = 'Rank')
     fig.update_layout(showlegend = True)
@@ -117,14 +151,16 @@ def CreateRankGraph(season : int, week: int) -> None:
     
     fig.update_xaxes(nticks = week)
     fig.update_yaxes(range=[RankRecords.shape[0], 0])
+    print("here")
     fig.show()
+    print("here2")
 
 
 
 def CreatePointsGraph(season: int, week: int) -> None:
     """It plots a player's points through out the season"""
     PastPoints = f'Records/S{season}W{week}PastPoints.csv'
-    PastPoints = pd.read_csv(PastPoints)
+    PastPoints = pd.read_csv(PastPoints, encoding = "ISO-8859-1")
     PastPoints = PastPoints.sort_values(f'BWeek{week}', ascending = False)
 
     colors = ['aquamarine', 'crimson', 'hotpink', 'goldenrod', 'navy']
@@ -211,12 +247,12 @@ def main():
     # Update choice to get new options
     #season = UI.UserSeason()
     #week = UI.UserWeek()
-    choice = 3
+    choice = 1
     season = 1
     week = 3
     
     if choice == 1:
-        CreateRankGraph(season, week)
+        SetupRank(season, week)
     elif choice == 2:
         CreatePointsGraph(season, week)
     elif choice == 3:
@@ -230,5 +266,87 @@ def main():
     
     print("End")
 
-
 main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Save these just in case we need all the information
+
+
+##def CreateRankGraph(season : int, week: int) -> None:
+##    """It plots all players weekly rank"""
+##    RankRecords = f'Records/S{season}W{week}RankRecords.csv'
+##    RankRecords = pd.read_csv(RankRecords, encoding = "ISO-8859-1")
+##    RankRecords = RankRecords.sort_values(f'RWeek{week}')
+##
+##    colors = ['aquamarine', 'crimson', 'hotpink', 'goldenrod', 'navy']
+##    len_colors= len(colors)
+##
+##    x_range = [i for i in range(1, week + 1)]
+##
+##    fig = go.Figure()
+##    for index, row in RankRecords.iterrows():
+##        playerTag = row[1]
+##        playerRank = [row[f'RWeek{week}'] for i in range(1, week + 1)]
+##        fig.add_trace(go.Scatter(x = x_range, y = playerRank, name = playerTag,
+##                         line = dict(color = colors[index % len_colors], width = 4)))
+##
+##    fig.update_layout(title = f'Season {season} Ranks')
+##    fig.update_layout(xaxis_title = 'Week Number')
+##    fig.update_layout(yaxis_title = 'Rank')
+##    fig.update_layout(showlegend = True)
+##    fig.update_layout(legend = dict(font_size = 16))
+##    
+##    fig.update_xaxes(nticks = week)
+##    fig.update_yaxes(range=[RankRecords.shape[0], 0])
+##    fig.show()
+##
+##
+##
+##def CreatePointsGraph(season: int, week: int) -> None:
+##    """It plots a player's points through out the season"""
+##    PastPoints = f'Records/S{season}W{week}PastPoints.csv'
+##    PastPoints = pd.read_csv(PastPoints, encoding = "ISO-8859-1")
+##    PastPoints = PastPoints.sort_values(f'BWeek{week}', ascending = False)
+##
+##    colors = ['aquamarine', 'crimson', 'hotpink', 'goldenrod', 'navy']
+##    len_colors= len(colors)
+##    x_range = [i for i in range(1, week + 1)]
+##
+##    fig = go.Figure()
+##    for index, row in PastPoints.iterrows():
+##        playerTag = row[1]
+##        playerPoints = [row[f'BWeek{i}'] for i in range(1, week + 1)]
+##        #playerPoints = [math.log(float(row[f'BWeek{i}'])) for i in range(1, week + 1)]
+##        fig.add_trace(go.Scatter(x = x_range, y = playerPoints, name = playerTag,
+##                         line = dict(color = colors[index % len_colors], width = 4)))
+##
+##    fig.update_layout(title = f'Season {season} BankRoll Bills')
+##    fig.update_layout(xaxis_title = 'Week Number')
+##    fig.update_layout(yaxis_title = 'Bills')
+##    fig.update_layout(showlegend = True)
+##    fig.update_layout(legend = dict(font_size = 16))
+##    
+##    fig.update_xaxes(nticks = week)
+##    fig.show()
+

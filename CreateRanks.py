@@ -14,8 +14,8 @@ import RankingFormula as RF
 def CreateWeeklyResults(WeeklyScoresLadderfile: str, WeeklyScoresBracketfile: str,
                         WeeklyResultsfile: str,week: int) -> None:
     """It combines the scores from ladder and bracket into one file."""
-    WSL = pd.read_csv(WeeklyScoresLadderfile, encoding="ISO-8859-1")
-    WSB = pd.read_csv(WeeklyScoresBracketfile, encoding="ISO-8859-1")
+    WSL = pd.read_csv(WeeklyScoresLadderfile, encoding = "ISO-8859-1")
+    WSB = pd.read_csv(WeeklyScoresBracketfile, encoding = "ISO-8859-1")
     WR = WSL    # WeeklyResults
 
     WR['Placement'] = -1
@@ -50,16 +50,16 @@ def CreateWeeklyResults(WeeklyScoresLadderfile: str, WeeklyScoresBracketfile: st
              'LimitLadderWins', 'Prospect', 'Rookie', 'Pro',
              'AllStar', 'HallOfFame', 'Floated', 'Placement']]
     WR = WR.sort_values(by = 'SmasherID')
-    WR.to_csv(WeeklyResultsfile, index=False)
+    WR.to_csv(WeeklyResultsfile, index=False, encoding = "ISO-8859-1")
 
 
 
 def UpdateTiers(WeeklyResultsfile: str, oldFeaturesfile: str, Featuresfile: str, week: int):
     """It updates a player's wins, losses, and number of times they were in
     Prospect, ..., Floated to previous weeks"""
-    WR = pd.read_csv(WeeklyResultsfile, encoding="ISO-8859-1")
+    WR = pd.read_csv(WeeklyResultsfile, encoding = "ISO-8859-1")
     if week != 1:
-        Features = pd.read_csv(oldFeaturesfile, encoding="ISO-8859-1")
+        Features = pd.read_csv(oldFeaturesfile, encoding = "ISO-8859-1")
         for index, row in WR.iterrows():
             inThisWeek = Features[Features['SmasherID'].isin([row['SmasherID']])]
             if len(inThisWeek) > 0:     # Has the player entered before
@@ -93,7 +93,7 @@ def UpdateTiers(WeeklyResultsfile: str, oldFeaturesfile: str, Featuresfile: str,
                        'LimitLadderWins', 'Prospect', 'Rookie', 'Pro',
                        'AllStar', 'HallOfFame', 'Floated']]
     Features = Features.sort_values(by = 'SmasherID')
-    Features.to_csv(Featuresfile, index=False)
+    Features.to_csv(Featuresfile, index=False, encoding = "ISO-8859-1")
 
 
 def FindTournamentEntrants(Placement: 'df', week: int) -> None:
@@ -120,9 +120,9 @@ def UpdatePlacements(WeeklyResultsfile, oldPlacementsfile:str, Placementsfile:st
     """Appends this week's bracket placement to previous weeks.
     -1 means they did not make bracket.
     -2 means they did not enter that week."""
-    WR = pd.read_csv(WeeklyResultsfile, encoding="ISO-8859-1")
+    WR = pd.read_csv(WeeklyResultsfile, encoding = "ISO-8859-1")
     if week != 1:
-        Placement = pd.read_csv(oldPlacementsfile, encoding="ISO-8859-1")
+        Placement = pd.read_csv(oldPlacementsfile, encoding = "ISO-8859-1")
         Placement[f'PWeek{week}'] = -2
         for index, row in WR.iterrows():
             oldPlayer = Placement[Placement['SmasherID'].isin([row['SmasherID']])]
@@ -146,43 +146,43 @@ def UpdatePlacements(WeeklyResultsfile, oldPlacementsfile:str, Placementsfile:st
         
     FindTournamentEntrants(Placement, week)
     Placement = Placement.sort_values(by = 'SmasherID')
-    Placement.to_csv(Placementsfile, index=False)
+    Placement.to_csv(Placementsfile, index=False, encoding = "ISO-8859-1")
 
 
 def RankLadder(WeeklyScoresLadderfile: str, WeeklyRankLadderfile: str) -> None:
     """Rank ladder for that week. """
-    WSLadder = pd.read_csv(WeeklyScoresLadderfile, encoding="ISO-8859-1")
+    WSLadder = pd.read_csv(WeeklyScoresLadderfile, encoding = "ISO-8859-1")
     RF.LimitLadderWins(WSLadder)
     RF.FormulaLadder(WSLadder)
     WSLadder['Rank'] = (WSLadder['Points'] * -1).rank(method = 'min')
-    WSLadder.to_csv(WeeklyRankLadderfile, index = False)
+    WSLadder.to_csv(WeeklyRankLadderfile, index = False, encoding = "ISO-8859-1")
 
 
 def RankWeekly(WeeklyResultsfile: str, WeeklyRankfile: str) -> None:
     """Rank Ladder and Bracket for that week."""
-    WeeklyResults = pd.read_csv(WeeklyResultsfile)
+    WeeklyResults = pd.read_csv(WeeklyResultsfile, encoding = "ISO-8859-1")
     RF.PlacementPointsWeekly(WeeklyResults)
     RF.FormulaWeekly(WeeklyResults)
     WeeklyResults['Rank'] = (WeeklyResults['Points'] * -1).rank(method = 'min')
-    WeeklyResults.to_csv(WeeklyRankfile, index = False)
+    WeeklyResults.to_csv(WeeklyRankfile, index = False, encoding = "ISO-8859-1")
 
 
 def RankSeason(Featuresfile: str, Placementsfile: str, week: int) -> None:
     """It will give value to each column to determine the ranks for
     the entire season."""
-    Features = pd.read_csv(Featuresfile)
-    Placements = pd.read_csv(Placementsfile)
+    Features = pd.read_csv(Featuresfile, encoding = "ISO-8859-1")
+    Placements = pd.read_csv(Placementsfile, encoding = "ISO-8859-1")
     RF.PlacementPointsSeason(Placements, week)
     RF.FormulaTotalSeason(Features, Placements)
     Features['Rank'] = (Features['Points'] * -1).rank(method = 'min')
-    Features.to_csv(Featuresfile, index = False)
+    Features.to_csv(Featuresfile, index = False, encoding = "ISO-8859-1")
 
 
 def ChangeRank(Featuresfile: str, oldRankRecordsfile: str, week: int, RankRecordsfile: str):
     """It keeps track of someone's rank for each week."""
-    Features = pd.read_csv(Featuresfile)
+    Features = pd.read_csv(Featuresfile, encoding = "ISO-8859-1")
     if week != 1:
-        RankRecords = pd.read_csv(oldRankRecordsfile)
+        RankRecords = pd.read_csv(oldRankRecordsfile, encoding = "ISO-8859-1")
         for index, row in Features.iterrows():
             oldPlayer = RankRecords[RankRecords['SmasherID'].isin([row['SmasherID']])]
             if len(oldPlayer) > 0:      # Have they entered before?
@@ -207,14 +207,14 @@ def ChangeRank(Featuresfile: str, oldRankRecordsfile: str, week: int, RankRecord
         RankRecords = RankRecords.rename(columns = {'Rank': 'RWeek1'})
         RankRecords['ChangeInRank'] = 'New'
     RankRecords = RankRecords.sort_values(by = 'SmasherID')
-    RankRecords.to_csv(RankRecordsfile, index = False)
+    RankRecords.to_csv(RankRecordsfile, index = False, encoding = "ISO-8859-1")
 
 
 def UpdatePoints(Featuresfile: str, oldPastPoints: str, PastPointsfile: str, week: int) -> None:
     """It keeps tracks of how many points everybody got every week"""
-    Features = pd.read_csv(Featuresfile)
+    Features = pd.read_csv(Featuresfile, encoding = "ISO-8859-1")
     if week != 1:
-        PastPoints = pd.read_csv(oldPastPoints)
+        PastPoints = pd.read_csv(oldPastPoints, encoding = "ISO-8859-1")
         for index, row in Features.iterrows():
             oldPlayer = PastPoints[PastPoints['SmasherID'].isin([row['SmasherID']])]
             if len(oldPlayer) > 0:      # Have they entered before?
@@ -232,14 +232,14 @@ def UpdatePoints(Featuresfile: str, oldPastPoints: str, PastPointsfile: str, wee
         PastPoints = Features[['SmasherID', 'SmashTag', 'Points']]
         PastPoints = PastPoints.rename(columns = {'Points': 'BWeek1'})
     PastPoints = PastPoints.sort_values(by = 'SmasherID')
-    PastPoints.to_csv(PastPointsfile, index = False)
+    PastPoints.to_csv(PastPointsfile, index = False, encoding = "ISO-8859-1")
 
     
 def WebsiteWeeklyRank(WeeklyRankfile: str, WebWeeklyRankfile: str) -> None:
     """ It does not change anything about the data. It moves and removes columns
     so it is more presentable for the website. This is used by both the weekly
     ladder and bracket rank."""
-    WeeklyRank = pd.read_csv(WeeklyRankfile)
+    WeeklyRank = pd.read_csv(WeeklyRankfile, encoding = "ISO-8859-1")
     WeeklyRank = WeeklyRank.rename(columns={'Points': 'BankRoll Bills'})
     WeeklyRank['Win%'] = 100*WeeklyRank['Wins'] / (WeeklyRank['Wins'] + WeeklyRank['Losses'])
     WeeklyRank = WeeklyRank[['Rank', 'SmashTag', 'Wins', 'Losses',
@@ -247,7 +247,7 @@ def WebsiteWeeklyRank(WeeklyRankfile: str, WebWeeklyRankfile: str) -> None:
     
     WeeklyRank = WeeklyRank.sort_values(by='Rank')
     WeeklyRank = WeeklyRank.round(2)
-    WeeklyRank.to_csv(WebWeeklyRankfile, index=False)
+    WeeklyRank.to_csv(WebWeeklyRankfile, index=False, encoding = "ISO-8859-1")
 
 
 def WebsiteChangeInRank(Features: 'df') -> None:
@@ -270,9 +270,9 @@ def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str, Placementsfile:str
     # The total can include more information
     """It moves and removes columns. Changes how values are displayed
     so it is more presentable for the website."""
-    Features = pd.read_csv(Featuresfile)
-    RankRecords = pd.read_csv(RankRecordsfile)
-    Placements = pd.read_csv(Placementsfile)
+    Features = pd.read_csv(Featuresfile, encoding = "ISO-8859-1")
+    RankRecords = pd.read_csv(RankRecordsfile, encoding = "ISO-8859-1")
+    Placements = pd.read_csv(Placementsfile, encoding = "ISO-8859-1")
 
     Features['ChangeInRank'] = RankRecords['ChangeInRank']
     WebsiteChangeInRank(Features)
@@ -289,7 +289,7 @@ def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str, Placementsfile:str
     
     Features = Features.sort_values(by='Rank')
     Features = Features.round(2)
-    Features.to_csv(WebTotalRankfile, index=False)
+    Features.to_csv(WebTotalRankfile, index=False, encoding = "ISO-8859-1")
 
 
 def main():
@@ -330,8 +330,8 @@ def main():
         RankLadder(WSL, WeeklyRankLadder)
         WebsiteWeeklyRank(WeeklyRankLadder, WebWLR)
     else:
-        
         CreateWeeklyResults(WSL, WSB, WeeklyResults, week)
+        
         
         UpdateTiers(WeeklyResults, oldFeatures, Features, week)
         UpdatePlacements(WeeklyResults, oldPlacements, Placements, week)
@@ -344,7 +344,7 @@ def main():
         
         WebsiteWeeklyRank(WeeklyRank, WebWR)
         WebsiteTotalRank(Features, RankRecords, Placements, WebTR)
-
+        
 
 main()
 
