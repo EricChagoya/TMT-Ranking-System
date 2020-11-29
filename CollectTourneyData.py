@@ -264,11 +264,13 @@ if __name__ == '__main__':
                 if eventName == 'East':
                     ladderFile.write(
                         get_tier(value[3], hofE, allstarE, proE, rookieE))
+                    ladderFile.write(str(value[3]) +',' + 'EC')
                 else:
                     ladderFile.write(
                         get_tier(value[3], hofW, allstarW, proW, rookieW))
+                    ladderFile.write(str(value[3]) + ',' + 'WC')
 
-                ladderFile.write(str(value[3]) + '\n')
+                ladderFile.write('\n')
             print(f'Inputted {eventName} Coast Ladder results to {ladderLink}')
         elif choice == 2:
             bracketFile = open(bracketLink, 'w')
