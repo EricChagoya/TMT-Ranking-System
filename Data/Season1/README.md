@@ -12,8 +12,8 @@
   - Features.csv
   - Placements.csv
   - RankRecords.csv
-  - PastPoints.csv (Future)
-  - Mains.csv (Future)
+  - PastPoints.csv
+  - PlayerMains.csv
 
 #### Website
 - The most update files go on the website
