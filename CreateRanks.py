@@ -1,15 +1,24 @@
+import os
 import numpy as np
 import pandas as pd
 import UserInterface as UI
 import RankingFormula as RF
 
-# In order to run this script you will need the folders
-# Debug
-# Records
-# Website
-# WeeklyLadderBracket
 
-# Maybe program it to create these directory if they don't exist
+
+
+def CreateDirectories() -> None:
+    """If these directories don't exists, it will create them"""
+    if not os.path.exists('Debug'):
+        os.mkdir('Debug')
+    if not os.path.exists('Records'):
+        os.mkdir('Records')
+    if not os.path.exists('Website'):
+        os.mkdir('Website')
+    if not os.path.exists('WeeklyLadderBracket'):
+        os.mkdir('WeeklyLadderBracket')
+        print("Put ladder and bracket files into WeeklyLadderBracket Directory")
+
 
 def CreateWeeklyResults(WeeklyScoresLadderfile: str, WeeklyScoresBracketfile: str,
                         WeeklyResultsfile: str,week: int) -> None:
@@ -265,7 +274,8 @@ def WebsiteChangeInRank(Features: 'df') -> None:
             pass
 
 
-def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str, Placementsfile:str, WebTotalRankfile: str) -> None:
+def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str,
+                     Placementsfile:str, WebTotalRankfile: str) -> None:
     # Keep for now. We might want different columns for each file.
     # The total can include more information
     """It moves and removes columns. Changes how values are displayed
@@ -293,13 +303,15 @@ def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str, Placementsfile:str
 
 
 def main():
-    #UI.PrintRankWelcomeMessage()
-    #choice = UI.rankChoice()
-    #season = UI.UserSeason()
-    #week = UI.UserWeek()
-    choice = 2
-    season = 1
-    week = 3
+    UI.PrintRankWelcomeMessage()
+    choice = UI.rankChoice()
+    season = UI.UserSeason()
+    week = UI.UserWeek()
+    #choice = 2
+    #season = 1
+    #week = 3
+
+    CreateDirectories()
 
     # Input files
     WSL = f'WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
