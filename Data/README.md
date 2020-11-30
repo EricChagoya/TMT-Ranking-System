@@ -29,7 +29,7 @@ W(n) being which week is it
 - It list every player's placement in the final bracket
 - If they did not TMT that week, it will be -2
 - If they did not make it into final bracket, it will be -1
-- Column Names: SmasherID, SmashTag, PWeek1, ..., PWeekN
+- Column Names: SmasherID, SmashTag, NumTMTEntered, NumInBracket, PWeek1, ..., PWeekN
 
 ##### WeeklyRankLadder.csv
 - It ranks people for how well they did in ladder and only ladder
@@ -42,9 +42,9 @@ W(n) being which week is it
 ##### RankRecords.csv
 - It displays a player's rank on a week to week basis
 - The last column displays how much they increase or decreased
-- Column Names: SmasherID, SmashTag, RWeek1, ..., RWeekN, RankChange
+- Column Names: SmasherID, SmashTag, RWeek1, ..., RWeekN, ChangeInRank
 
-##### PastPoints.csv (Future)
+##### PastPoints.csv
 - It displays a player's cummulative points for every week
 - Column Names: SmasherID, SmashTag, BWeek1, ..., BWeekN
   
@@ -57,11 +57,11 @@ W(n) being which week is it
 
 ##### WebsiteTotalRanks.csv
 - Everybody's points for the entire season
-- Column Names: Rank, RankChange, SmashTag, Coast, Wins, Losses, WinPercentage, BankRollBills
+- Column Names: Rank, ChangeInRank, SmashTag, Coast, Wins, Losses, Win%, NumTMTEntered, NumInBracket, BankRoll Bills
 
 
 ## Manualy Update Files
-##### Mains.csv
+##### PlayerMains.csv
 - A player's main. No dual main. Most played character
 - This will be updates manually
 - Column Names: SmashTag, Main
