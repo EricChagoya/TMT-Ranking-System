@@ -6,13 +6,14 @@ import UserInterface as UI
 
 import plotly.graph_objects as go
 import plotly.express as px
+
 # pip install plotly
 # https://plotly.com/python/
 # Really good documentation
 # pip install -U kaleido
 # Used for saving static images
 
-FORMAT = 0  # Iteractable HTML
+FORMAT = 0  # 0 is an iteractable HTML
             # 1 is a png
 
 CHARACTERS = {'Fox': 0,
@@ -365,18 +366,66 @@ def CreateEntrantBracketNewGraph(season: int, week: int) -> None:
         fig.write_image(f"Plots/S{season}W{week}TMTDetails.png")
 
 
+def getPointsCoast(season: int, week: int) -> [int, int]:
+    """It gets the total amount of points for each coast and
+    number of attendees for each coast"""
+    Features = f'Records/S{season}W{week}Features.csv'
+    Features = pd.read_csv(Features, encoding = "ISO-8859-1")
+    Points = [0, 0] # [WC, EC]
+    for index, row in Features.iterrows():
+        if row['Coast'] == 'WC':
+            Points[0] += row['Points']
+        elif row['Coast'] == 'EC':
+            Points[1] += row['Points']
+    return Points
+
+
+def CombinedPointsCoast(season: int, week: int) -> None:
+    """It plots how many combined points each coast has."""
+    Points = getPointsCoast(season, week)
+    print(Points)
+
+    # Fix how the plot looks like.
+    fig = go.Figure()
+    '#d9534f'
+    fig.add_trace(go.Bar(x = [-0.5], y= [Points[0]],
+                         name = 'West Coast', marker_color = 'indianred'))
+
+    '#428bca'
+    fig.add_trace(go.Bar(x = [0.5], y= [Points[1]],
+                         name = 'East Coast', marker_color = 'indianred'))
+
+    print()
+    fig.update_layout(title = f'Season {season} Coast Total Points')
+    
+    fig.update_layout(xaxis_title = '')
+    #fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
+    #                               ticktext = [f'Week {i}' for i in range(1, week + 1)]))
+    fig.update_layout(yaxis_title = 'Points')
+
+
+
+    fig.update_layout(font = dict(size= 23))    
+    fig.update_layout(showlegend = True)
+    fig.update_layout(legend = dict(font_size = 24))
+    if FORMAT == 0:
+        fig.show()
+    else:
+        fig.write_image(f"Plots/S{season}W{week}TotalPointsCoast.png")
+
+
 
 
 def main():
-    UI.PrintGraphWelcomeMessage()
-    choice = UI.graphChoice()
-    save_graphs = UI.saveGraph()
-    season = UI.UserSeason()
-    week = UI.UserWeek()
-    #choice = 1
-    #save_graphs = 1
-    #season = 1
-    #week = 3
+    #UI.PrintGraphWelcomeMessage()
+    #choice = UI.graphChoice()
+    #save_graphs = UI.saveGraph()
+    #season = UI.UserSeason()
+    #week = UI.UserWeek()
+    choice = 9
+    save_graphs = 1
+    season = 1
+    week = 3
     
     SavingFormat(save_graphs)
     
@@ -400,6 +449,10 @@ def main():
     elif choice == 8:
         CreateEntrantsCoastGraph(season, week)      # TMT details
         CreateEntrantBracketNewGraph(season, week)
+    elif choice == 9:
+        # Website
+        # Points for each Coast
+        CombinedPointsCoast(season, week)
 
     print("End")
 
