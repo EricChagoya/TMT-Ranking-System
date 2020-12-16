@@ -251,11 +251,11 @@ if __name__ == '__main__':
     print()
     ladderFile = open(ladderLink, 'w')
     ladderFile.write('SmasherID,SmashTag,Wins,Losses,'
-                     'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement\n')
+                     'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement, Coast\n')
     for eventName, eventId in info.items():
-        pageCounts = get_page_counts(eventId)
-        stats = get_event_stats(eventId, pageCounts)
         if eventName in {'East', 'West'}:
+            pageCounts = get_page_counts(eventId)
+            stats = get_event_stats(eventId, pageCounts)
             for playerId, value in stats.items():
                 ladderFile.write(str(playerId) + ',')
                 ladderFile.write(value[0] + ',')
@@ -273,6 +273,8 @@ if __name__ == '__main__':
                 ladderFile.write('\n')
             print(f'Inputted {eventName} Coast Ladder results to {ladderLink}')
         elif choice == 2:
+            pageCounts = get_page_counts(eventId)
+            stats = get_event_stats(eventId, pageCounts)
             bracketFile = open(bracketLink, 'w')
             bracketFile.write('SmasherID,SmashTag,Wins,Losses,Placement\n')
             for playerId, value in stats.items():
