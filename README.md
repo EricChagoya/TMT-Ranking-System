@@ -1,5 +1,6 @@
 # TMT-Ranking-System
 
+I changed this
  
 ##### CollectData.py
 - It gets the pure data from smash.gg without applying any formula to it
