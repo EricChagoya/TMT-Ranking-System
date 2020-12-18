@@ -18,7 +18,7 @@
 	- WeeklyRankLadder.csv
 	- WeeklyRank.csv
 	- RankRecords.csv
-	- PastPoints.csv (Future)
+	- PastPoints.csv
 	- WebsiteWeeklyLadderRank.csv
 	- WebsiteWeeklyRank.csv
 	- WebsiteTotalRanks.csv

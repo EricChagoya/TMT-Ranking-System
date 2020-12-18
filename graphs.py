@@ -2,19 +2,22 @@ import os
 import math
 import numpy as np
 import pandas as pd
+
+import graphsStaff as GS
 import UserInterface as UI
 
 import plotly.graph_objects as go
 import plotly.express as px
+import plotly.io as pio
+
+#pio.kaleido.scope.default_height = 1200
+#pio.kaleido.scope.default_width = 2400
 
 # pip install plotly
 # https://plotly.com/python/
 # Really good documentation
 # pip install -U kaleido
 # Used for saving static images
-
-FORMAT = 0  # 0 is an iteractable HTML
-            # 1 is a png
 
 CHARACTERS = {'Fox': 0,
               'Falco' : 1,
@@ -24,33 +27,36 @@ CHARACTERS = {'Fox': 0,
               'Puff': 5,
               'Peach': 6,
               'ICs' : 7,
-              'Other/Unknown': 8}
+              'Other': 8}
 
-# Change these colors later
 COLORS = ['#ffc34d', '#0000ff', '#1aff1a', '#ff1a1a', '#4d4d4d',
           '#6600cc', '#ff66ff', '#ffff00', '#000000', '#666699']
 #        [Yellow/Orange, Blue, Lime Green, Red, Dark Gray,
 #         Purple, Pink, Yellow, Black, Gray]
 
-# Colors should be based off player's main
 
 
-def SavingFormat(choice: int) -> None:
+FORMAT = 0  # 0 is an iteractable HTML
+            # 1 is a jpeg
+
+def SavingFormat(choice: int, season: int) -> None:
     """Changes a global variable so all graphs are put into HTML
-    or into a png file"""
+    or into a jpeg file"""
     global FORMAT
     if choice == 1: 
-        FORMAT = 0  # HTML Version
+        FORMAT = 0
     else:
-        FORMAT = 1  # png Version
-        if not os.path.exists("Plots"):
-            os.mkdir("Plots")
+        FORMAT = 1
+        if not os.path.exists(f'Data/Season{season}/PlotsWebsite'):
+            os.mkdir(f'Data/Season{season}/PlotsWebsite')
+        if not os.path.exists(f'Data/Season{season}/PlotsStaff'):
+            os.mkdir(f'Data/Season{season}/PlotsStaff')
 
 
 def getPlayerMains() -> {'Main': 'Tag'}:
     """This will return a ditionary with the Character being the key and
     the values will be a set of players."""
-    Mains = 'Records/PlayerMains.csv'
+    Mains = 'Data/PlayerMains.csv'
     Mains = pd.read_csv(Mains, encoding='utf-8-sig')    # Not sure why ISO encoding doesn't work    
     AllPlayerMains = dict()
     for index, row in Mains.iterrows():
@@ -60,14 +66,14 @@ def getPlayerMains() -> {'Main': 'Tag'}:
             if row['Main'] in CHARACTERS:
                 AllPlayerMains[row['Main']] = {row['SmashTag']}
             else:
-                AllPlayerMains['Other/Unknown'] = {row['SmashTag']}
+                AllPlayerMains['Other'] = {row['SmashTag']}
     return AllPlayerMains
 
 
 def getMainsOfPlayer() -> {'Tag': 'Main'}:
     """We will return a dictionary with the key being the Tag and
     the value will be their main character."""
-    Mains = 'Records/PlayerMains.csv'
+    Mains = 'Data/PlayerMains.csv'
     #Mains = pd.read_csv(Mains, encoding='utf-8-sig')
     Mains = pd.read_csv(Mains, encoding='utf-8-sig')    # Not sure why ISO encoding doesn't work    
     PlayerMains = dict()
@@ -75,120 +81,30 @@ def getMainsOfPlayer() -> {'Tag': 'Main'}:
         if row['Main'] in CHARACTERS:
             PlayerMains[row['SmashTag']] = row['Main']
         else:
-            PlayerMains[row['SmashTag']] = 'Other/Unknown'
+            PlayerMains[row['SmashTag']] = 'Other'
     return PlayerMains
     
 
-def getCoastData(season: int, week: int) -> 'df':
-    """Get the total number of combined, West Coast, and East Coast entrants
-    for each week. The last column is for people we aren't sure of.
-    [Total, WC, EC, NA]"""
-    Features = f'Records/S{season}W{week}Features.csv'
-    Features = pd.read_csv(Features, encoding = "ISO-8859-1")
-    Placements = f'Records/S{season}W{week}Placements.csv'
-    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
-    coasts= dict()
-    for index, row in Features.iterrows():
-        if row['Coast'] == "WC":
-            region = 1
-        elif row['Coast'] == "EC":
-            region = 2
-        else:
-            region = 3
-        coasts[row['SmasherID']] = region
 
-    count = {i: [0, 0, 0, 0] for i in range(1, week + 1)}
-    for _, row in Placements.iterrows():
-        region = coasts[row['SmasherID']]
-        placed = [row[f'PWeek{i}'] for i in range(1, week + 1)]
-        attended = [i > -2 for i in placed]
-        for index, i in enumerate(attended):
-            count[index + 1][0] += i        # Update Tournament Entrant Count
-            count[index + 1][region] += i   # Update Entrant Count for their region
-    df = pd.DataFrame.from_dict(count, orient ='index')
-    column_names = {0: 'Total',
-                    1: 'West Coast',
-                    2: 'East Coast',
-                    3: 'NA'}
-    df = df.rename(columns = column_names)
-    return df[['Total', 'West Coast', 'East Coast']]
-
-
-def getBracketNewData(season, week) -> 'df':
-    """Get the total number of attendees, number of players in bracket, and
-    number of unique players for each tournament in the season.
-    [TotalnumAttendees, oldPlayers, newPlayers, numBracket] """
-    Placements = f'Records/S{season}W{week}Placements.csv'
-    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
-    players = {row['SmasherID'] for index, row in Placements.iterrows()}
-    # Used to determine new players. Change this later for season 2
-
-    count = {i: [0, 0, 0, 0] for i in range(1, week + 1)}
-    # Key is the Week number
-    # Values are [TotalnumAttendees, oldPlayers, newPlayers, numBracket]
-    t= 0
-    for _, row in Placements.iterrows():
-        placed = [row[f'PWeek{i}'] for i in range(1, week + 1)]
-        attended = [i > -2 for i in placed]     # Which tournaments did they enter
-        madeBracket = [i > -1 for i in placed]  # Which tournaments did they make bracket
-
-        for i in range(1, week + 1):
-            count[i][0] += attended[i - 1]
-            count[i][3] += madeBracket[i - 1]            
-            if row['SmasherID'] in players:     # New Player
-                if attended[i - 1] == 1:
-                    count[i][2] += 1
-                    players.remove(row['SmasherID'])
-            else:                               # Returning Player
-                if attended[i - 1] == 1:
-                    count[i][1] += 1
-                
-    df = pd.DataFrame.from_dict(count, orient ='index')
-    column_names = {0: 'Total',
-                    1: 'Returning Players',
-                    2: 'New Players',
-                    3: 'Players In Bracket'}
-    return df.rename(columns = column_names)    
-
-
-def SetupRank(season: int, week: int) -> None:
+def RankCharacter(season: int, week: int) -> None:
     """It plots every player's weekly rank up to that week for every week.
     Plots are separated by a player's main"""
-    RankRecords = f'Records/S{season}W{week}RankRecords.csv'
+    RankRecords = f'Data/Season{season}/Records/S{season}W{week}RankRecords.csv'
     RankRecords = pd.read_csv(RankRecords, encoding = 'ISO-8859-1')
     RankRecords = RankRecords.sort_values(f'RWeek{week}')
-
     AllPlayerMains = getPlayerMains()
     
     for character, v in sorted(CHARACTERS.items(), key = lambda item: item[1]):
         if character in AllPlayerMains:
-            CreateCharacterRankGraph(RankRecords, AllPlayerMains[character],
-                            COLORS[v], character, season, week)
-            
+            CharacterRankGraph(RankRecords, AllPlayerMains[character],
+                               COLORS[v], character, season, week)
 
-def SetupPoint(season: int, week: int) -> None:
-    """It plots the number of Points every player for every week. Plots are
-    separated by a player's main."""
-    PastPoints = f'Records/S{season}W{week}PastPoints.csv'
-    PastPoints = pd.read_csv(PastPoints, encoding = "ISO-8859-1")
-    PastPoints = PastPoints.sort_values(f'BWeek{week}', ascending = False)
-
-    AllPlayerMains = getPlayerMains()
-    maxPoints = max(PastPoints[f'BWeek{week}']) + 30
-    
-    for character, v in sorted(CHARACTERS.items(), key = lambda item: item[1]):
-        if character in AllPlayerMains:
-            CreateCharacterPointsGraph(PastPoints, AllPlayerMains[character],
-                                       COLORS[v], character, season, week, maxPoints)
-
-
-def CreateCharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
-                    character: str, season : int, week: int) -> None:
+def CharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
+                       character: str, season : int, week: int) -> None:
     """It plots the ranks of all the players of one character on
     a week to week basis."""
-    x_range = [i for i in range(1, week + 1)]
-
     fig = go.Figure()
+    x_range = [i for i in range(1, week + 1)]
     for index, row in RankRecords.iterrows():
         playerTag = row[1]
         if playerTag in players:    # If player is an X main
@@ -196,8 +112,7 @@ def CreateCharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
             fig.add_trace(go.Scatter(x = x_range, y = playerRank,
                                      name = playerTag + " Rank " + str(int(playerRank[-1])),
                                      line = dict(color = color, width = 3)))
-
-    print()
+            
     fig.update_layout(title = f'Season {season} {character} Ranks')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
@@ -209,29 +124,25 @@ def CreateCharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
     fig.update_layout(font = dict(size= 23))    
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}Rank{character}.png")
+    GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}Rank{character}.jpeg')
 
 
-def CreateAllPlayersRankGraph(season : int, week: int) -> None:
+def RankTop10Graph(season: int, week: int) -> None:
     """It plots all players weekly rank"""
-    RankRecords = f'Records/S{season}W{week}RankRecords.csv'
+    RankRecords = f'Data/Season{season}/Records/S{season}W{week}RankRecords.csv'
     RankRecords = pd.read_csv(RankRecords, encoding = "ISO-8859-1")
     RankRecords = RankRecords.sort_values(f'RWeek{week}')
 
-    x_range = [i for i in range(1, week + 1)]
-    PlayerMains = getMainsOfPlayer()
-
     lowestRank = 0
+    PlayerMains = getMainsOfPlayer()
+    x_range = [i for i in range(1, week + 1)]
 
     fig = go.Figure()
     count = 1
     for index, row in RankRecords.iterrows():
         playerTag = row[1]
         color = '#666699'
-        if playerTag in PlayerMains:    # Find the color for the person's main
+        if playerTag in PlayerMains:    # Find the color for the player's main
             color = COLORS[CHARACTERS[PlayerMains[playerTag]]]
         playerRank = [float(row[f'RWeek{i}']) for i in range(1, week + 1)]
         lowestRank = max(lowestRank, max(playerRank)) # Max because lowest rank means highest number
@@ -242,7 +153,6 @@ def CreateAllPlayersRankGraph(season : int, week: int) -> None:
             break
         count += 1
 
-    print()
     fig.update_layout(title = f'Season {season} Ranks')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
@@ -255,19 +165,31 @@ def CreateAllPlayersRankGraph(season : int, week: int) -> None:
     fig.update_layout(font = dict(size= 23))    
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}RankAllPlayers.png")
+    GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}RankTop10.jpeg')
+
+
+def PointsCharacter(season: int, week: int) -> None:
+    """It plots the number of Points every player for every week. Plots are
+    separated by a player's main."""
+    PastPoints = f'Data/Season{season}/Records/S{season}W{week}PastPoints.csv'
+    PastPoints = pd.read_csv(PastPoints, encoding = "ISO-8859-1")
+    PastPoints = PastPoints.sort_values(f'BWeek{week}', ascending = False)
+    AllPlayerMains = getPlayerMains()
+    maxPoints = max(PastPoints[f'BWeek{week}']) + 30
+    
+    for character, v in sorted(CHARACTERS.items(), key = lambda item: item[1]):
+        if character in AllPlayerMains:
+            CharacterPointsGraph(PastPoints, AllPlayerMains[character],
+                                 COLORS[v], character, season, week, maxPoints)
 
     
-def CreateCharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
-                      character:str, season: int, week: int, maxPoints:int) -> None:
+def CharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
+                         character:str, season: int, week: int, maxPoints:int) -> None:
     """It plots the cummulative points of all players of one character
-    main on a week to week basis."""
+    on a week to week basis."""
+    fig = go.Figure()
     x_range = [i for i in range(1, week + 1)]
 
-    fig = go.Figure()
     for _, row in PastPoints.iterrows():
         playerTag = row[1]
         if playerTag in players:    # If player is an X main
@@ -276,7 +198,7 @@ def CreateCharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
             fig.add_trace(go.Scatter(x = x_range, y = playerPoints,
                                      name = playerTag + " Bills " + str(int(playerPoints[-1])),
                                      line = dict(color = color, width = 3)))
-    print()
+    
     fig.update_layout(title = f'Season {season} {character} BankRoll Bills')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
@@ -288,24 +210,21 @@ def CreateCharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
     fig.update_layout(font = dict(size= 23))    
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}Points{character}.png")
+    GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}Points{character}.jpeg')
 
 
-def CreateAllPlayersPointsGraph(season: int, week: int) -> None:
+def PointsTop10Graph(season: int, week: int) -> None:
     """It plots a player's points through out the season. The color is
     related to their main."""
-    PastPoints = f'Records/S{season}W{week}PastPoints.csv'
+    PastPoints = f'Data/Season{season}/Records/S{season}W{week}PastPoints.csv'
     PastPoints = pd.read_csv(PastPoints, encoding = "ISO-8859-1")
     PastPoints = PastPoints.sort_values(f'BWeek{week}', ascending = False)
 
-    x_range = [i for i in range(1, week + 1)]
-    PlayerMains = getMainsOfPlayer()
-
     count = 1
     fig = go.Figure()
+    PlayerMains = getMainsOfPlayer()
+    x_range = [i for i in range(1, week + 1)]
+
     for _, row in PastPoints.iterrows():
         playerTag = row[1]
         playerPoints = [row[f'BWeek{i}'] for i in range(1, week + 1)]
@@ -315,91 +234,27 @@ def CreateAllPlayersPointsGraph(season: int, week: int) -> None:
             color = COLORS[CHARACTERS[PlayerMains[playerTag]]]
         fig.add_trace(go.Scatter(x = x_range, y = playerPoints,
                                  name = str(playerTag) + " Bills " + str(int(playerPoints[-1])),
-                         line = dict(color = color, width = 3)))
+                                 line = dict(color = color, width = 3)))
         if count >= 10:
             break
         count += 1
 
-    print()
     fig.update_layout(title = f'Season {season} BankRoll Bills')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
                                    ticktext = [f'Week {i}' for i in range(1, week + 1)]))
-    
     fig.update_layout(yaxis_title = 'Points')
 
     fig.update_layout(font = dict(size= 23))    
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}PointsAllPlayers.png")
-
-
-def CreateEntrantsCoastGraph(season: int, week: int) -> None:
-    """Plot a bar graph of the total number of attendees, number of
-    West Coast and number of East Coast attendees for each week"""
-    Entrants = getCoastData(season, week)
-
-    fig = go.Figure()
-    fig = px.bar(Entrants, barmode='group')
-
-    print()
-    fig.update_layout(title = f'Season {season} Entrant For Coasts')
-    
-    fig.update_layout(xaxis_title = '')
-    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
-                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
-    fig.update_layout(yaxis_title = 'Entrants')
-
-    max_y= max(Entrants['Total'])
-    yticks = [5*i for i in range(5 + math.floor(max_y/5))]      # Ticks at every 5
-    ytickstext = [5*i if (i % 2) == 0 else ' ' for i in range(5 + math.floor(max_y/5))]    # Text at every 10
-    fig.update_layout(yaxis = dict(tickvals = yticks, ticktext = ytickstext))
-
-    fig.update_layout(font = dict(size= 23))    
-    fig.update_layout(showlegend = True)
-    fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}EntrantsCoasts.png")
-
-
-def CreateEntrantBracketNewGraph(season: int, week: int) -> None:
-    """Plots a bar graph of the total number of attendees, players in bracket,
-    and new players that season."""
-    Entrants = getBracketNewData(season, week)
-    fig = px.bar(Entrants, barmode='group',
-                 color_discrete_sequence = px.colors.qualitative.Dark24)
-
-    fig.update_layout(title = f'Season {season} Entrants')
-    
-    fig.update_layout(xaxis_title = '')
-    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
-                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
-    fig.update_layout(yaxis_title = 'Entrants')
-
-    print()
-    max_y= max(Entrants['Total'])
-    yticks = [5*i for i in range(5 + math.floor(max_y/5))]      # Ticks at every 5
-    ytickstext = [5*i if (i % 2) == 0 else ' ' for i in range(5 + math.floor(max_y/5))]    # Text at every 10
-    fig.update_layout(yaxis = dict(tickvals = yticks, ticktext = ytickstext))
-
-    fig.update_layout(font = dict(size= 23))    
-    fig.update_layout(showlegend = True)
-    fig.update_layout(legend = dict(font_size = 24))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}TMTDetails.png")
+    GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}PointsTop10.jpeg')
 
 
 def getPointsCoast(season: int, week: int) -> [int, int]:
     """It gets the total amount of points for each coast and
     number of attendees for each coast"""
-    Features = f'Records/S{season}W{week}Features.csv'
+    Features = f'Data/Season{season}/Records/S{season}W{week}Features.csv'
     Features = pd.read_csv(Features, encoding = "ISO-8859-1")
     Points = [0, 0] # [WC, EC]
     for index, row in Features.iterrows():
@@ -424,10 +279,8 @@ def CombinedPointsCoast(season: int, week: int) -> None:
 
     fig.add_trace(go.Bar(x = [0.5], y= [Points[1]],
                          name = 'East Coast', marker_color = '#d9534f'))
-    print()
     
     fig.update_layout(title = f'Season {season} Coast Total Points')
-    
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [""], ticktext = [""]))
     
@@ -437,10 +290,7 @@ def CombinedPointsCoast(season: int, week: int) -> None:
     fig.update_layout(font = dict(size= 23))    
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 30))
-    if FORMAT == 0:
-        fig.show()
-    else:
-        fig.write_image(f"Plots/S{season}W{week}TotalPointsCoast.png")
+    GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}CoastTotalPoints.jpeg')
 
 
 
@@ -451,38 +301,66 @@ def main():
     #save_graphs = UI.saveGraph()
     #season = UI.UserSeason()
     #week = UI.UserWeek()
-    choice = 8
-    save_graphs = 1
+    choice = 9
+    save_graphs = 2
     season = 1
-    week = 4
+    week = 6
     
-    SavingFormat(save_graphs)
+    SavingFormat(save_graphs, season)
     
     if choice == 1:
-        SetupRank(season, week)
+        # Plots every rank based off character
+        RankCharacter(season, week)
+        #SetupRank(season, week)
+        
     elif choice == 2:
-        CreateAllPlayersRankGraph(season, week)
+        # Plots the rank of the top 10
+        RankTop10Graph(season, week)
+        
     elif choice == 3:
-        SetupPoint(season, week)
+        # Plots points for every character
+        PointsCharacter(season, week)
+        
     elif choice == 4:
-        CreateAllPlayersPointsGraph(season, week)
+        # Plots the points of the top 10
+        PointsTop10Graph(season, week)
+
     elif choice == 5:
-        CreateEntrantsCoastGraph(season, week)
-    elif choice == 6:
-        CreateEntrantBracketNewGraph(season, week)
-    elif choice == 7:
-        SetupRank(season, week)     # Website Graphs
-        CreateAllPlayersRankGraph(season, week)
-        SetupPoint(season, week)
-        CreateAllPlayersPointsGraph(season, week)
-    elif choice == 8:
-        CreateEntrantsCoastGraph(season, week)      # TMT details
-        CreateEntrantBracketNewGraph(season, week)
-    elif choice == 9:
-        # Website
         # Points for each Coast
         CombinedPointsCoast(season, week)
+        
+    elif choice == 6:
+        # Plots Total Entrants, WC Entrants, and EC Entrants
+        GS.CoastEntrantsGraph(season, week, FORMAT)
+        
+    elif choice == 7:
+        # Plots Total Entrants, Returning Players, and New Players
+        GS.NewPlayersGraph(season, week, FORMAT)
 
+    elif choice == 8:
+        # Plots how many TMTs the average attendee entered for that season
+        #GS.HistogramEntrants(season, week, FORMAT)
+        pass
+
+    elif choice == 9:
+        # Plots Revenue for TMT
+        #GS.Revenue(season, week, FORMAT)
+        pass
+        
+    elif choice == 10:
+        # All Website Plots
+        RankCharacter(season, week)
+        RankTop10Graph(season, week)
+        PointsCharacter(season, week)
+        PointsTop10Graph(season, week)
+        CombinedPointsCoast(season, week)
+        
+    elif choice == 11:
+        # Plots for Staff
+        GS.CoastEntrantsGraph(season, week, FORMAT)
+        GS.NewPlayersGraph(season, week, FORMAT)
+        #GS.HistogramEntrants(season, week, FORMAT)
+        
     print("End")
 
 main()

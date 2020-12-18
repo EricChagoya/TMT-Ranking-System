@@ -1,3 +1,4 @@
+import os
 import requests
 #pip install requests
 
@@ -10,6 +11,17 @@ import requests
 
 # FTSTimSin's API Key
 HEADERS = {'Authorization': 'Bearer bbc80775130117d4ecb1b0eedc00db7d'}
+
+def CreateDirectories(season: int, week: int) -> None:
+    """It will create a directory for a new season"""
+    if week == 1:
+        if not os.path.exists('Data'):
+            os.mkdir('Data')
+        if not os.path.exists(f'Data/Season{season}'):
+            os.mkdir(f'Data/Season{season}')
+            os.mkdir(f'Data/Season{season}/WeeklyLadderBracket')
+
+
 
 def run_query(query: str, variables: {str, int or str}) -> dict:
     """Sends the request to the API given the query and variables. Returns the
@@ -216,8 +228,11 @@ if __name__ == '__main__':
     season = input('Please input the season number: ')
     week = input('Please input the week number: ')
 
-    ladderLink = f'S{season}W{week}WeeklyScoresLadder.csv'
-    bracketLink = f'S{season}W{week}WeeklyScoresBracket.csv'
+    CreateDirectories(int(season), int(week))
+    ladderLink = f'Data/Season{season}/WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
+    bracketLink = f'Data/Season{season}/WeeklyLadderBracket/S{season}W{week}WeeklyScoresBracket.csv'
+
+    
 
     slug = input('Please input the smash.gg tournament slug: ')
     print()
@@ -251,7 +266,7 @@ if __name__ == '__main__':
     print()
     ladderFile = open(ladderLink, 'w')
     ladderFile.write('SmasherID,SmashTag,Wins,Losses,'
-                     'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement, Coast\n')
+                     'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement,Coast\n')
     for eventName, eventId in info.items():
         if eventName in {'East', 'West'}:
             pageCounts = get_page_counts(eventId)

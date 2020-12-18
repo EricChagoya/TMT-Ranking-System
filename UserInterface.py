@@ -37,7 +37,7 @@ def PrintRankWelcomeMessage() -> None:
     print("The Architect here! OmegaLUL\n")
     print("Which option would you like? (Press the number you want)")
     print("1. Update the Ladder Rankings")
-    print("2. Update the Bracket Rankings")
+    print("2. Update the Ladder and Bracket Rankings")
 
 
 def rankChoice() -> int:
@@ -59,14 +59,15 @@ def rankChoice() -> int:
 def PrintGraphWelcomeMessage() -> None:
     print("Hello, it's me")
     print("I was wondering if you wanted to create some graphs:")
-    print("1. Ranks for each character Line Graph")
-    print("2. Ranks for all entrants Line Graph")
-    print("3. Points for each character Line Graph")
-    print("4. Points for all entrants Line Graph")
-    print("5. Coast Entrants Bar Graph")
-    print("6. Number of Entrants and New Players Bar Graph")
-    print("7. All Website Graphs")
-    print("8. All TMT Details graphs")
+    print("1. Ranks for each character")
+    print("2. Top 10 Ranked Players")
+    print("3. Points for each character")
+    print("4. Points of the Top 10 Players")
+    print("5. Combined Points for both Coasts")
+    print("6. Coast Entrants Bar Graph")
+    print("7. Number of New Graph")
+    print("8. All Website Graphs")
+    print("9. All TMT Staff Graphs")
     print()
     
 
@@ -79,10 +80,10 @@ def graphChoice() -> int:
             option = int(option)
         except:
             pass
-        if option in range(1, 9):
+        if option in range(1, 10):
             return option
         else:
-            print("Choose an integer from 1 to 8\n")
+            print("Choose an integer from 1 to 9\n")
 
 
 def saveGraph() -> int:

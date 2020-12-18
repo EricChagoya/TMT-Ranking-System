@@ -63,6 +63,6 @@ W(n) being which week is it
 ## Manualy Update Files
 ##### PlayerMains.csv
 - A player's main. No dual main. Most played character
-- This will be updates manually
-- Column Names: SmashTag, Main
+- This will be updated manually
+- Column Names: SmasherID, SmashTag, Main
   

@@ -7,17 +7,17 @@ import RankingFormula as RF
 
 
 
-def CreateDirectories() -> None:
+def CreateDirectories(season: int) -> None:
     """If these directories don't exists, it will create them"""
-    if not os.path.exists('Debug'):
-        os.mkdir('Debug')
-    if not os.path.exists('Records'):
-        os.mkdir('Records')
-    if not os.path.exists('Website'):
-        os.mkdir('Website')
-    if not os.path.exists('WeeklyLadderBracket'):
-        os.mkdir('WeeklyLadderBracket')
-        print("Put ladder and bracket files into WeeklyLadderBracket Directory")
+    if not os.path.exists(f'Data/Season{season}/Debug'):
+        os.mkdir(f'Data/Season{season}/Debug')
+    if not os.path.exists(f'Data/Season{season}/Records'):
+        os.mkdir(f'Data/Season{season}/Records')
+    if not os.path.exists(f'Data/Season{season}/Website'):
+        os.mkdir(f'Data/Season{season}/Website')
+    if not os.path.exists(f'Data/Season{season}/WeeklyLadderBracket'):
+        os.mkdir(f'Data/Season{season}/WeeklyLadderBracket')
+
 
 
 def CreateWeeklyResults(WeeklyScoresLadderfile: str, WeeklyScoresBracketfile: str,
@@ -311,39 +311,43 @@ def main():
     #season = 1
     #week = 3
 
-    CreateDirectories()
+    CreateDirectories(season)
 
     # Input files
-    WSL = f'WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
-    WSB = f'WeeklyLadderBracket/S{season}W{week}WeeklyScoresBracket.csv'
+    WSL = f'Data/Season{season}/WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
+    WSB = f'Data/Season{season}/WeeklyLadderBracket/S{season}W{week}WeeklyScoresBracket.csv'
 
-    WeeklyResults= f'Debug/S{season}W{week}WeeklyResults.csv'    # It combines the results of Ladders and Bracket
-    oldFeatures = f'Records/S{season}W{week - 1}Features.csv'
-    Features = f'Records/S{season}W{week}Features.csv'
+    # It combines the results of Ladders and Bracket
+    WeeklyResults= f'Data/Season{season}/Debug/S{season}W{week}WeeklyResults.csv'
+    oldFeatures = f'Data/Season{season}/Records/S{season}W{week - 1}Features.csv'
+    Features = f'Data/Season{season}/Records/S{season}W{week}Features.csv'
 
-    oldPlacements = f'Records/S{season}W{week - 1}Placements.csv'
-    Placements = f'Records/S{season}W{week}Placements.csv'
+    oldPlacements = f'Data/Season{season}/Records/S{season}W{week - 1}Placements.csv'
+    Placements = f'Data/Season{season}/Records/S{season}W{week}Placements.csv'
 
-    WeeklyRankLadder = f'Debug/S{season}W{week}WeeklyRankLadder.csv'  # Points for that week's ladder
-    WeeklyRank = f'Debug/S{season}W{week}WeeklyRank.csv'
+    # Points for that week's ladder
+    WeeklyRankLadder = f'Data/Season{season}/Debug/S{season}W{week}WeeklyRankLadder.csv'
+    WeeklyRank = f'Data/Season{season}/Debug/S{season}W{week}WeeklyRank.csv'
     
-    oldRankRecords = f'Records/S{season}W{week - 1}RankRecords.csv'
-    RankRecords = f'Records/S{season}W{week}RankRecords.csv'
+    oldRankRecords = f'Data/Season{season}/Records/S{season}W{week - 1}RankRecords.csv'
+    RankRecords = f'Data/Season{season}/Records/S{season}W{week}RankRecords.csv'
 
-    oldPastPoints = f'Records/S{season}W{week - 1}PastPoints.csv'
-    PastPoints = f'Records/S{season}W{week}PastPoints.csv'
+    oldPastPoints = f'Data/Season{season}/Records/S{season}W{week - 1}PastPoints.csv'
+    PastPoints = f'Data/Season{season}/Records/S{season}W{week}PastPoints.csv'
 
     # These three will go on the website
-    WebWLR = f'Website/S{season}W{week}WebsiteWeeklyLadderRank.csv'
-    WebWR = f'Website/S{season}W{week}WebsiteWeeklyRank.csv'    # Ladders and Bracket Ranks
-    WebTR = f'Website/S{season}W{week}WebsiteTotalRanks.csv'    # Rank for the entire season
+    WebWLR = f'Data/Season{season}/Website/S{season}W{week}WebsiteWeeklyLadderRank.csv'
+    # Ladders and Bracket Ranks
+    WebWR = f'Data/Season{season}/Website/S{season}W{week}WebsiteWeeklyRank.csv'
+    # Rank for the entire season
+    WebTR = f'Data/Season{season}/Website/S{season}W{week}WebsiteTotalRanks.csv'
+
 
     if choice == 1:
         RankLadder(WSL, WeeklyRankLadder)
         WebsiteWeeklyRank(WeeklyRankLadder, WebWLR)
     else:
         CreateWeeklyResults(WSL, WSB, WeeklyResults, week)
-        
         
         UpdateTiers(WeeklyResults, oldFeatures, Features, week)
         UpdatePlacements(WeeklyResults, oldPlacements, Placements, week)
@@ -356,6 +360,7 @@ def main():
         
         WebsiteWeeklyRank(WeeklyRank, WebWR)
         WebsiteTotalRank(Features, RankRecords, Placements, WebTR)
+    
         
 
 main()
