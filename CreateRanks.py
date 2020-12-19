@@ -249,10 +249,11 @@ def WebsiteWeeklyRank(WeeklyRankfile: str, WebWeeklyRankfile: str) -> None:
     so it is more presentable for the website. This is used by both the weekly
     ladder and bracket rank."""
     WeeklyRank = pd.read_csv(WeeklyRankfile, encoding = "ISO-8859-1")
-    WeeklyRank = WeeklyRank.rename(columns={'Points': 'BankRoll Bills'})
+    WeeklyRank = WeeklyRank.rename(columns={'Points': 'Bankroll Bills'})
     WeeklyRank['Win%'] = 100*WeeklyRank['Wins'] / (WeeklyRank['Wins'] + WeeklyRank['Losses'])
-    WeeklyRank = WeeklyRank[['Rank', 'SmashTag', 'Wins', 'Losses',
-                             'Win%', 'BankRoll Bills']]
+    WeeklyRank = WeeklyRank.rename(columns={'SmashTag': 'Tag'})
+    WeeklyRank = WeeklyRank[['Rank', 'Tag', 'Wins', 'Losses',
+                             'Win%', 'Bankroll Bills']]
     
     WeeklyRank = WeeklyRank.sort_values(by='Rank')
     WeeklyRank = WeeklyRank.round(2)
@@ -290,12 +291,14 @@ def WebsiteTotalRank(Featuresfile: str, RankRecordsfile: str,
     Features['NumTMTEntered'] = Placements['NumTMTEntered']
     Features['NumInBracket'] = Placements['NumInBracket']
         
-    Features = Features.rename(columns={'Points': 'BankRoll Bills'})
+    Features = Features.rename(columns={'Points': 'Bankroll Bills'})
+    Features = Features.rename(columns={'ChangeInRank': 'RankChange'})
+    Features = Features.rename(columns={'SmashTag': 'Tag'})
     Features['Win%'] = 100*Features['Wins'] / (Features['Wins'] + Features['Losses'])
-##    Features = Features[['Rank', 'ChangeInRank', 'SmashTag', 'Coast', 'Wins', 'Losses',
-##                         'Win%', 'NumTMTEntered', 'NumInBracket', 'BankRoll Bills']]
-    Features = Features[['Rank', 'ChangeInRank', 'SmashTag', 'Wins',
-                         'Losses', 'Win%', 'BankRoll Bills']]
+##    Features = Features[['Rank', 'RankChange', 'Tag', 'Coast', 'Wins', 'Losses',
+##                         'Win%', 'NumTMTEntered', 'NumInBracket', 'Bankroll Bills']]
+    Features = Features[['Rank', 'RankChange', 'Tag', 'Wins',
+                         'Losses', 'Win%', 'Bankroll Bills']]
     
     Features = Features.sort_values(by='Rank')
     Features = Features.round(2)

@@ -34,6 +34,11 @@
 ##### graphs.py
 - Makes graphs about Ranks, Points, and Placements for the entire season
 
+
+#### graphsStaff.py
+- Graphs only for the TMT staff
+- Plots number of entrants
+
  
  [To Do List and Future Feature Ideas](https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing)
  
@@ -42,6 +47,8 @@
  [People's Mains](https://drive.google.com/file/d/1sordRvRwXjrGbftJNfb60wXZ1dC3yUD2/view?usp=sharing)
  
  [Graphs](https://docs.google.com/document/d/1mZGRhtXdH3q-9BXAvBiqj9glfS-gsg1wG1LHA4ce_LA/edit?usp=sharing)
+
+ [Getting People's Tiers](https://docs.google.com/document/d/1I6oSWfsJBWJcFOFvQEz96dwvCBstLog_ZrL8pxZSr4I/edit?usp=sharing)
  
  [Ranking Website](https://ucimelee.wixsite.com/tmtmelee)
  :shipit:

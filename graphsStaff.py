@@ -19,6 +19,69 @@ def presentFile(fig: 'Plotly', FORMAT: int, location:str) -> None:
         fig.write_image(location)
 
 
+# 6
+def getCoastData(season: int, week: int) -> 'df':
+    """Get the total number of combined, West Coast, and East Coast entrants
+    for each week. The last column is for people we aren't sure of.
+    [Total, WC, EC, NA]"""
+    Features = f'Data/Season{season}/Records/S{season}W{week}Features.csv'
+    Features = pd.read_csv(Features, encoding = "ISO-8859-1")
+    Placements = f'Data/Season{season}/Records/S{season}W{week}Placements.csv'
+    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
+    coasts= dict()
+    for index, row in Features.iterrows():
+        if row['Coast'] == "WC":
+            region = 1
+        elif row['Coast'] == "EC":
+            region = 2
+        else:
+            region = 3
+        coasts[row['SmasherID']] = region
+
+    count = {i: [0, 0, 0, 0] for i in range(1, week + 1)}
+    for _, row in Placements.iterrows():
+        region = coasts[row['SmasherID']]
+        placed = [row[f'PWeek{i}'] for i in range(1, week + 1)]
+        attended = [i > -2 for i in placed]
+        for index, i in enumerate(attended):
+            count[index + 1][0] += i        # Update Tournament Entrant Count
+            count[index + 1][region] += i   # Update Entrant Count for their region
+    df = pd.DataFrame.from_dict(count, orient ='index')
+    column_names = {0: 'Total',
+                    1: 'West Coast',
+                    2: 'East Coast',
+                    3: 'NA'}
+    df = df.rename(columns = column_names)
+    return df[['Total', 'West Coast', 'East Coast']]
+
+
+def CoastEntrantsGraph(season: int, week: int, FORMAT:int) -> None:
+    """Plot a bar graph of the total number of attendees, number of
+    West Coast and number of East Coast attendees for each week"""
+    Entrants = getCoastData(season, week)
+
+    fig = go.Figure()
+    fig = px.bar(Entrants, barmode='group')
+
+    fig.update_layout(title = f'Season {season} Entrant For Coasts')
+    
+    fig.update_layout(xaxis_title = '')
+    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
+                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
+    fig.update_layout(yaxis_title = 'Entrants')
+
+    max_y= max(Entrants['Total'])
+    yticks = [5*i for i in range(5 + math.floor(max_y/5))]      # Ticks at every 5
+    ytickstext = [5*i if (i % 2) == 0 else ' ' for i in range(5 + math.floor(max_y/5))]    # Text at every 10
+    fig.update_layout(yaxis = dict(tickvals = yticks, ticktext = ytickstext))
+
+    fig.update_layout(font = dict(size= 23))    
+    fig.update_layout(showlegend = True)
+    fig.update_layout(legend = dict(font_size = 24))
+    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}EntrantsCoasts.jpeg")
+
+
+# 7
 def getNewPlayerData(season, week) -> 'df':
     """Get the total number of attendees, number of returning players, and
     number of unique players for each tournament.
@@ -84,71 +147,6 @@ def NewPlayersGraph(season: int, week: int, FORMAT: int) -> None:
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 30))
     presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}TMTDetails.jpeg")
-
-
-def getCoastData(season: int, week: int) -> 'df':
-    """Get the total number of combined, West Coast, and East Coast entrants
-    for each week. The last column is for people we aren't sure of.
-    [Total, WC, EC, NA]"""
-    Features = f'Data/Season{season}/Records/S{season}W{week}Features.csv'
-    Features = pd.read_csv(Features, encoding = "ISO-8859-1")
-    Placements = f'Data/Season{season}/Records/S{season}W{week}Placements.csv'
-    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
-    coasts= dict()
-    for index, row in Features.iterrows():
-        if row['Coast'] == "WC":
-            region = 1
-        elif row['Coast'] == "EC":
-            region = 2
-        else:
-            region = 3
-        coasts[row['SmasherID']] = region
-
-    count = {i: [0, 0, 0, 0] for i in range(1, week + 1)}
-    for _, row in Placements.iterrows():
-        region = coasts[row['SmasherID']]
-        placed = [row[f'PWeek{i}'] for i in range(1, week + 1)]
-        attended = [i > -2 for i in placed]
-        for index, i in enumerate(attended):
-            count[index + 1][0] += i        # Update Tournament Entrant Count
-            count[index + 1][region] += i   # Update Entrant Count for their region
-    df = pd.DataFrame.from_dict(count, orient ='index')
-    column_names = {0: 'Total',
-                    1: 'West Coast',
-                    2: 'East Coast',
-                    3: 'NA'}
-    df = df.rename(columns = column_names)
-    return df[['Total', 'West Coast', 'East Coast']]
-
-
-def CoastEntrantsGraph(season: int, week: int, FORMAT:int) -> None:
-    """Plot a bar graph of the total number of attendees, number of
-    West Coast and number of East Coast attendees for each week"""
-    Entrants = getCoastData(season, week)
-
-    fig = go.Figure()
-    fig = px.bar(Entrants, barmode='group')
-
-    fig.update_layout(title = f'Season {season} Entrant For Coasts')
-    
-    fig.update_layout(xaxis_title = '')
-    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
-                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
-    fig.update_layout(yaxis_title = 'Entrants')
-
-    max_y= max(Entrants['Total'])
-    yticks = [5*i for i in range(5 + math.floor(max_y/5))]      # Ticks at every 5
-    ytickstext = [5*i if (i % 2) == 0 else ' ' for i in range(5 + math.floor(max_y/5))]    # Text at every 10
-    fig.update_layout(yaxis = dict(tickvals = yticks, ticktext = ytickstext))
-
-    fig.update_layout(font = dict(size= 23))    
-    fig.update_layout(showlegend = True)
-    fig.update_layout(legend = dict(font_size = 24))
-    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}EntrantsCoasts.jpeg")
-
-
-
-
 
 
 
