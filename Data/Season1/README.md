@@ -6,6 +6,13 @@
   - WeeklyRankLadder.csv
   - WeeklyResults.csv
 
+#### PlotsStaff
+- These plots are just for the TMT Staff
+- Shouldn't be public
+
+#### PlotsWebsite
+- These plots will go on the website
+
 #### Records
 - Only needs last week's files to run
 - Files
@@ -13,7 +20,6 @@
   - Placements.csv
   - RankRecords.csv
   - PastPoints.csv
-  - PlayerMains.csv
 
 #### Website
 - The most update files go on the website
