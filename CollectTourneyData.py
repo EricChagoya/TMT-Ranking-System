@@ -59,15 +59,16 @@ def get_event_info(slug: str) -> {str: int}:
     for event in result['data']['tournament']['events']:
         if 'East' in event['name']:
             info['East'] = event['id']
-            print('East Coast Ladder Found!:', event['name'])
+            #print('East Coast Ladder Found!:', event['name'])
         elif 'West' in event['name']:
             info['West'] = event['id']
-            print('West Coast Ladder Found!:', event['name'])
+            #print('West Coast Ladder Found!:', event['name'])
         elif 'Main' in event['name']:
             info['Bracket'] = event['id']
-            print('Main Bracket Found!:', event['name'])
+            #print('Main Bracket Found!:', event['name'])
         else:
-            print('UNKNOWN EVENT:', event['name'])
+            pass
+            #print('UNKNOWN EVENT:', event['name'])
     return info
 
 
