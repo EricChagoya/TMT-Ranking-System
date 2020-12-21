@@ -66,8 +66,10 @@ def PrintGraphWelcomeMessage() -> None:
     print("5. Combined Points for both Coasts")
     print("6. Coast Entrants Bar Graph")
     print("7. Number of New Graph")
-    print("8. All Website Graphs")
-    print("9. All TMT Staff Graphs")
+    print("8. The number of tournament attendees enter")
+    print("9. Revenue")
+    print("10. All Website Graphs")
+    print("11. All TMT Staff Graphs")
     print()
     
 
@@ -80,10 +82,10 @@ def graphChoice() -> int:
             option = int(option)
         except:
             pass
-        if option in range(1, 10):
+        if option in range(1, 12):
             return option
         else:
-            print("Choose an integer from 1 to 9\n")
+            print("Choose an integer from 1 to 11\n")
 
 
 def saveGraph() -> int:

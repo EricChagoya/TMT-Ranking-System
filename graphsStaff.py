@@ -150,3 +150,92 @@ def NewPlayersGraph(season: int, week: int, FORMAT: int) -> None:
 
 
 
+
+
+# 8
+def getBarGraphDataEntrants(season: int, week: int) -> [int]:
+    """It collects to see how often someone enters TMT 1 time, 2 times,...,
+    for the whole season. """
+    entrants = [0 for i in range(week)]
+    Placements = f'Data/Season{season}/Records/S{season}W{week}Placements.csv'
+    Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
+    for _, row in Placements.iterrows():
+        numTournamentEntered = sum([row[f'PWeek{i}'] >= -1 for i in range(1, week + 1)])
+        entrants[numTournamentEntered - 1] += 1
+    return entrants
+
+
+def BarGraphEntrants(season: int, week: int, FORMAT: int) -> None:
+    """It plots a histogram of how often someone enters TMT. Only does for
+    the current season."""
+    entrants = getBarGraphDataEntrants(season, week)
+    x = [i for i in range(1, week + 1)]
+
+    fig = go.Figure(data=[go.Bar(x=x, y= entrants,
+                                 text= entrants,
+                                 textposition='outside')])
+
+    fig.update_layout(title = f'Number of Times People Entered in Season {season}')
+    fig.update_layout(xaxis_title = '')
+    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
+                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
+    fig.update_layout(yaxis_title = 'Entrants')
+
+    fig.update_layout(font = dict(size= 30))
+    fig.update_layout(showlegend = False)
+    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}BarGraphEntrants.jpeg")
+    
+
+
+# 9
+def getRevenueData() -> 'df':
+    Revenue = f'Data/TMTRevenue.csv'
+    Revenue = pd.read_csv(Revenue, encoding = "ISO-8859-1")
+    Total = dict()          # {Week Number: [Revenue, Loss, Overall Profit]}
+    overallTotal = 0
+    for _, row in Revenue.iterrows():
+        if row['Week'] not in Total:
+            Total[row['Week']] = [0, 0, overallTotal]
+        if row['Amount'] >= 0:
+            Total[row['Week']][0] += row['Amount']
+        else:
+            Total[row['Week']][1] += row['Amount']
+        overallTotal += row['Amount']
+        Total[row['Week']][2] = overallTotal
+        
+    df = pd.DataFrame()
+    for k, v in sorted(Total.items()):
+        new_row = {'Revenue': v[0], 'Loss': v[1] * -1, 'Overall Profit': v[2]}
+        #new_row = {'Revenue': v[0], 'Loss': v[1], 'Overall Profit': v[2]}
+        df = df.append(new_row, ignore_index = True)
+    return df[['Revenue', 'Loss', 'Overall Profit']]
+    
+
+def Revenue(season, week, FORMAT) -> None:
+    """Graphs how much revenue, loss, and profit we have"""
+    Total = getRevenueData()
+    numWeeks = Total.shape[0]
+    Display = 12         # Only display the last 10 weeks
+    Total = Total.tail(Display)
+    t = Total.shape[0]
+
+
+    weeks = [f'Week {i + 1}' for i in range(numWeeks - t, numWeeks)]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x = weeks, y = Total['Revenue'],
+                         name = 'Revenue', marker_color = '#33cc33'))
+    fig.add_trace(go.Bar(x = weeks, y = Total['Loss'],
+                         name = 'Loss', marker_color = '#cc0000'))
+    fig.add_trace(go.Bar(x = weeks, y = Total['Overall Profit'],
+                         name = 'Overall Profit', marker_color = '#ffff4d'))
+    fig.update_layout(title = f'Total Revenue')
+    fig.update_layout(yaxis_title = 'Money')
+
+    fig.update_layout(font = dict(size= 30))
+    fig.update_layout(showlegend = True)
+    fig.update_layout(legend = dict(font_size = 30))
+    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}Revenue.jpeg")
+
+
+

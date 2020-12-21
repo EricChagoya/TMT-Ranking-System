@@ -40,7 +40,7 @@ COLOROTHER = '#808080'      # Gray
 
 FORMAT = 0  # 0 is an iteractable HTML
             # 1 is a jpeg
-DEBUGGING = True
+DEBUGGING = False
 
 def SavingFormat(choice: int, season: int) -> None:
     """Changes a global variable so all graphs are put into HTML
@@ -130,7 +130,7 @@ def RankCharacter(season: int, week: int) -> None:
                                       CHARACTERS[character], character, season, week)
             legend = appendRankLegend(legend, temp, character)
     
-    temp2 = CharacterMidTierRankGraph(RankRecords, MidTierMains, 'Mid Tiers', season, week)
+    temp2 = CharacterMidTierRankGraph(RankRecords, MidTierMains, 'MidTiers', season, week)
     temp3 = CharacterRankGraph(RankRecords, Other, COLOROTHER, 'Other', season, week)
     legend = appendRankLegend(legend, temp2, "MidTiers")
     legend = appendRankLegend(legend, temp3, "Other")
@@ -266,7 +266,7 @@ def PointsCharacter(season: int, week: int) -> None:
                                         CHARACTERS[character], character, season, week)
             legend = appendPointsLegend(legend, temp, character)
             
-    temp2 = CharacterMidTiersPointsGraph(PastPoints, MidTierMains, "Mid Tiers", season, week)
+    temp2 = CharacterMidTiersPointsGraph(PastPoints, MidTierMains, "MidTiers", season, week)
     temp3 = CharacterPointsGraph(PastPoints, Other, COLOROTHER, "Other", season, week)
     legend = appendPointsLegend(legend, temp2, "MidTiers")
     legend = appendPointsLegend(legend, temp3, "Other")
@@ -434,15 +434,15 @@ def CombinedPointsCoast(season: int, week: int) -> None:
 
 
 def main():
-    #UI.PrintGraphWelcomeMessage()
-    #choice = UI.graphChoice()
-    #save_graphs = UI.saveGraph()
-    #season = UI.UserSeason()
-    #week = UI.UserWeek()
-    choice = 10
-    save_graphs = 2
-    season = 1
-    week = 6
+    UI.PrintGraphWelcomeMessage()
+    choice = UI.graphChoice()
+    save_graphs = UI.saveGraph()
+    season = UI.UserSeason()
+    week = UI.UserWeek()
+    #choice = 10
+    #save_graphs = 2
+    #season = 1
+    #week = 6
     
     SavingFormat(save_graphs, season)
     
@@ -477,13 +477,11 @@ def main():
 
     elif choice == 8:
         # Plots how many TMTs the average attendee entered for that season
-        #GS.HistogramEntrants(season, week, FORMAT)
-        pass
-
+        GS.BarGraphEntrants(season, week, FORMAT)
+        
     elif choice == 9:
         # Plots Revenue for TMT
-        #GS.Revenue(season, week, FORMAT)
-        pass
+        GS.Revenue(season, week, FORMAT)
         
     elif choice == 10:
         # All Website Plots
@@ -497,7 +495,8 @@ def main():
         # Plots for Staff
         GS.CoastEntrantsGraph(season, week, FORMAT)
         GS.NewPlayersGraph(season, week, FORMAT)
-        #GS.HistogramEntrants(season, week, FORMAT)
+        GS.BarGraphEntrants(season, week, FORMAT)
+        GS.Revenue(season, week, FORMAT)
         
     print("End")
 
