@@ -1,6 +1,4 @@
 
-# Added some comments
-
 
 
 def UserSeason() -> int:
@@ -29,6 +27,21 @@ def UserWeek() -> int:
                 print("Please choose an integer greater than 0")
         except:
             print("Please Choose an integer\n")
+
+
+def UserTMTNumber() -> int:
+    """The user decides what Week it is"""
+    while True:
+        TMTNumber = input("What TMT is this? (How many TMTs have there been?) ")
+        try:
+            TMTNumber = int(TMTNumber)
+            if TMTNumber > 0:
+                return TMTNumber
+            else:
+                print("Please choose an integer greater than 0")
+        except:
+            print("Please Choose an integer\n")
+
 
 ############# Rank #############
 
