@@ -121,6 +121,13 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
     return playerSets
 
 
+def getPlayerTags() -> {int: str}:
+    """Tt gets the tag of every player"""
+    Mains = f'Data/PlayerMains.csv'
+    Mains = pd.read_csv(Mains, encoding = 'utf-8-sig')
+    return {int(row['SmasherID']):row['SmashTag'] for _, row in Mains.iterrows()}
+
+
 def CombineSetData(info: {str: int}, season: int, week: int) -> None:
     """It combines the sets from ladder and final bracket."""
     data = []
@@ -230,10 +237,7 @@ def CombinePreviousSets(weeklySets: json, season: int, week: int) -> None:
 
 
 def SetDataWithSmashTag(season: int, week: int) -> None:
-    Mains = f'Data/PlayerMains.csv'
-    Mains = pd.read_csv(Mains, encoding = 'utf-8-sig')
-    playerMains = {int(row['SmasherID']):row['SmashTag'] for _, row in Mains.iterrows()}
-
+    playerMains = getPlayerTags()
     playerSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSets.json'
     with open(playerSets, "r") as file:
         playerSets = json.load(file)
@@ -260,6 +264,102 @@ def SetDataWithSmashTag(season: int, week: int) -> None:
         outfile.write(jsonPlayer)
 
 
+def getPlayerLosses(season: int, week: int) -> {'SmasherID': {'WinsID'}}:
+    """Find out everybody's wins. The key being the player and the value being
+    a set of the player ids of the people they beat."""
+    playerSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSets.json'
+    with open(playerSets, "r") as file:
+        playerSets = json.load(file)
+
+    return {player['SmasherID']: {int(lossesID) for lossesID in player['LosingSets']} for player in playerSets}
+
+
+def DijkstraTable(graphLosses: {int: {int}}, Armada: int) -> \
+                    {'SmasherID': {'inTree': bool, 'parent': 'SmasherID', 'distance': int}}:
+    """It will create the preliminary table for Dijkstra's Algorithm.
+    inTree means whether we have "taken" that value.
+    parent is the player that they they lost to.
+    Distance will be infinity."""
+    inTree = dict()
+    parent = dict()
+    distance = dict()
+    for player in graphLosses.keys():
+        inTree[player] = False
+        parent[player] = ""
+        distance[player] = float('inf')
+    distance[Armada] = 0
+    return inTree, parent, distance
+    
+
+def ShortestPath(graphLosses: {int: {int}}, Armada: int) -> {int:int}:
+    """It tries to find the smallest Armada number for each player by naming
+    the person who they beat.
+    Parent = {Player: PlayerTheyBeat}
+    Distance = {Player: ArmadaNumber}
+    """
+    inTree, parent, distance = DijkstraTable(graphLosses, Armada)
+    playersLeft = {k:v for k, v in distance.items()}
+
+    while True:
+        # Determine next player arbitrarily
+        nextPlayer = min(playersLeft, key = playersLeft.get)
+        if playersLeft[nextPlayer] == float('inf'):
+            break
+        del playersLeft[nextPlayer]
+        inTree[nextPlayer] = True
+        
+        for playerLosses in graphLosses[nextPlayer]:
+            if (distance[nextPlayer] + 1) < distance[playerLosses]:
+                distance[playerLosses] = distance[nextPlayer] + 1
+                playersLeft[playerLosses] = distance[playerLosses]
+                parent[playerLosses] = nextPlayer
+    return parent, distance
+
+
+
+
+
+def CompletePath(shortestPath: {int: int}, distance: {int: int}, Armada: int) -> None:
+    fullPath = {Armada: []}
+    del distance[Armada]
+
+    for player, d in sorted(distance.items(), key = (lambda x: x[1]) ):
+        if d == float('inf'):
+            fullPath[player] = ['NA']
+        else:
+            fullPath[player] = fullPath[shortestPath[player]] + [shortestPath[player]]
+
+    IdTags = getPlayerTags()
+    data= {f'{IdTags[Armada]} Number': [0],
+           'SmashTag': [str(IdTags[Armada])],
+           'Path': ['']}
+    df = pd.DataFrame(data)
+
+    for player, d in sorted(distance.items(), key = (lambda x: x[1]) ):
+        if fullPath[player] == ['NA']:
+            path = 'NA'
+            d = 'NA'
+        else:
+            path = f'{IdTags[Armada]}'
+            for p in fullPath[player][1:]:
+                path += f' <- {IdTags[p]}'
+        
+        new_row = {f'{IdTags[Armada]} Number': d,
+                   'SmashTag': IdTags[player],
+                   'Path': path}
+        df = df.append(new_row, ignore_index = True)
+    return df[[f'{IdTags[Armada]} Number', 'SmashTag', 'Path']]
+
+
+def ArmadaSolver(Armada: int, season: int, week: int):
+    graphLosses = getPlayerLosses(season, week)
+    shortestPath, distance = ShortestPath(graphLosses, Armada)
+    df = CompletePath(shortestPath, distance, Armada)
+    armadaNumber = f'Data/Season{season}/ArmadaNumber/S{season}W{week}ArmadaNumber.csv'
+    df.to_csv(armadaNumber, index = False, encoding = 'ISO-8859-1')
+
+
+
 def main():
     # ask for week and season
     #slug = input('Please input the smash.gg tournament slug: ')
@@ -268,19 +368,26 @@ def main():
     #slug = 'tournament/training-mode-tournaments-1-200-pot-bonus'
     #slug = 'training-mode-tournaments-6'
     #CreateDirectories(season)
+    #Part 1
     #info = CTData.get_event_info(slug)
     #CombineSetData(info, season, week)
 
-    SetDataWithSmashTag(season, week)
-    
+    # Part 2
+    #SetDataWithSmashTag(season, week)
 
-    # 3 output files
-    # Cummulative Sets with SmasherID
-    # Cummulative Sets with SmashTag    # Just for fast checking
-    # Dijkstra's Algorithm
+    # 1017 - S2J
+    # Who is Armada?
+    Armada = 1017
+    ArmadaSolver(Armada, season, week)
+
 
 
 
 main()
-# check player's tag and see if they are weird
-# 508569
+
+
+
+# Still need to fact check
+# Clean up the code
+# Document it better
+# Make a basic interface

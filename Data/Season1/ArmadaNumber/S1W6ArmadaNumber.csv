@@ -1,0 +1,258 @@
+S2J Number,SmashTag,Path
+0,S2J,
+1,CLG. | SFAT,S2J
+1,bobby big ballz,S2J
+1,Revenge | Gahtzu,S2J
+1,Null,S2J
+1,LSD,S2J
+1,Ginger,S2J
+2,yingling,S2J <- bobby big ballz
+2,KoDoRiN,S2J <- CLG. | SFAT
+2,SANS | Blues Clues,S2J <- CLG. | SFAT
+2,RG | Far!,S2J <- bobby big ballz
+2,cliché,S2J <- bobby big ballz
+2,306 | Amrak,S2J <- bobby big ballz
+2,GST | Ryobeat,S2J <- Null
+2,Dom,S2J <- LSD
+2,GUG | Kürv,S2J <- CLG. | SFAT
+2,SonOfJ,S2J <- bobby big ballz
+2,Golden,S2J <- Ginger
+2,Spiral Cafe | Krudo,S2J <- bobby big ballz
+2,Westballz,S2J <- Null
+2,Fiction,S2J <- bobby big ballz
+3,FM | Cilan,S2J <- bobby big ballz <- 306 | Amrak
+3,Thad <3,S2J <- bobby big ballz <- yingling
+3,AlyJ,S2J <- bobby big ballz <- yingling
+3,Elk G | Ivayne,S2J <- bobby big ballz <- yingling
+3,LAG,S2J <- bobby big ballz <- yingling
+3,Pappi,S2J <- bobby big ballz <- cliché
+3,Young,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,TBD,S2J <- bobby big ballz <- yingling
+3,Hulka,S2J <- bobby big ballz <- yingling
+3,USF | Quadae,S2J <- bobby big ballz <- RG | Far!
+3,Pipe,S2J <- bobby big ballz <- cliché
+3,ManRay,S2J <- bobby big ballz <- cliché
+3,noChill,S2J <- CLG. | SFAT <- KoDoRiN
+3,Ben,S2J <- CLG. | SFAT <- KoDoRiN
+3,Vish,S2J <- bobby big ballz <- yingling
+3,Typhoon,S2J <- bobby big ballz <- yingling
+3,SLO | GrizzlyBair,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,RedX,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,DD,S2J <- bobby big ballz <- cliché
+3,S.C.E. | Erik,S2J <- bobby big ballz <- RG | Far!
+3,MIOM | Toph,S2J <- bobby big ballz <- yingling
+3,ycz6,S2J <- bobby big ballz <- cliché
+3,DarkGenex,S2J <- bobby big ballz <- Spiral Cafe | Krudo
+3,Marrgasm,S2J <- bobby big ballz <- yingling
+3,Twisty,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,NOOT,S2J <- CLG. | SFAT <- GUG | Kürv
+3,Mango's Friend | Lucky,S2J <- Null <- Westballz
+3,Light,S2J <- bobby big ballz <- cliché
+3,Trock,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,Neologism,S2J <- Null <- GST | Ryobeat
+3,soccermom69,S2J <- bobby big ballz <- SonOfJ
+3,ROFL,S2J <- bobby big ballz <- cliché
+3,Android 0,S2J <- CLG. | SFAT <- KoDoRiN
+3,EP | Justus,S2J <- bobby big ballz <- yingling
+3,TG NBR | Panos,S2J <- Null <- GST | Ryobeat
+3,CG | Firebolt,S2J <- bobby big ballz <- cliché
+3,Fizz,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,The Leaf,S2J <- CLG. | SFAT <- KoDoRiN
+3,Bones,S2J <- CLG. | SFAT <- SANS | Blues Clues
+3,SDJ,S2J <- bobby big ballz <- yingling
+3,HWY | ybot,S2J <- bobby big ballz <- cliché
+3,ABG | salami,S2J <- bobby big ballz <- yingling
+3,ScrubUp,S2J <- bobby big ballz <- cliché
+3,Megaman,S2J <- bobby big ballz <- cliché
+3,Milo,S2J <- LSD <- Dom
+3,Vitro,S2J <- bobby big ballz <- yingling
+3,306 | Polo,S2J <- bobby big ballz <- yingling
+3,GEM | CrossFitJesus,S2J <- bobby big ballz <- cliché
+3,WW | Lemonjuices,S2J <- bobby big ballz <- cliché
+3,billybopeep,S2J <- bobby big ballz <- yingling
+4,Phantom Airline,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young
+4,Gaz,S2J <- bobby big ballz <- 306 | Amrak <- FM | Cilan
+4,Eastwood,S2J <- bobby big ballz <- yingling <- Vish
+4,JCubez,S2J <- bobby big ballz <- yingling <- AlyJ
+4,CowCowCowCowCow,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young
+4,ePG | Chevy,S2J <- bobby big ballz <- 306 | Amrak <- FM | Cilan
+4,KaiKwonDo,S2J <- bobby big ballz <- yingling <- Thad <3
+4,Soltrain,S2J <- bobby big ballz <- yingling <- Thad <3
+4,8-bit | dansdaman,S2J <- bobby big ballz <- 306 | Amrak <- FM | Cilan
+4,snacklepackle,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae
+4,John,S2J <- bobby big ballz <- yingling <- Vish
+4,Elysian,S2J <- bobby big ballz <- cliché <- Pipe
+4,Ghost Rider,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae
+4,Penguis,S2J <- bobby big ballz <- 306 | Amrak <- FM | Cilan
+4,Chewy,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos
+4,Help,S2J <- bobby big ballz <- cliché <- Megaman
+4,Phorox,S2J <- CLG. | SFAT <- SANS | Blues Clues <- RedX
+4,Zave,S2J <- bobby big ballz <- yingling <- LAG
+4,ANTIFA CEO | Quiggles,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae
+4,thesiscat,S2J <- bobby big ballz <- yingling <- Thad <3
+4,2Framez,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos
+4,BLM | Rats!,S2J <- bobby big ballz <- yingling <- LAG
+4,.Ðempt,S2J <- bobby big ballz <- cliché <- Light
+4,404 YC | Salt,S2J <- bobby big ballz <- yingling <- LAG
+4,Uncle Pete,S2J <- bobby big ballz <- cliché <- Megaman
+4,Bonn Esports | Question,S2J <- bobby big ballz <- RG | Far! <- S.C.E. | Erik
+4,jams,S2J <- bobby big ballz <- cliché <- Pipe
+4,olé,S2J <- bobby big ballz <- RG | Far! <- S.C.E. | Erik
+4,GLR | JAM,S2J <- bobby big ballz <- 306 | Amrak <- FM | Cilan
+4,Crispy | Chango,S2J <- bobby big ballz <- yingling <- LAG
+4,TheFormuoli,S2J <- bobby big ballz <- cliché <- Pipe
+4,Chem,S2J <- bobby big ballz <- cliché <- DD
+4,Musashi,S2J <- bobby big ballz <- cliché <- Pipe
+4,Solo.,S2J <- bobby big ballz <- cliché <- Pipe
+4,Hunybear,S2J <- bobby big ballz <- Spiral Cafe | Krudo <- DarkGenex
+4,Denzill,S2J <- bobby big ballz <- yingling <- LAG
+4,YoungHanSolo,S2J <- bobby big ballz <- yingling <- Elk G | Ivayne
+4,Captain G,S2J <- bobby big ballz <- Spiral Cafe | Krudo <- DarkGenex
+4,moscow mich,S2J <- bobby big ballz <- cliché <- Megaman
+4,W8ASec,S2J <- bobby big ballz <- yingling <- Thad <3
+4,Maher,S2J <- bobby big ballz <- yingling <- Marrgasm
+4,GS | TreyTheTrashman,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Fizz
+4,darkwizard123,S2J <- CLG. | SFAT <- GUG | Kürv <- NOOT
+4,Slump,S2J <- bobby big ballz <- yingling <- Thad <3
+4,Dawson,S2J <- bobby big ballz <- Spiral Cafe | Krudo <- DarkGenex
+4,Shy,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Fizz
+4,Rive,S2J <- CLG. | SFAT <- SANS | Blues Clues <- RedX
+4,GHQ | Zamu,S2J <- bobby big ballz <- yingling <- Hulka
+4,DHB | IggyNieves,S2J <- bobby big ballz <- yingling <- LAG
+4,Cowbell,S2J <- bobby big ballz <- cliché <- Pipe
+4,Chubbz,S2J <- bobby big ballz <- yingling <- Thad <3
+4,Trail,S2J <- bobby big ballz <- RG | Far! <- S.C.E. | Erik
+4,Panda,S2J <- bobby big ballz <- RG | Far! <- S.C.E. | Erik
+4,JustJoshin,S2J <- bobby big ballz <- cliché <- DD
+5,YBBT | leroydankins,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich
+5,Arctic,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,Talen,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,STP,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,Pawn,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich
+5,Kaptinkillem,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich
+5,Den,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,Douglas.J.Gov,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,Stone,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,TC | BuyMyMixTape,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,Travy,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,UARK | VentusWK,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,Alex18+,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,Ringler,S2J <- bobby big ballz <- yingling <- Thad <3 <- Slump
+5,eh | sickø,S2J <- bobby big ballz <- cliché <- Pipe <- Cowbell
+5,Futz,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,CSR | Tezlik,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,LanTurN,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich
+5,Rigo Bigo,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- ANTIFA CEO | Quiggles
+5,DiscipleOfBorp,S2J <- bobby big ballz <- cliché <- Pipe <- jams
+5,OtES,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy
+5,BABA | shama,S2J <- bobby big ballz <- yingling <- LAG <- BLM | Rats!
+5,codeman,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,CLEM#112 | Clem,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,Yamasaki,S2J <- bobby big ballz <- yingling <- Thad <3 <- Soltrain
+5,QoT | Cruelscotty,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+5,Maruf,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young <- Phantom Airline
+5,ight,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young <- CowCowCowCowCow
+5,Jakespeare,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young <- CowCowCowCowCow
+5,TurboThot,S2J <- bobby big ballz <- cliché <- DD <- JustJoshin
+5,FISA | JoJo,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle
+6,ericiscool.net,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- STP
+6,Bobakanoosh,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone
+6,pointykitty,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,jtetter,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Talen
+6,radvillainy,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- STP
+6,markrevival,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,Divine Senator Kelly,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,Miranda,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Alex18+
+6,Fraud,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,Jorge,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- LanTurN
+6,RB | V$,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- LanTurN
+6,CVSmashMods | Ripn,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,SDJ | SudoJoe,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,sucordie,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- UARK | VentusWK
+6,Strazz,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Alex18+
+6,LUNK#783 | dom,S2J <- CLG. | SFAT <- SANS | Blues Clues <- Young <- CowCowCowCowCow <- Jakespeare
+6,Tourist,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,CB,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Futz
+6,Theftz,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- YBBT | leroydankins
+6,Watermelons,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,adamaggy,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- LanTurN
+6,Zeph,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Douglas.J.Gov
+6,bird | unlucky,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,WOMB#619 | Wombat,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn
+6,Sporsinick,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Travy
+7,Drewski,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Talen <- jtetter
+7,Kettering,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,CSB | ushi,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh
+7,Hamburglar,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh
+7,SRN | Soulrifle211,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Talen <- jtetter
+7,hHerb,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,Rozu,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- markrevival
+7,Silkylaroux,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,Melos,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- SDJ | SudoJoe
+7,Doctor Dank,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Alex18+ <- Strazz
+7,100 Days Of Solitude,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- SDJ | SudoJoe
+7,Mounir,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh
+7,Schweppes,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh
+7,Frozone,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- markrevival
+7,K.H.D | Reign,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- WOMB#619 | Wombat
+7,Blu-J,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- LanTurN <- RB | V$
+7,3OutChange,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,Lust,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh
+7,punished | gelp,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- LanTurN <- adamaggy
+7,kippu,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,saacdaddy,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- Watermelons
+7,Troy,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- markrevival
+7,ZUTH | Zuthane,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- STP <- ericiscool.net
+7,Nico,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty
+7,420 | Yolk,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- WOMB#619 | Wombat
+8,HorseGirl420,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh <- Hamburglar
+8,JCobbs,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering
+8,Ahung,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Talen <- jtetter <- SRN | Soulrifle211
+8,gbio,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering
+8,Big Pivot,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering
+8,BCM | veggies,S2J <- bobby big ballz <- RG | Far! <- USF | Quadae <- snacklepackle <- Stone <- Bobakanoosh <- CSB | ushi
+8,dirtyDev,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- hHerb
+8,Luppi,S2J <- Null <- GST | Ryobeat <- TG NBR | Panos <- Chewy <- Alex18+ <- Strazz <- Doctor Dank
+8,TNC | n3zModGod,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- kippu
+8,OXY | TheCrimsonBlur,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- hHerb
+9,Night,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering <- Big Pivot
+9,bensw,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering <- Big Pivot
+9,DCG | Spots,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering <- Big Pivot
+10,BEBO,S2J <- bobby big ballz <- cliché <- Megaman <- moscow mich <- Pawn <- pointykitty <- Kettering <- Big Pivot <- Night
+NA,Snoos,NA
+NA,ButterRoyaleTV,NA
+NA,Special K,NA
+NA,PP | Droze,NA
+NA,$W@6 | rocketf20,NA
+NA,Tomz,NA
+NA,rickey_kc,NA
+NA,glum oinkin',NA
+NA,BABA | Babo,NA
+NA,lemon,NA
+NA,Rose,NA
+NA,CID,NA
+NA,LVD | Super,NA
+NA,Frost | JJK,NA
+NA,Fishpaste,NA
+NA,Just Jason,NA
+NA,Raffshot,NA
+NA,Badboi,NA
+NA,Hellraid,NA
+NA,Sleeepy,NA
+NA,CarltonDanks,NA
+NA,N8V,NA
+NA,Blue Jay,NA
+NA,Abhi,NA
+NA,KLAWHAU5,NA
+NA,ACAB | Mugen,NA
+NA,Daddy Icey,NA
+NA,Afron,NA
+NA,early,NA
+NA,flowjam,NA
+NA,LoneCubone,NA
+NA,Sax,NA
+NA,ASAPferq,NA
+NA,TT | Dair,NA
+NA,8167263631 | Notto,NA
+NA,snek,NA
+NA,Snickerdoodle,NA
