@@ -150,8 +150,6 @@ def NewPlayersGraph(season: int, week: int, FORMAT: int) -> None:
 
 
 
-
-
 # 8
 def getBarGraphDataEntrants(season: int, week: int) -> [int]:
     """It collects to see how often someone enters TMT 1 time, 2 times,...,
@@ -176,9 +174,10 @@ def BarGraphEntrants(season: int, week: int, FORMAT: int) -> None:
                                  textposition='outside')])
 
     fig.update_layout(title = f'Number of Times People Entered in Season {season}')
-    fig.update_layout(xaxis_title = '')
-    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
-                                   ticktext = [f'Week {i}' for i in range(1, week + 1)]))
+    fig.update_layout(xaxis_title = 'Entered N Times')
+    fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)],
+                                   ticktext = [f'{i}' for i in range(1, week + 1)]))
+                                   #ticktext = [f'Week {i}' for i in range(1, week + 1)]))
     fig.update_layout(yaxis_title = 'Entrants')
 
     fig.update_layout(font = dict(size= 30))

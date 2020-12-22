@@ -434,15 +434,15 @@ def CombinedPointsCoast(season: int, week: int) -> None:
 
 
 def main():
-    UI.PrintGraphWelcomeMessage()
-    choice = UI.graphChoice()
-    save_graphs = UI.saveGraph()
-    season = UI.UserSeason()
-    week = UI.UserWeek()
-    #choice = 10
-    #save_graphs = 2
-    #season = 1
-    #week = 6
+    #UI.PrintGraphWelcomeMessage()
+    #choice = UI.graphChoice()
+    #save_graphs = UI.saveGraph()
+    #season = UI.UserSeason()
+    #week = UI.UserWeek()
+    choice = 8
+    save_graphs = 2
+    season = 1
+    week = 6
     
     SavingFormat(save_graphs, season)
     

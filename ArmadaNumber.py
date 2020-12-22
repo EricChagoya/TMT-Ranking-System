@@ -128,7 +128,6 @@ def CombineSetData(info: {str: int}, season: int, week: int) -> None:
         pageCounts = CTData.get_page_counts(eventId)
         data.append(getPlayerSets(eventId, pageCounts))    
     master = dict()
-    #allPlayers = data[0].keys() | data[1].keys()
     allPlayers = data[0].keys() | data[1].keys() | data[2].keys()
 
     for player in allPlayers:
@@ -185,12 +184,14 @@ def CombinePreviousSets(weeklySets: json, season: int, week: int) -> None:
         previousSets = json.load(f1)
     with open(temp, "r") as f2:
         updatedSets = json.load(f2)
-
+    
     allPlayers = dict()
+    total = []
+    t= set()
     for player in previousSets:
         allPlayers[player['SmasherID']] = [player['WinningSets'], player['LosingSets']]
-
-    total = []
+        t.add(player['SmasherID'])
+    
     for player in updatedSets:
         if player['SmasherID'] not in allPlayers:   # New Player
             allPlayers[player['SmasherID']] = [player['WinningSets'], player['LosingSets']]
@@ -210,16 +211,53 @@ def CombinePreviousSets(weeklySets: json, season: int, week: int) -> None:
                 else:
                     # This player has lost to this player already
                     allPlayers[player['SmasherID']][1][recentLossID] += times
+            t.remove(player['SmasherID'])
                     
         temp= {'SmasherID': player['SmasherID'],
                'WinningSets': allPlayers[player['SmasherID']][0],
                'LosingSets': allPlayers[player['SmasherID']][1]}
         total.append(temp)
-        
+    for SmasherID in t:
+        sets= allPlayers[SmasherID]
+        temp= {'SmasherID': SmasherID,
+               'WinningSets': sets[0],
+               'LosingSets': sets[1]}
+        total.append(temp)
+    
     with open(newSets, "w") as outfile:
         jsonPlayer = json.dumps(total, indent = 2)
         outfile.write(jsonPlayer)
 
+
+def SetDataWithSmashTag(season: int, week: int) -> None:
+    Mains = f'Data/PlayerMains.csv'
+    Mains = pd.read_csv(Mains, encoding = 'utf-8-sig')
+    playerMains = {int(row['SmasherID']):row['SmashTag'] for _, row in Mains.iterrows()}
+
+    playerSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSets.json'
+    with open(playerSets, "r") as file:
+        playerSets = json.load(file)
+
+    total = []
+    for player in playerSets:
+        wins = dict()
+        for winsID, record in player['WinningSets'].items():
+            wins[playerMains[int(winsID)]] = record
+            
+        losses = dict()
+        for lossesID, record in player['LosingSets'].items():
+            losses[playerMains[int(lossesID)]] = record
+
+        SmashTagSets = {'SmashTag': playerMains[player['SmasherID']],
+                        'SmasherID': player['SmasherID'],
+                        'WinningSets': wins,
+                        'LosingSets': losses}
+        total.append(SmashTagSets)
+    
+    playerSetsTags = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSetsTags.json'
+    with open(playerSetsTags, "w") as outfile:
+        jsonPlayer = json.dumps(total, indent = 2)
+        outfile.write(jsonPlayer)
 
 
 def main():
@@ -227,11 +265,14 @@ def main():
     #slug = input('Please input the smash.gg tournament slug: ')
     season = 1
     week = 6
-    #slug = 'tournament/training-mode-tournaments-2-100-pot-bonus'
-    slug = 'training-mode-tournaments-6'
-    CreateDirectories(season)
-    info = CTData.get_event_info(slug)
-    CombineSetData(info, season, week)
+    #slug = 'tournament/training-mode-tournaments-1-200-pot-bonus'
+    #slug = 'training-mode-tournaments-6'
+    #CreateDirectories(season)
+    #info = CTData.get_event_info(slug)
+    #CombineSetData(info, season, week)
+
+    SetDataWithSmashTag(season, week)
+    
 
     # 3 output files
     # Cummulative Sets with SmasherID
@@ -241,4 +282,5 @@ def main():
 
 
 main()
-
+# check player's tag and see if they are weird
+# 508569
