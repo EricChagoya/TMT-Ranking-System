@@ -271,7 +271,7 @@ def WebsiteChangeInRank(Features: 'df') -> None:
                 Features.at[index, 'ChangeInRank'] = row['ChangeInRank']
                 #Features.at[index, 'ChangeInRank'] = "++ " + row['ChangeInRank']
             elif change < 0:
-                Features.at[index, 'ChangeInRank'] = str(-1 * change)
+                Features.at[index, 'ChangeInRank'] = str(change)
                 #Features.at[index, 'ChangeInRank'] = "-- " + str(-1 * change)
         except:
             pass

@@ -50,6 +50,8 @@
 
  [Getting People's Tiers](https://docs.google.com/document/d/1I6oSWfsJBWJcFOFvQEz96dwvCBstLog_ZrL8pxZSr4I/edit?usp=sharing)
  
+ [Updating the Website](https://docs.google.com/document/d/1dOn92pFcJPdpBYNX2bsFhm-R0J_Owpqmf8T3eZJ0kLE/edit?usp=sharing)
+ 
  [Ranking Website](https://ucimelee.wixsite.com/tmtmelee)
  :shipit:
  
