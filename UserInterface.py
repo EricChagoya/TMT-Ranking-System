@@ -1,6 +1,5 @@
 
 
-
 def UserSeason() -> int:
     """The user decides what Season it is"""
     while True:
@@ -41,6 +40,12 @@ def UserTMTNumber() -> int:
                 print("Please choose an integer greater than 0")
         except:
             print("Please Choose an integer\n")
+
+
+def UserSlug() -> str:
+    """The user identifies the slug, which is a unique identifier for a tournament"""
+    return input("What is the Smash.gg tournament slug: ")
+
 
 
 ############# Rank #############
@@ -117,6 +122,64 @@ def saveGraph() -> int:
             return option
         else:
             print("Choose 1 or 2\n")
+
+
+
+############# Armada Number ########################
+
+
+def PrintArmadaNumberWelcomeMessage() -> None:
+    print("Hello")
+    print("You can plan for a change in weather and time")
+    print("But I never planned on you changing your mind")
+    print()
+
+def ArmadaGeneralOption() -> None:
+    print("What do you want to do?")
+    print("1. Collect all player sets")
+    print("2. Find Armada Numbers")
+    print("3. Both")
+    while True:
+        option = input("User Choice: ")
+        try:
+            option = int(option)
+        except:
+            pass
+        if option in (1, 2, 3):
+            return option
+        else:
+            print("Choose 1, 2, or 3")
+            print()
+
+
+def findArmada(bestRank: str, bestRankID: int) -> int:
+    print()
+    print("Who will be Armada for this week!")
+    print('Please input the SmasherID for "Armada"')
+    print(f'{bestRank} is the highest ranked player')
+    print("More SmasherIDs can be found in PlayerMains.csv")
+    print()
+    print(f'If you want {bestRank} to be "Armada", press 0')
+
+    while True:
+        option = input("User Choice: ")
+        try:
+            option = int(option)
+            if option == 0:
+                return bestRankID
+            return option
+        except:
+            pass
+        print("Please use an integer")
+
+
+
+
+
+
+
+
+
 
 
 

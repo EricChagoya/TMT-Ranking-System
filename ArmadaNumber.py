@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import UserInterface as UI
 import CollectTourneyData as CTData
 
 # The smash.gg API has 2 rate limits:
@@ -122,10 +123,19 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
 
 
 def getPlayerTags() -> {int: str}:
-    """Tt gets the tag of every player"""
+    """It gets the tag of every player with SmasherID as the key and the tag as a value"""
     Mains = f'Data/PlayerMains.csv'
     Mains = pd.read_csv(Mains, encoding = 'utf-8-sig')
     return {int(row['SmasherID']):row['SmashTag'] for _, row in Mains.iterrows()}
+
+
+def findBestRankedPlayer(season, week) -> str and int:
+    """Find who is ranked number one for the whole season"""
+    Rank = f'Data/Season{season}/Records/S{season}W{week}RankRecords.csv'
+    Rank = pd.read_csv(Rank, encoding = 'ISO-8859-1')
+    for index, row in Rank.iterrows():
+        if row[f'RWeek{week}'] == 1:
+            return row['SmashTag'], row['SmasherID']
 
 
 def CombineSetData(info: {str: int}, season: int, week: int) -> None:
@@ -175,7 +185,7 @@ def SetWeeklyDataToJSON(players:{'SmasherID': [['WinsID'], ['LossesID']]}, week:
     
 
 def CombinePreviousSets(weeklySets: json, season: int, week: int) -> None:
-    """It will combine previous's sets with the current week."""
+    """It will combine last week's cummulative sets with the current week."""
     previousSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week - 1}PlayerSets.json'
     newSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSets.json'
     
@@ -237,6 +247,9 @@ def CombinePreviousSets(weeklySets: json, season: int, week: int) -> None:
 
 
 def SetDataWithSmashTag(season: int, week: int) -> None:
+    """Make a Json file that is more readable for humans. It will now include
+    a Smasher's Tag for the player and for each of their wins and losses.
+    Mostly used for debugging purposes."""
     playerMains = getPlayerTags()
     playerSets = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSets.json'
     with open(playerSets, "r") as file:
@@ -298,7 +311,7 @@ def ShortestPath(graphLosses: {int: {int}}, Armada: int) -> {int:int}:
     Distance = {Player: ArmadaNumber}
     """
     inTree, parent, distance = DijkstraTable(graphLosses, Armada)
-    playersLeft = {k:v for k, v in distance.items()}
+    playersLeft = {k:v for k, v in distance.items()}    # Players that not yet been choosen
 
     while True:
         # Determine next player arbitrarily
@@ -316,10 +329,9 @@ def ShortestPath(graphLosses: {int: {int}}, Armada: int) -> {int:int}:
     return parent, distance
 
 
-
-
-
 def CompletePath(shortestPath: {int: int}, distance: {int: int}, Armada: int) -> None:
+    """Input is the shortest Path. Now we want to know from any player, the exact
+    path to reach Armada with the fewest amount of players. """
     fullPath = {Armada: []}
     del distance[Armada]
 
@@ -352,6 +364,8 @@ def CompletePath(shortestPath: {int: int}, distance: {int: int}, Armada: int) ->
 
 
 def ArmadaSolver(Armada: int, season: int, week: int):
+    """It will find the shortest number of wins required to get to Armada
+    for each player."""
     graphLosses = getPlayerLosses(season, week)
     shortestPath, distance = ShortestPath(graphLosses, Armada)
     df = CompletePath(shortestPath, distance, Armada)
@@ -359,35 +373,37 @@ def ArmadaSolver(Armada: int, season: int, week: int):
     df.to_csv(armadaNumber, index = False, encoding = 'ISO-8859-1')
 
 
-
 def main():
-    # ask for week and season
-    #slug = input('Please input the smash.gg tournament slug: ')
-    season = 1
-    week = 6
-    #slug = 'tournament/training-mode-tournaments-1-200-pot-bonus'
-    #slug = 'training-mode-tournaments-6'
-    #CreateDirectories(season)
-    #Part 1
-    #info = CTData.get_event_info(slug)
-    #CombineSetData(info, season, week)
+    UI.PrintArmadaNumberWelcomeMessage()
+    choice = UI.ArmadaGeneralOption()
+    season = UI.UserSeason()
+    week = UI.UserWeek()
+    #choice = 2
+    #season = 1
+    #week = 6
+    CreateDirectories(season)
 
-    # Part 2
-    #SetDataWithSmashTag(season, week)
-
-    # 1017 - S2J
-    # Who is Armada?
-    Armada = 1017
-    ArmadaSolver(Armada, season, week)
-
-
-
+    if choice == 1:         # Collect Player Set from Smash.gg
+        slug = UI.UserSlug()
+        #slug = 'training-mode-tournaments-6'
+        info = CTData.get_event_info(slug)
+        CombineSetData(info, season, week)
+        SetDataWithSmashTag(season, week)
+        
+    elif choice == 2:       # Find Armada Number
+        SmashTag, SmasherID = findBestRankedPlayer(season, week)
+        Armada = UI.findArmada(SmashTag, SmasherID)
+        ArmadaSolver(Armada, season, week)
+        
+    else:       # Collect Player Sets and Find Armada Number
+        slug = UI.UserSlug()
+        info = CTData.get_event_info(slug)
+        CombineSetData(info, season, week)
+        SetDataWithSmashTag(season, week)
+        
+        SmashTag, SmasherID = findBestRankedPlayer(season, week)
+        Armada = findArmada(SmashTag, SmasherID)
+        ArmadaSolver(Armada, season, week)
+    
 
 main()
-
-
-
-# Still need to fact check
-# Clean up the code
-# Document it better
-# Make a basic interface
