@@ -17,7 +17,7 @@ def UserSeason() -> int:
 def UserWeek() -> int:
     """The user decides what Week it is"""
     while True:
-        week = input("What week is it? (Week of the Season) ")
+        week = input("What week is it? (Non cummulative week) ")
         try:
             week = int(week)
             if week > 0:
@@ -31,7 +31,7 @@ def UserWeek() -> int:
 def UserTMTNumber() -> int:
     """The user decides what Week it is"""
     while True:
-        TMTNumber = input("What TMT is this? (How many TMTs have there been?) ")
+        TMTNumber = input("How many total TMTs have there been? ")
         try:
             TMTNumber = int(TMTNumber)
             if TMTNumber > 0:

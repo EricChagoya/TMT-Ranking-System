@@ -29,8 +29,9 @@ def UpdateNewPlayerMains(season: int, week: int, TMTNumber: int) -> None:
     and put their SmasherID, SmashTag, and what TMT was their
     first TMT into PlayerMains.csv"""
     Mainsfile = "Data/PlayerMains.csv"
-    Mains = pd.read_csv(Mainsfile, encoding = 'ISO-8859-1')
+    Mains = pd.read_csv(Mainsfile, encoding = 'utf-8-sig')
     newPlayers = getNewPlayersSeason(season, week)
+    print(Mains.columns)
     oldPlayers = set(Mains['SmasherID'])
     for SmasherID, SmashTag in sorted(newPlayers.items(), key = lambda item: item[1]):
         if SmasherID not in oldPlayers:
@@ -42,7 +43,7 @@ def UpdateNewPlayerMains(season: int, week: int, TMTNumber: int) -> None:
 
 def UpdateTags(season: int, week: int) -> None:
     Mainsfile = "Data/PlayerMains.csv"
-    Mains = pd.read_csv(Mainsfile, encoding='utf-8-sig')
+    Mains = pd.read_csv(Mainsfile, encoding = 'utf-8-sig')
     PastPoints = f'Data/Season{season}/Records/S{season}W{week}PastPoints.csv'
     PastPoints = pd.read_csv(PastPoints, encoding = 'ISO-8859-1')
 
@@ -62,7 +63,7 @@ def UpdateTags(season: int, week: int) -> None:
     for SmasherID, SmashTag in updatedTags.items():
         location = Mains.loc[Mains['SmasherID'] == SmasherID]
         Mains.at[location.index[0], 'SmashTag'] = SmashTag
-    Mains.to_csv(Mainsfile, index = False, encoding='utf-8-sig')
+    Mains.to_csv(Mainsfile, index = False, encoding = 'utf-8-sig')
 
 
 def main():
@@ -70,8 +71,8 @@ def main():
     week = UI.UserWeek()
     TMTNumber = UI.UserTMTNumber()
     #season = 1
-    #week = 6
-    #TMTNumber = 6
+    #week = 7
+    #TMTNumber = 7
     UpdateNewPlayerMains(season, week, TMTNumber)
     UpdateTags(season, week)
 

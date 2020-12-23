@@ -385,7 +385,7 @@ def main():
 
     if choice == 1:         # Collect Player Set from Smash.gg
         slug = UI.UserSlug()
-        #slug = 'training-mode-tournaments-6'
+        #slug = 'training-mode-tournaments-7'
         info = CTData.get_event_info(slug)
         CombineSetData(info, season, week)
         SetDataWithSmashTag(season, week)
@@ -402,7 +402,7 @@ def main():
         SetDataWithSmashTag(season, week)
         
         SmashTag, SmasherID = findBestRankedPlayer(season, week)
-        Armada = findArmada(SmashTag, SmasherID)
+        Armada = UI.findArmada(SmashTag, SmasherID)
         ArmadaSolver(Armada, season, week)
     
 
