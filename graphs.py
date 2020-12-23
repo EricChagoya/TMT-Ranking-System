@@ -134,11 +134,9 @@ def RankCharacter(season: int, week: int) -> None:
     temp3 = CharacterRankGraph(RankRecords, Other, COLOROTHER, 'Other', season, week)
     legend = appendRankLegend(legend, temp2, "MidTiers")
     legend = appendRankLegend(legend, temp3, "Other")
+    legend = legend[['Character', 'SmashTag', 'Rank']]
     rankLegendLocation = f'Data/Season{season}/PlotsWebsite/S{season}W{week}RankLegend.csv'
     legend.to_csv(rankLegendLocation, index=False, encoding = "ISO-8859-1")
-
-
-
 
 
 def CharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
@@ -270,6 +268,7 @@ def PointsCharacter(season: int, week: int) -> None:
     temp3 = CharacterPointsGraph(PastPoints, Other, COLOROTHER, "Other", season, week)
     legend = appendPointsLegend(legend, temp2, "MidTiers")
     legend = appendPointsLegend(legend, temp3, "Other")
+    legend = legend[['Character', 'SmashTag', 'Points']]
     pointsLegendLocation = f'Data/Season{season}/PlotsWebsite/S{season}W{week}PointsLegend.csv'
     legend.to_csv(pointsLegendLocation, index=False, encoding = "ISO-8859-1")
     
@@ -434,15 +433,15 @@ def CombinedPointsCoast(season: int, week: int) -> None:
 
 
 def main():
-    #UI.PrintGraphWelcomeMessage()
-    #choice = UI.graphChoice()
-    #save_graphs = UI.saveGraph()
-    #season = UI.UserSeason()
-    #week = UI.UserWeek()
-    choice = 8
-    save_graphs = 2
-    season = 1
-    week = 6
+    UI.PrintGraphWelcomeMessage()
+    choice = UI.graphChoice()
+    save_graphs = UI.saveGraph()
+    season = UI.UserSeason()
+    week = UI.UserWeek()
+    #choice = 10
+    #save_graphs = 2
+    #season = 1
+    #week = 6
     
     SavingFormat(save_graphs, season)
     
