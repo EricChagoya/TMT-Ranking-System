@@ -45,7 +45,7 @@
 - Plots graphs about number of entrants, new players, and revenue
 
 
-## ArmadaNumber.py
+##### ArmadaNumber.py
 - Collects data on everyone's wins and losses in ladder and bracket
 - Determine everybody's "Armada" Number based off the highest ranked player
 
@@ -53,6 +53,8 @@
 ##### UserInterface.py
 - Small interface details
 
+
+## Useful Links
  
  [To Do List and Future Feature Ideas](https://docs.google.com/document/d/1aHgE6YX5nf8FrP0W4hysDb9TuxMNkKI6R7AvGE5YeJI/edit?usp=sharing)
  

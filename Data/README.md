@@ -62,22 +62,22 @@ W(n) being which week is it
 
 
 ## ArmadaNumber.py Output Files
-PlayerSets.json
+##### PlayerSets.json
 - Contains every player's head to head records for the season
 - Attributes: SmasherID, WinningsSets, LosingSets
 
-PlayerSetsTags.json
+##### PlayerSetsTags.json
 - Same as PlayerSets.json except it replaces SmasherID with SmashTag
 - Mostly used for debugging
 - Attributes: SmashTag, WinningsSets, LosingSets
 
-ArmadaNumber.csv
+##### ArmadaNumber.csv
 - It contains everybody's Armada number and the shortest path to get there
 - Column Names: SmashTag, Armada Number, Path
 
 
 
-## Manualy Update Files
+## Manually Update Files
 ##### PlayerMains.csv
 - A player's main. No dual main. Most played character
 - Column Names: SmasherID, SmashTag, Main
