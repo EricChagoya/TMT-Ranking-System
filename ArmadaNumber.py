@@ -6,7 +6,7 @@ import CollectTourneyData as CTData
 
 # The smash.gg API has 2 rate limits:
 # 80 requests per minute
-# 1000 objects per request
+# 1000 objects per request3
 # At the top of each query, the number of objects per query will be shown in a
 # comment (only an estimation).
 
@@ -70,30 +70,38 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
                 player['entrant']['name'], player['placement'], 0, 0,
                 player['entrant']['participants'][0]['player']['id']
             ]
-            
-    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: 302 at most
+
+    # ESTIMATED NUMBER OF OBJECTS OBTAINED PER QUERY: ???
     query = '''
     query EventSets($eventId: ID!, $page: Int!, $perPage: Int!) {
-      event(id: $eventId) {
-        id
-        name
-        sets(
-          page: $page
-          perPage: $perPage
-          sortType: STANDARD
-        ) {
-          nodes {
-            winnerId
-            slots{
-              entrant{
-                id
+          event(id: $eventId) {
+            id
+            name
+            sets(
+              page: $page
+              perPage: $perPage
+              sortType: STANDARD
+            ) {
+              nodes {
+                winnerId
+                slots{
+                  entrant{
+                    id
+                    name
+                  }
+                  standing{
+                    stats{
+                      score{
+                        value
+                      }
+                    }
+                  }
+                }
               }
             }
           }
         }
-      }
-    }
-    '''
+       '''
 
     playerSets = dict()     # {'playerID': [[WinsID], [LossesID]]}
 
@@ -105,20 +113,28 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
             winner = player['winnerId']
             entrants = [player['slots'][0]['entrant']['id'],
                         player['slots'][1]['entrant']['id']]
+
+            # get winner, loser, and loser's score
             if entrants[0] == winner:
                 loser = entrants[1]
             else:
                 loser = entrants[0]
+            loserScore = min(player['slots'][0]['standing']['stats']['score']
+                ['value'], player['slots'][1]['standing']['stats']['score']
+                ['value'])
 
-            winner = stats[winner][-1]
-            loser = stats[loser][-1]
-            if winner not in playerSets:
-                playerSets[winner] = [[], []]
-            if loser not in playerSets:
-                playerSets[loser] = [[], []]
+            if (loserScore != -1):      # only add set if it is not a DQ
+                winner = stats[winner][-1]
+                loser = stats[loser][-1]
+                if winner not in playerSets:
+                    playerSets[winner] = [[], []]
+                if loser not in playerSets:
+                    playerSets[loser] = [[], []]
 
-            playerSets[winner][0].append(loser)
-            playerSets[loser][1].append(winner)
+                playerSets[winner][0].append(loser)
+                playerSets[loser][1].append(winner)
+            else:
+                print(f"DQ Found! {player['slots'][0]['entrant']['name']} vs. {player['slots'][1]['entrant']['name']} not added.")
     return playerSets
 
 
@@ -142,7 +158,7 @@ def CombineSetData(info: {str: int}, season: int, week: int) -> None:
     """It combines the sets from ladder and final bracket."""
     data = []
     for eventName, eventId in info.items():
-        pageCounts = CTData.get_page_counts(eventId)
+        pageCounts = CTData.get_page_counts(eventId, 50)    # halved the number of items per page from normal to handle the extra query code that checks DQs
         data.append(getPlayerSets(eventId, pageCounts))    
     master = dict()
     allPlayers = data[0].keys() | data[1].keys() | data[2].keys()
@@ -385,7 +401,7 @@ def main():
 
     if choice == 1:         # Collect Player Set from Smash.gg
         slug = UI.UserSlug()
-        #slug = 'training-mode-tournaments-7'
+        #slug = 'training-mode-tournaments-6'
         info = CTData.get_event_info(slug)
         CombineSetData(info, season, week)
         SetDataWithSmashTag(season, week)
