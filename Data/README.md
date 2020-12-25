@@ -60,9 +60,29 @@ W(n) being which week is it
 - Column Names: Rank, ChangeInRank, SmashTag, Coast, Wins, Losses, Win%, NumTMTEntered, NumInBracket, BankRoll Bills
 
 
+
+## ArmadaNumber.py Output Files
+PlayerSets.json
+- Contains every player's head to head records for the season
+- Attributes: SmasherID, WinningsSets, LosingSets
+
+PlayerSetsTags.json
+- Same as PlayerSets.json except it replaces SmasherID with SmashTag
+- Mostly used for debugging
+- Attributes: SmashTag, WinningsSets, LosingSets
+
+ArmadaNumber.csv
+- It contains everybody's Armada number and the shortest path to get there
+- Column Names: SmashTag, Armada Number, Path
+
+
+
 ## Manualy Update Files
 ##### PlayerMains.csv
 - A player's main. No dual main. Most played character
-- This will be updated manually
 - Column Names: SmasherID, SmashTag, Main
   
+
+##### TMTRevenue.csv
+- The revenue, cost, and total profit for the entire series
+- Column Names: Week, Amount, Reason

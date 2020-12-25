@@ -83,7 +83,7 @@ def PrintGraphWelcomeMessage() -> None:
     print("4. Points of the Top 10 Players")
     print("5. Combined Points for both Coasts")
     print("6. Coast Entrants Bar Graph")
-    print("7. Number of New Graph")
+    print("7. Number of New Players Graph")
     print("8. The number of tournament attendees enter")
     print("9. Revenue")
     print("10. All Website Graphs")
@@ -171,18 +171,6 @@ def findArmada(bestRank: str, bestRankID: int) -> int:
         except:
             pass
         print("Please use an integer")
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

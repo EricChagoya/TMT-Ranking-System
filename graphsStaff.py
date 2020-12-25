@@ -82,52 +82,62 @@ def CoastEntrantsGraph(season: int, week: int, FORMAT:int) -> None:
 
 
 # 7
-def getNewPlayerData(season, week) -> 'df':
+def getNewPlayerData(season: int, week: int, cummulativeWeek: int) -> 'df':
     """Get the total number of attendees, number of returning players, and
     number of unique players for each tournament.
     [TotalnumAttendees, oldPlayers, newPlayers] """
     # Need to completely change this function
-    
     Placements = f'Data/Season{season}/Records/S{season}W{week}Placements.csv'
     Placements = pd.read_csv(Placements, encoding = "ISO-8859-1")
-    players = {row['SmasherID'] for index, row in Placements.iterrows()}
-    # Used to determine new players. Change this later for season 2
 
-    count = {i: [0, 0, 0] for i in range(1, week + 1)}
-    # Key is the Week number
-    # Values are [TotalnumAttendees, oldPlayers, newPlayers]
-    t= 0
+    Mains = 'Data/PlayerMains.csv'
+    Mains = pd.read_csv(Mains, encoding = 'utf-8-sig')
+    
+    # Finds the cummulative weeks for the past N weeks
+    display = 12
+    startWeek = cummulativeWeek - display + 1
+    if startWeek < 1:
+        startWeek = 1
+    weeksSeason = [i for i in range(startWeek, cummulativeWeek + 1)]
+    count = {i: [0, 0, 0] for i in range(startWeek, cummulativeWeek + 1)}
+    newPlayers = {row['SmasherID']:row['FirstTMT'] for index, row in Mains.iterrows() \
+                                                      if row['FirstTMT'] in weeksSeason}
+
     for _, row in Placements.iterrows():
         placed = [row[f'PWeek{i}'] for i in range(1, week + 1)]
         attended = [i > -2 for i in placed]     # Which tournaments did they enter
-        #madeBracket = [i > -1 for i in placed]  # Which tournaments did they make bracket
 
         for i in range(1, week + 1):
-            count[i][0] += attended[i - 1]
-            #count[i][3] += madeBracket[i - 1]
-            if row['SmasherID'] in players:     # New Player
+            currentWeek = i + startWeek - 1
+            count[currentWeek][0] += attended[i - 1]
+            
+            # New Player
+            if (row['SmasherID'] in newPlayers) and (newPlayers[row['SmasherID']] == currentWeek):
+                count[currentWeek][2] += 1
+            else:                           # Returning Player
                 if attended[i - 1] == 1:
-                    count[i][2] += 1
-                    players.remove(row['SmasherID'])
-            else:                               # Returning Player
-                if attended[i - 1] == 1:
-                    count[i][1] += 1
-                
+                    count[currentWeek][1] += 1
+##            A bug where we are counting wrong by 1 sometimes
+##            Appears for cummulative weeks 1- 4
+##            if count[currentWeek][0] != (count[currentWeek][1] + count[currentWeek][2]):
+##                print(row['SmasherID'], row['SmashTag'], "Week:", currentWeek)
+##                print(count[currentWeek][0])
+##                print(count[currentWeek][1] + count[currentWeek][2])
+##                print(count)
+##                return
+
     df = pd.DataFrame.from_dict(count, orient ='index')
     column_names = {0: 'Total',
                     1: 'Returning Players',
                     2: 'New Players'}
-                    #3: 'Players In Bracket'}
-##    0   1   2
-##1   60   0  60
-##2   54  19  35
     return df.rename(columns = column_names)
 
 
-def NewPlayersGraph(season: int, week: int, FORMAT: int) -> None:
+
+def NewPlayersGraph(season: int, week: int, cummulativeWeek: int, FORMAT: int) -> None:
     """Plots a bar graph of the total number of attendees, returning players,
     and players who have never entered a TMT. """
-    Entrants = getNewPlayerData(season, week)
+    Entrants = getNewPlayerData(season, week, cummulativeWeek)
     fig = px.bar(Entrants, barmode='group',
                  color_discrete_sequence = px.colors.qualitative.Dark24)
 
@@ -146,7 +156,7 @@ def NewPlayersGraph(season: int, week: int, FORMAT: int) -> None:
     fig.update_layout(font = dict(size= 30))
     fig.update_layout(showlegend = True)
     fig.update_layout(legend = dict(font_size = 30))
-    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}TMTDetails.jpeg")
+    presentFile(fig, FORMAT, f"Data/Season{season}/PlotsStaff/S{season}W{week}NewPlayers.jpeg")
 
 
 

@@ -354,13 +354,13 @@ def CompletePath(shortestPath: {int: int}, distance: {int: int}, Armada: int) ->
         else:
             path = f'{IdTags[Armada]}'
             for p in fullPath[player][1:]:
-                path += f' <- {IdTags[p]}'
+                path += f' < {IdTags[p]}'
         
         new_row = {f'{IdTags[Armada]} Number': d,
                    'SmashTag': IdTags[player],
                    'Path': path}
         df = df.append(new_row, ignore_index = True)
-    return df[[f'{IdTags[Armada]} Number', 'SmashTag', 'Path']]
+    return df[['SmashTag', f'{IdTags[Armada]} Number', 'Path']]
 
 
 def ArmadaSolver(Armada: int, season: int, week: int):

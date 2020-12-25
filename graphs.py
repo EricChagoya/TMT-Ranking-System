@@ -28,12 +28,15 @@ CHARORDER = ['Fox', 'Falco', 'Marth', 'Sheik',
 
 MIDTIERS = {'Pikachu': '#ffff00',   # Piss Yellow
             'Samus': '#ff9900',     # Redish Orange
-            'Doc': '#f2f2f2',       # White/ Gray
-            'Yoshi': '#009933',     # Dark Green
+            'Doc': '#4d4d4d',       # White/ Gray
+            'Yoshi': '#99ff66',     # Dark Green
             'Luigi': '#009933',     # Slippi Green
-            'Ganon': '#660000'}     # Maroon
+            'Ganon': '#660000',     # Maroon
+            'DK': '#663300'}
+
 MIDTIERORDER = ['Pikachu', 'Samus', 'Doc',
-                'Yoshi', 'Luigi', 'Ganon']
+                'Yoshi', 'Luigi', 'Ganon',
+                'DK']
 
 COLOROTHER = '#808080'      # Gray
 
@@ -438,6 +441,7 @@ def main():
     save_graphs = UI.saveGraph()
     season = UI.UserSeason()
     week = UI.UserWeek()
+    cummulativeWeek = UI.UserTMTNumber()
     #choice = 10
     #save_graphs = 2
     #season = 1
@@ -448,7 +452,6 @@ def main():
     if choice == 1:
         # Plots every rank based off character
         RankCharacter(season, week)
-        #SetupRank(season, week)
         
     elif choice == 2:
         # Plots the rank of the top 10
@@ -472,7 +475,7 @@ def main():
         
     elif choice == 7:
         # Plots Total Entrants, Returning Players, and New Players
-        GS.NewPlayersGraph(season, week, FORMAT)
+        GS.NewPlayersGraph(season, week, cummulativeWeek, FORMAT)
 
     elif choice == 8:
         # Plots how many TMTs the average attendee entered for that season
