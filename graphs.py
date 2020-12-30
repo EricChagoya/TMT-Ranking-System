@@ -496,7 +496,7 @@ def main():
     elif choice == 11:
         # Plots for Staff
         GS.CoastEntrantsGraph(season, week, FORMAT)
-        GS.NewPlayersGraph(season, week, FORMAT)
+        GS.NewPlayersGraph(season, week, cummulativeWeek, FORMAT)
         GS.BarGraphEntrants(season, week, FORMAT)
         GS.Revenue(season, week, FORMAT)
         
