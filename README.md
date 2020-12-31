@@ -50,6 +50,10 @@
 - Determine everybody's "Armada" Number based off the highest ranked player
 
 
+##### UpdateWebsiteSpreadSheets.py
+- It updates all the Google spreadsheets
+
+
 ##### UserInterface.py
 - Small interface details
 

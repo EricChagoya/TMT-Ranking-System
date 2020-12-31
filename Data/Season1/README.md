@@ -14,6 +14,7 @@
   - WeeklyRank.csv
   - WeeklyRankLadder.csv
   - WeeklyResults.csv
+  - RanksforBracket.csv
 
 #### PlotsStaff
 - These plots are just for the TMT Staff

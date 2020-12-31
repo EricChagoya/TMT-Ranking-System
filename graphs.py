@@ -158,7 +158,6 @@ def CharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
                                      line = dict(color = color, width = 3)))
             temp[playerTag] = int(playerRank[-1])
             
-    fig.update_layout(title = f'Season {season} {character} Ranks')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
                                    ticktext = [f'Week {i}' for i in range(1, week + 1)]))
@@ -169,6 +168,7 @@ def CharacterRankGraph(RankRecords: 'df', players: {'str'}, color: str,
     if DEBUGGING:
         fig.update_layout(showlegend = True)
         fig.update_layout(legend = dict(font_size = 20))
+        fig.update_layout(title = f'Season {season} {character} Ranks')
     else:
         fig.update_layout(showlegend = False)
     GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}Rank{character}.jpeg')
@@ -294,7 +294,6 @@ def CharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
                                      line = dict(color = color, width = 3)))
             temp[playerTag] = int(playerPoints[-1])
     
-    fig.update_layout(title = f'Season {season} {character} BankRoll Bills')
     fig.update_layout(xaxis_title = '')
     fig.update_layout(xaxis = dict(tickvals = [i for i in range(1, week + 1)], 
                                    ticktext = [f'Week {i}' for i in range(1, week + 1)]))
@@ -307,6 +306,7 @@ def CharacterPointsGraph(PastPoints: 'df', players:{'str'}, color: str,
     if DEBUGGING:
         fig.update_layout(showlegend = True)
         fig.update_layout(legend = dict(font_size = 20))
+        fig.update_layout(title = f'Season {season} {character} BankRoll Bills')
     else:
         fig.update_layout(showlegend = False)
     GS.presentFile(fig, FORMAT, f'Data/Season{season}/PlotsWebsite/S{season}W{week}Points{character}.jpeg')

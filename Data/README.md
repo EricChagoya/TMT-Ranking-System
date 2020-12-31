@@ -75,6 +75,9 @@ W(n) being which week is it
 - It contains everybody's Armada number and the shortest path to get there
 - Column Names: SmashTag, Armada Number, Path
 
+## UpdateWebsiteSpreadSheets.py Output Files
+##### RanksforBracket.csv
+- Column Names: Rank, SmashTag, EnteredTMT
 
 
 ## Manually Update Files
