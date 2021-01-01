@@ -1,5 +1,6 @@
 import os
 import requests
+import UserInterface as UI
 #pip install requests
 
 # The smash.gg API has 2 rate limits:
@@ -226,8 +227,8 @@ def get_tier(placement, hof, allstar, pro, rookie):
 
 
 if __name__ == '__main__':
-    season = input('Please input the season number: ')
-    week = input('Please input the week number: ')
+    season = UI.UserSeason()
+    week = UI.UserWeek()
 
     CreateDirectories(int(season), int(week))
     ladderLink = f'Data/Season{season}/WeeklyLadderBracket/S{season}W{week}WeeklyScoresLadder.csv'
@@ -235,41 +236,40 @@ if __name__ == '__main__':
 
     
 
-    slug = input('Please input the smash.gg tournament slug: ')
+    slug = UI.UserSlug()
     print()
     info = get_event_info(slug)
     print()
 
-    choice = int(input('Enter 1 to just get ladder results or 2 to get both ladder and bracket results: '))
-    if choice not in {1, 2}:
-        print('INVALID INPUT! Ending program.')
+    choice = UI.PrintCTDOptions()
 
-    print()
-    hofE = int(input(
-        'Input the lowest placement in East Coast Ladder with the Hall of Fame Rank (0 if NA): '))
-    allstarE = int(input(
-        'Input the lowest placement in East Coast Ladder with the All-Star Rank (Roughly): '))
-    proE = int(input(
-        'Input the lowest placement in East Coast Ladder with the Pro Rank (Roughly): '))
-    rookieE = int(input(
-        'Input the lowest placement in East Coast Ladder with the Rookie Rank (Roughly): '))
+    if choice != 2:
+        print()
+        hofE = int(input(
+            'Input the lowest placement in East Coast Ladder with the Hall of Fame Rank (0 if NA): '))
+        allstarE = int(input(
+            'Input the lowest placement in East Coast Ladder with the All-Star Rank (Roughly): '))
+        proE = int(input(
+            'Input the lowest placement in East Coast Ladder with the Pro Rank (Roughly): '))
+        rookieE = int(input(
+            'Input the lowest placement in East Coast Ladder with the Rookie Rank (Roughly): '))
 
-    print()
-    hofW = int(input(
-        'Input the lowest placement in West Coast Ladder with the Hall of Fame Rank (0 if NA): '))
-    allstarW = int(input(
-        'Input the lowest placement in West Coast Ladder with the All-Star Rank (Roughly): '))
-    proW = int(input(
-        'Input the lowest placement in West Coast Ladder with the Pro Rank (Roughly): '))
-    rookieW = int(input(
-        'Input the lowest placement in West Coast Ladder with the Rookie Rank (Roughly): '))
+        print()
+        hofW = int(input(
+            'Input the lowest placement in West Coast Ladder with the Hall of Fame Rank (0 if NA): '))
+        allstarW = int(input(
+            'Input the lowest placement in West Coast Ladder with the All-Star Rank (Roughly): '))
+        proW = int(input(
+            'Input the lowest placement in West Coast Ladder with the Pro Rank (Roughly): '))
+        rookieW = int(input(
+            'Input the lowest placement in West Coast Ladder with the Rookie Rank (Roughly): '))
 
     print()
     ladderFile = open(ladderLink, 'w')
     ladderFile.write('SmasherID,SmashTag,Wins,Losses,'
                      'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement,Coast\n')
     for eventName, eventId in info.items():
-        if eventName in {'East', 'West'}:
+        if eventName in {'East', 'West'} and choice in (1, 3):
             pageCounts = get_page_counts(eventId)
             stats = get_event_stats(eventId, pageCounts)
             for playerId, value in stats.items():
@@ -288,7 +288,7 @@ if __name__ == '__main__':
 
                 ladderFile.write('\n')
             print(f'Inputted {eventName} Coast Ladder results to {ladderLink}')
-        elif choice == 2:
+        elif eventName == 'Bracket' and choice in (2, 3):
             pageCounts = get_page_counts(eventId)
             stats = get_event_stats(eventId, pageCounts)
             bracketFile = open(bracketLink, 'w')

@@ -1,9 +1,8 @@
 
-
 def UserSeason() -> int:
     """The user decides what Season it is"""
     while True:
-        season = input("What week Season is it? ")
+        season = input("What season is it? ")
         try:
             season = int(season)
             if season >= 0:
@@ -89,7 +88,7 @@ def PrintGraphWelcomeMessage() -> None:
     print("10. All Website Graphs")
     print("11. All TMT Staff Graphs")
     print()
-    
+
 
 def graphChoice() -> int:
     """The user decides what type of graph they want to create
@@ -174,3 +173,21 @@ def findArmada(bestRank: str, bestRankID: int) -> int:
 
 
 
+############# CollectTourneyData ########################
+
+def PrintCTDOptions() -> int:
+    print("What do you want to do?")
+    print("1. Get Ladder Results")
+    print("2. Get Bracket Results")
+    print("3. Both")
+    while True:
+        option = input("User Choice: ")
+        try:
+            option = int(option)
+        except:
+            pass
+        if option in (1, 2, 3):
+            return option
+        else:
+            print("Choose 1, 2, or 3")
+            print()
