@@ -119,22 +119,29 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
                 loser = entrants[1]
             else:
                 loser = entrants[0]
-            loserScore = min(player['slots'][0]['standing']['stats']['score']
-                ['value'], player['slots'][1]['standing']['stats']['score']
-                ['value'])
 
-            if (loserScore != -1):      # only add set if it is not a DQ
-                winner = stats[winner][-1]
-                loser = stats[loser][-1]
-                if winner not in playerSets:
-                    playerSets[winner] = [[], []]
-                if loser not in playerSets:
-                    playerSets[loser] = [[], []]
+            if (player['slots'][0]['standing']['stats']['score']
+                ['value'] != None and player['slots'][1]['standing']['stats']['score']
+                ['value'] != None):
 
-                playerSets[winner][0].append(loser)
-                playerSets[loser][1].append(winner)
+                loserScore = min(player['slots'][0]['standing']['stats']['score']
+                    ['value'], player['slots'][1]['standing']['stats']['score']
+                    ['value'])
+
+                if (loserScore != -1):      # only add set if it is not a DQ
+                    winner = stats[winner][-1]
+                    loser = stats[loser][-1]
+                    if winner not in playerSets:
+                        playerSets[winner] = [[], []]
+                    if loser not in playerSets:
+                        playerSets[loser] = [[], []]
+
+                    playerSets[winner][0].append(loser)
+                    playerSets[loser][1].append(winner)
+                else:
+                    print(f"DQ Found! {player['slots'][0]['entrant']['name']} vs. {player['slots'][1]['entrant']['name']} not added.")
             else:
-                print(f"DQ Found! {player['slots'][0]['entrant']['name']} vs. {player['slots'][1]['entrant']['name']} not added.")
+                print(f"Error: {player['slots'][0]['entrant']['name']} vs. {player['slots'][1]['entrant']['name']} not added.")
     return playerSets
 
 

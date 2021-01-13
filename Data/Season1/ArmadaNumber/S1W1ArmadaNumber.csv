@@ -1,0 +1,61 @@
+Ginger Number,SmashTag,Path
+0,Ginger,
+1,LSD,Ginger
+1,Golden,Ginger
+1,KoDoRiN,Ginger
+2,Revenge | Gahtzu,Ginger <- LSD
+2,Dom,Ginger <- LSD
+2,bobby big ballz,Ginger <- Golden
+2,ABG | salami,Ginger <- KoDoRiN
+2,CLG. | SFAT,Ginger <- KoDoRiN
+2,S2J,Ginger <- KoDoRiN
+3,Milo,Ginger <- LSD <- Dom
+3,306 | Amrak,Ginger <- Golden <- bobby big ballz
+3,306 | Polo,Ginger <- KoDoRiN <- ABG | salami
+3,SANS | Blues Clues,Ginger <- KoDoRiN <- ABG | salami
+3,cliché,Ginger <- Golden <- bobby big ballz
+3,Chem,Ginger <- KoDoRiN <- ABG | salami
+3,yingling,Ginger <- Golden <- bobby big ballz
+3,Fiction,Ginger <- Golden <- bobby big ballz
+4,Captain G,Ginger <- LSD <- Dom <- Milo
+4,Hulka,Ginger <- Golden <- bobby big ballz <- 306 | Amrak
+4,Vitro,Ginger <- Golden <- bobby big ballz <- yingling
+4,MIOM | Toph,Ginger <- Golden <- bobby big ballz <- yingling
+4,DarkGenex,Ginger <- LSD <- Dom <- Milo
+4,EP | Justus,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues
+4,Marrgasm,Ginger <- Golden <- bobby big ballz <- 306 | Amrak
+4,Thad <3,Ginger <- Golden <- bobby big ballz <- yingling
+4,Dawson,Ginger <- LSD <- Dom <- Milo
+4,GHQ | Zamu,Ginger <- LSD <- Dom <- Milo
+4,ANTIFA CEO | Quiggles,Ginger <- LSD <- Dom <- Milo
+4,RedX,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues
+4,billybopeep,Ginger <- Golden <- bobby big ballz <- yingling
+4,DD,Ginger <- KoDoRiN <- ABG | salami <- 306 | Polo
+5,2Framez,Ginger <- LSD <- Dom <- Milo <- Captain G
+5,jams,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues <- RedX
+5,GST | Ryobeat,Ginger <- LSD <- Dom <- Milo <- Captain G
+5,W8ASec,Ginger <- Golden <- bobby big ballz <- yingling <- Vitro
+5,OtES,Ginger <- LSD <- Dom <- Milo <- ANTIFA CEO | Quiggles
+5,Pipe,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues <- EP | Justus
+5,Slump,Ginger <- Golden <- bobby big ballz <- yingling <- Thad <3
+5,NOOT,Ginger <- Golden <- bobby big ballz <- 306 | Amrak <- Marrgasm
+5,Musashi,Ginger <- Golden <- bobby big ballz <- yingling <- MIOM | Toph
+5,Hunybear,Ginger <- LSD <- Dom <- Milo <- Captain G
+5,Alex18+,Ginger <- LSD <- Dom <- Milo <- ANTIFA CEO | Quiggles
+6,DiscipleOfBorp,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues <- RedX <- jams
+6,Miranda,Ginger <- LSD <- Dom <- Milo <- ANTIFA CEO | Quiggles <- Alex18+
+6,Strazz,Ginger <- LSD <- Dom <- Milo <- ANTIFA CEO | Quiggles <- Alex18+
+6,TG NBR | Panos,Ginger <- LSD <- Dom <- Milo <- Captain G <- GST | Ryobeat
+6,TheFormuoli,Ginger <- KoDoRiN <- ABG | salami <- SANS | Blues Clues <- RedX <- jams
+6,Ringler,Ginger <- Golden <- bobby big ballz <- yingling <- Thad <3 <- Slump
+7,Theftz,Ginger <- Golden <- bobby big ballz <- yingling <- Thad <3 <- Slump <- Ringler
+7,Chewy,Ginger <- LSD <- Dom <- Milo <- Captain G <- GST | Ryobeat <- TG NBR | Panos
+NA,ericiscool.net,NA
+NA,CarltonDanks,NA
+NA,Frost | JJK,NA
+NA,N8V,NA
+NA,Blue Jay,NA
+NA,Fishpaste,NA
+NA,radvillainy,NA
+NA,Pawn,NA
+NA,Afron,NA
