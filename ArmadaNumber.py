@@ -80,7 +80,7 @@ def getPlayerSets(eventId: int, pageCounts: (int, int, int)) -> {int: [[int], [i
             sets(
               page: $page
               perPage: $perPage
-              sortType: STANDARD
+              sortType: RECENT
             ) {
               nodes {
                 winnerId

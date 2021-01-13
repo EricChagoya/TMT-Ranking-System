@@ -172,7 +172,7 @@ def get_event_stats(eventId: int, pageCounts: (int, int, int)) -> \
         sets(
           page: $page
           perPage: $perPage
-          sortType: STANDARD
+          sortType: RECENT
         ) {
           nodes {
             winnerId
