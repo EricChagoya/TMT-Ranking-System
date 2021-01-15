@@ -110,6 +110,7 @@ def updateRanks(credentials: 'credentials', season: int, week: int) -> None:
     wks_name = 'Ranks'
     websiteSheets = ['Fox', 'Falco', 'Marth', 'Sheik', 'Falcon',
                      'Puff', 'Peach', 'ICs', 'MidTiers', 'Other']
+    print("Ranks")
     
     characters = f'Data/Season{season}/PlotsWebsite/S{season}W{week}RankLegend.csv'
     characters = pd.read_csv(characters, encoding = 'ISO-8859-1')
@@ -131,6 +132,7 @@ def updatePoints(credentials: 'credentials', season: int, week: int) -> None:
     wks_name = 'Bills'
     websiteSheets = ['Fox', 'Falco', 'Marth', 'Sheik', 'Falcon',
                      'Puff', 'Peach', 'ICs', 'MidTiers', 'Other']
+    print("Points")
     
     characters = f'Data/Season{season}/PlotsWebsite/S{season}W{week}PointsLegend.csv'
     characters = pd.read_csv(characters, encoding = 'ISO-8859-1')
@@ -156,9 +158,9 @@ def main():
     credentials = getClient()
 
     updateWeeklyFiles(credentials, season, week)
-    time.sleep(100)
+    time.sleep(50)
     updateRanks(credentials, season, week)
-    time.sleep(100)
+    time.sleep(50)
     updatePoints(credentials, season, week)
 
     
