@@ -58,13 +58,13 @@ def get_event_info(slug: str) -> {str: int}:
 
     info = dict()
     for event in result['data']['tournament']['events']:
-        if 'East' in event['name']:
+        if 'Melee Ladder East Coast' in event['name']:
             info['East'] = event['id']
             #print('East Coast Ladder Found!:', event['name'])
-        elif 'West' in event['name']:
+        elif 'Melee Ladder West Coast' in event['name']:
             info['West'] = event['id']
             #print('West Coast Ladder Found!:', event['name'])
-        elif 'Main' in event['name']:
+        elif 'Melee Singles Main Bracket' in event['name']:
             info['Bracket'] = event['id']
             #print('Main Bracket Found!:', event['name'])
         else:
@@ -265,7 +265,7 @@ if __name__ == '__main__':
             'Input the lowest placement in West Coast Ladder with the Rookie Rank (Roughly): '))
 
     print()
-    ladderFile = open(ladderLink, 'w', encoding='utf-8')
+    ladderFile = open(ladderLink, 'w')
     ladderFile.write('SmasherID,SmashTag,Wins,Losses,'
                      'Prospect,Rookie,Pro,AllStar,HallOfFame,Placement,Coast\n')
     for eventName, eventId in info.items():
@@ -291,7 +291,7 @@ if __name__ == '__main__':
         elif eventName == 'Bracket' and choice in (2, 3):
             pageCounts = get_page_counts(eventId)
             stats = get_event_stats(eventId, pageCounts)
-            bracketFile = open(bracketLink, 'w', encoding='utf-8')
+            bracketFile = open(bracketLink, 'w')
             bracketFile.write('SmasherID,SmashTag,Wins,Losses,Placement\n')
             for playerId, value in stats.items():
                 bracketFile.write(str(playerId) + ',')
