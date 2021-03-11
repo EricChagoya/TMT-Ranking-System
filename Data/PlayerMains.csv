@@ -75,7 +75,7 @@
 15948,glum oinkin',Falcon,2
 147251,GS | TreyTheTrashman,Sheik,2
 301566,JustJoshin,Falco,2
-18722,RE!GN,Ganon,2
+18722,K.H.D | RE!GN,Ganon,2
 229216,KaiKwonDo,Falco,2
 2085246,kippu,Marth,2
 28793,Light,Falco,2
@@ -174,9 +174,9 @@
 858866,SLO | GrizzlyBair,Puff,4
 862074,snacklepackle,Falcon,4
 694759,snek,Samus,4
-4317,donk,Fox,4
+4317,Solomon,Fox,4
 130672,Soltrain,Peach,4
-147424,Krudo,Sheik,4
+147424,Spiral Cafe | Krudo,Sheik,4
 56287,Sporsinick,Samus,4
 54316,Stone,Fox,4
 2011811,sucordie,Falcon,4
@@ -278,10 +278,10 @@
 1261759,melatonin,Falco,7
 158003,Mono,Yoshi,7
 982735,MordecaiPielord,Sheik,7
-4390,NGG | Jflex,Sheik,7
+4390,Jflex,Sheik,7
 1554675,NoFuxGiven,Falco,7
 312097,Nyte,Puff,7
-623333,ParkedInTraffic | Commas,Sheik,7
+623333,Echo_SSBM | Commas,Sheik,7
 2094677,peenlover,Falcon,7
 395730,PQ2 | CPU0,Puff,7
 1597042,Rome0,Fox,7
@@ -455,7 +455,7 @@
 221136,Zeeker,Marth,10
 153138,ZouL,Fox,10
 232446,ash6,Marth,10
-1974127,Team Roz | aujory,Sheik,10
+1974127,Roz's Friend | aujory,Sheik,10
 145075,blazerboy,Fox,10
 1998865,buttcakes29,Falcon,10
 46752,doby,Falco,10
@@ -530,7 +530,7 @@
 1184224,Tancascade,Marth,11
 62632,TheRed,Marth,11
 507912,Top Shelf | Dulbasaur,Fox,11
-62721,UL | Dirty Lasagna,Falcon,11
+62721,Dirty Lasagna,Falcon,11
 279757,Velos,Falco,11
 13956,Vino,Fox,11
 71442,Wiza,Marth,11
@@ -629,7 +629,7 @@
 1308234,JackO,Falco,13
 1669002,JehL,Falco,13
 378512,Khoron | Oreo,Falco,13
-2177428,KYROS | Chuchaka2112,,13
+2177428,Chuchaka2112,,13
 1232194,Kawaii Kid | King Salmon,,13
 215584,LAGr | Travioli,,13
 271333,MMG | Seven,,13
@@ -688,84 +688,139 @@
 45726,Faust,Puff,15
 732665,Lama,Puff,15
 1076996,Newquake,Falcon,15
-229209,15SA | Raiken,,16
-1122123,Alex AF,,16
-172811,Amity,,16
-283648,MDF | Amor,,16
-179993,Archi,,16
-36538,Bayløck,,16
-47304,Boyz II Mensch,,16
-29984,Broasty,,16
-843302,Buffalo,,16
-1736473,Comp... | PJThePuff,,16
-726185,DBRDd#641,,16
-2053276,DT6 | Ogre,,16
-491552,DannyPhantom,,16
-531485,Dova,,16
-22551,Eddyvandamn,,16
-12023,El Link,,16
-10968,Enemy,,16
-1375808,Epoodle,,16
-2189946,GNIK,,16
-18840,Gooms,,16
-581039,I'm Michael BTW,,16
-897692,Iron,,16
-68868,Jr,,16
-519399,Leviath,,16
-1261736,Mars,,16
-23615,Noc,,16
-129500,O N I,,16
-231083,Phaunsey,,16
-416070,Pooptown,,16
-23214,Potts,,16
-243525,Radamen,,16
-15087,Reese,,16
-592481,Riggs,,16
-1379261,S.O.D.A,,16
-226271,SU | wild flower,,16
-1954849,Salamanderman,,16
-259856,Seraph,,16
-48041,Slade,,16
-517095,TG CS | EBND,,16
-1458782,Tomato,,16
-15504,Umarth,,16
-2111039,Uncle B,,16
-175629,WRLD,,16
-4205,a-on,,16
-1053202,diddylonglegs,,16
-10067,icecream,,16
-1034371,niimo,,16
-2110985,theassistant,,16
-2124348,thehumanblob,,16
-3977,B0XX | Sicca,,17
-247592,Bassline,,17
-836691,BeanBurrito-San,,17
+229209,15SA | Raiken,Marth,16
+1122123,Alex AF,Falcon,16
+172811,Amity,Luigi,16
+283648,MDF | Amor,Puff,16
+179993,Archi,Fox,16
+36538,Bayløck,Doc,16
+47304,Boyz II Mensch,Luigi,16
+29984,Broasty,Falco,16
+843302,Buffalo,Falco,16
+1736473,Comp... | PJThePuff,Puff,16
+726185,DBRDd#641,Falco,16
+2053276,#215 | Ogre,Falco,16
+491552,DannyPhantom,Fox,16
+531485,Dova,Falco,16
+22551,Eddyvandamn,Fox,16
+12023,El Link,Link,16
+10968,Enemy,Fox,16
+1375808,Epoodle,Marth,16
+2189946,GNIK,Fox,16
+18840,Gooms,Fox,16
+581039,I'm Michael BTW,Falco,16
+897692,Iron,Fox,16
+68868,Jr,Falco,16
+519399,Leviath,Fox,16
+1261736,Mars,Fox,16
+23615,Noc,Falcon,16
+129500,O N I,Fox,16
+231083,Phaunsey,Fox,16
+416070,Pooptown,Falcon,16
+23214,Potts,Falco,16
+243525,Radamen,Sheik,16
+15087,Reese,Fox,16
+592481,Riggs,Peach,16
+1379261,S.O.D.A,Fox,16
+226271,SU | wild flower,Fox,16
+1954849,Salamanderman,Puff,16
+259856,Seraph,Falco,16
+48041,Slade,Fox,16
+517095,TG CS | EBND,Fox,16
+1458782,Tomato,Falcon,16
+15504,Umarth,Marth,16
+2111039,Uncle B,Sheik,16
+175629,WRLD,Falco,16
+4205,a-on,Marth,16
+1053202,diddylonglegs,Falco,16
+10067,icecream,Fox,16
+1034371,niimo,Falco,16
+2110985,theassistant,Falco,16
+2124348,thehumanblob,Marth,16
+3977,B0XX | Sicca,Marth,17
+247592,Bassline,Falcon,17
+836691,BeanBurrito-San,Fox,17
 253767,Captain Pretzel,,17
 618813,Chance,,17
 213297,Chompy,,17
-6839,Drephen,,17
-179962,Fran,,17
+6839,Drephen,Sheik,17
+179962,Fran,Falcon,17
 37865,INDY,,17
 2184214,Joobey,,17
 883137,Keppler,,17
 449526,King,,17
 16164,Kitsune,,17
 427342,Lamonster,,17
-2175146,McLovin,,17
+2175146,Thumos,Falco,17
 4929,Melee Stats | Ambisinister,,17
-262000,Minty Hippo,,17
+262000,Minty Hippo,Falco,17
 460428,Moshi,,17
 890721,Mr. Butterfly,,17
-519779,NJ | Tommy,,17
+519779,Tommy,,17
 348589,Okami,,17
 3949,Project Pat,,17
-250355,Rutsky,,17
+250355,Rutsky,Falco,17
 2161709,SpiritGun,,17
-519644,Stoon,,17
-1931842,TPYO,,17
+519644,Stoon,Luigi,17
+1931842,TPYO,Falco,17
 287589,The Elder Statesman,,17
 226595,TourGuide,,17
 2208548,Zant,,17
 2207286,davidparkpark,,17
-1194651,gsm | Pound,,17
-1941140,kennypenny,,17
+1194651,Pound,,17
+1941140,Moist | kennypenny,,17
+5714,092 | LXIX,,18
+1665299,2Pro4Pro | Toastrmann,,18
+41374,Anchovy,,18
+1682862,ArtlexPlays,,18
+1791375,AzLuFa,,18
+26623,B0XX | ADMJ,,18
+928033,CarbonDog,,18
+1257072,Chaboomba,,18
+227436,Chet,,18
+26934,Clay,,18
+260631,Coco,,18
+1833185,Danimals,,18
+2194031,Dorian uwu,,18
+227672,DumpyComb,,18
+128266,EASTJ | Mike,,18
+323499,Edier,,18
+14049,Fasthands,,18
+1601,FendrickLamar,,18
+149076,Fiyah,,18
+44933,Fleece,,18
+1844112,FoUr,,18
+1077796,FreeHops,,18
+7962,FreeMelee | Zuppy,,18
+25351,Hell'sLabyrinth,,18
+134929,IDK,,18
+27780,IHOP Dan,,18
+2184641,JoJoMyth,,18
+137480,Jpeg | RC,,18
+363202,Luigi Gang | Brownie,,18
+171201,Mootook,,18
+7676,MrDrBoi,,18
+869465,NSB  |  KXT,,18
+4176,NathanSandwich,,18
+2216222,Nayolfa,,18
+10268,PLEB | Capy,,18
+22333,Redcoat,,18
+33458,RustyTrombone,,18
+172046,Saya | QQQ#348,,18
+1088,Scar,,18
+34351,Simon,,18
+2086583,SirTaco,,18
+26187,Slowking,,18
+36403,Smashdaddy,,18
+63313,Sneakywill,,18
+34180,Socknose,,18
+269511,SquidTheCat,,18
+1654446,TR | Lunez,,18
+407048,WA | AodhaN,,18
+1634098,Zuber,,18
+1377337,bluecd,,18
+28815,doctahdylan,,18
+1105215,krizzy,,18
+1106504,omnijr,,18
+7764,sfy | Fizz,,18
+2148920,thicceon,,18
