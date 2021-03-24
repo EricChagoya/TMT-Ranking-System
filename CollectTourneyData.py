@@ -200,9 +200,11 @@ def get_event_stats(eventId: int, pageCounts: (int, int, int)) -> \
                 loser = entrants[1]
             else:
                 loser = entrants[0]
-
-            stats[winner][2] += 1
-            stats[loser][3] += 1
+            try:
+                stats[winner][2] += 1
+                stats[loser][3] += 1
+            except KeyError:
+                pass
 
     playerIdDict = dict()
     for player in stats.values():

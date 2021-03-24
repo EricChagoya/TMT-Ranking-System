@@ -280,19 +280,22 @@ def SetDataWithSmashTag(season: int, week: int) -> None:
 
     total = []
     for player in playerSets:
-        wins = dict()
-        for winsID, record in player['WinningSets'].items():
-            wins[playerMains[int(winsID)]] = record
-            
-        losses = dict()
-        for lossesID, record in player['LosingSets'].items():
-            losses[playerMains[int(lossesID)]] = record
+        try:
+            wins = dict()
+            for winsID, record in player['WinningSets'].items():
+                wins[playerMains[int(winsID)]] = record
 
-        SmashTagSets = {'SmashTag': playerMains[player['SmasherID']],
-                        'SmasherID': player['SmasherID'],
-                        'WinningSets': wins,
-                        'LosingSets': losses}
-        total.append(SmashTagSets)
+            losses = dict()
+            for lossesID, record in player['LosingSets'].items():
+                losses[playerMains[int(lossesID)]] = record
+
+            SmashTagSets = {'SmashTag': playerMains[player['SmasherID']],
+                            'SmasherID': player['SmasherID'],
+                            'WinningSets': wins,
+                            'LosingSets': losses}
+            total.append(SmashTagSets)
+        except KeyError:
+            pass
     
     playerSetsTags = f'Data/Season{season}/ArmadaNumber/S{season}W{week}PlayerSetsTags.json'
     with open(playerSetsTags, "w") as outfile:
@@ -371,18 +374,21 @@ def CompletePath(shortestPath: {int: int}, distance: {int: int}, Armada: int) ->
     df = pd.DataFrame(data)
 
     for player, d in sorted(distance.items(), key = (lambda x: x[1]) ):
-        if fullPath[player] == ['NA']:
-            path = 'NA'
-            d = 'NA'
-        else:
-            path = f'{IdTags[Armada]}'
-            for p in fullPath[player][1:]:
-                path += f' < {IdTags[p]}'
-        
-        new_row = {f'{IdTags[Armada]} Number': d,
-                   'SmashTag': IdTags[player],
-                   'Path': path}
-        df = df.append(new_row, ignore_index = True)
+        try:
+            if fullPath[player] == ['NA']:
+                path = 'NA'
+                d = 'NA'
+            else:
+                path = f'{IdTags[Armada]}'
+                for p in fullPath[player][1:]:
+                    path += f' < {IdTags[p]}'
+
+            new_row = {f'{IdTags[Armada]} Number': d,
+                       'SmashTag': IdTags[player],
+                       'Path': path}
+            df = df.append(new_row, ignore_index = True)
+        except KeyError:
+            pass
     return df[['SmashTag', f'{IdTags[Armada]} Number', 'Path']]
 
 
