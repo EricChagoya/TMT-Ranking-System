@@ -42,7 +42,7 @@
 265808,NOOT,Falco,1
 45356,OtES,Fox,1
 40403,Pawn,Falco,1
-61897,lluZ | PEP | LSD,Marth,1
+61897,LSD,Marth,1
 627118,Pipe,Sheik,1
 155077,radvillainy,Falcon,1
 38643,RedX,Link,1
@@ -66,7 +66,7 @@
 148200,Big Pivot,Marth,2
 54390,Bonn Esports | Question,Marth,2
 657464,CowCowCowCowCow,Ganon,2
-735376,Ripn,Puff,2
+735376,CVSmashMods | Ripn,Puff,2
 183400,Doctor Dank,Doc,2
 47866,Erik,Fox,2
 250581,Fizz,Sheik,2
@@ -144,7 +144,7 @@
 219919,Frozone,Falco,4
 22479,Peppi | CrossFitJesus,Sheik,4
 2029721,Ghost Rider,Falco,4
-37116,Kürv,Fox,4
+37116,GUG | Kürv,Fox,4
 64260,Tayhow,Fox,4
 230537,hHerb,Falco,4
 420458,Jorge,Fox,4
@@ -278,7 +278,7 @@
 1261759,melatonin,Falco,7
 158003,Mono,Yoshi,7
 982735,MordecaiPielord,Sheik,7
-4390,NGG | Jflex,Sheik,7
+4390,CG | Jflex,Sheik,7
 1554675,NoFuxGiven,Falco,7
 312097,Nyte,Puff,7
 623333,Echo_SSBM | Commas,Sheik,7
@@ -297,7 +297,7 @@
 27754,Chummi,Falco,8
 1839605,DontTestMe,Sheik,8
 10228,Flow | Stark,Fox,8
-7277,GOL | JSalt,Sheik,8
+7277,Crescent | JSalt,Sheik,8
 1631004,Homeslice,Fox,8
 47832,IceCreamOG,Falco,8
 538935,Jangu,Falcon,8
@@ -349,7 +349,7 @@
 15171,oh,Falco,9
 28588,pem$,Fox,9
 4438,pinecone22,Falco,9
-48322,AHHHHH | Alice,ICs,10
+48322,AHHHHH | Climbers Alice,ICs,10
 2147839,Aidanafoo,Falcon,10
 1816060,FKA Minerali,Fox,10
 1760355,ArStar,Peach,10
@@ -546,7 +546,7 @@
 1723399,jeddo,Falco,11
 67516,raid shadow legends,Falcon,11
 1728675,pongo,Sheik,11
-1918686,roadkill,Peach,11
+1918686,Analog,Peach,11
 49711,sad | UwUMysticalGirl,Puff,11
 954582,winismine,Falco,11
 1617199,xavier,Fox,11
@@ -593,7 +593,7 @@
 1972326,Rold,Fox,12
 8096,Salty Seth,Fox,12
 7654,Schnurb,Fox,12
-2093540,SexGod | RitzyCheese,Falco,12
+2093540,RitzyCheese,Falco,12
 33239,SheepHair,Falcon,12
 130746,TZ | Morrito,Fox,12
 2056968,TrainerBlu,Marth,12
@@ -865,32 +865,92 @@
 508967,Goosekhan,Falcon,20
 158213,LG | Louis,Falco,20
 30197,Ober,Falco,20
-129774,(Ozymandias) | Churze,,21
-224897,AWaveDash,,21
-539984,Ahmad,,21
-232193,Chiefn_,,21
-1077883,CountifShine,,21
-180797,Cpt.Blade,,21
-1658777,CrazyColtCory,,21
-211440,Darrell,,21
-156503,FLOW | Beiker,,21
-2160161,GAS,,21
-1402983,Hua,,21
-10487,KELLZ,,21
-2033164,Kickflip,,21
-1016657,Kr1meM45ter2517A,,21
-1644052,LG | KrC,,21
-44674,Loscar,,21
-56374,NEPA | Ron Paul,,21
-159198,Pi2z,,21
-242832,Rahma Noodles,,21
-328674,Raptor Jesus,,21
-153143,Ren5o,,21
-1857983,River | Green River,,21
-53437,Shadow,,21
-372512,TAS | TrueAlpha,,21
-1278457,U-Smash | Rocket,,21
-3954,YungWaff,,21
-2229523,Zen,,21
-1503239,catsonthemoon,,21
-25916,redpandamaster,,21
+129774,(Ozymandias) | Churze,Yoshi,21
+224897,AWaveDash,Falco,21
+539984,Ahmad,Marth,21
+232193,Chiefn_,Fox,21
+1077883,CountifShine,Fox,21
+180797,Cpt.Blade,Fox,21
+1658777,CrazyColtCory,Falcon,21
+211440,Darrell,Samus,21
+156503,FLOW | Beiker,Sheik,21
+2160161,GAS,Doc,21
+1402983,Hua,Peach,21
+10487,KELLZ,Marth,21
+2033164,Kickflip,Sheik,21
+1016657,Kr1meM45ter2517A,Falcon,21
+1644052,LG | KrC,Falco,21
+44674,Loscar,Link,21
+56374,NEPA | Ron Paul,Fox,21
+159198,Pi2z,Falco,21
+242832,Rahma Noodles,Pikachu,21
+328674,Raptor Jesus,Marth,21
+153143,Ren5o,Fox,21
+1857983,River | Green River,Falco,21
+53437,Shadow,Falcon,21
+372512,TAS | TrueAlpha,Peach,21
+1278457,Rocket,Young Link,21
+3954,YungWaff,Falco,21
+2229523,Zen,Falco,21
+1503239,catsonthemoon,Fox,21
+25916,redpandamaster,Marth,21
+2041350,2rk | Turok,Falco,22
+32691,Blitzkrieg,Sheik,22
+10971,Brainless  | FLiiNcHy,Falco,22
+1957918,Cow,Marth,22
+1451042,Deeb,Falcon,22
+725016,Dolfo,Falco,22
+103305,Dr. Lame,Marth,22
+2242538,Erica,Fox,22
+23995,Forrest,Fox,22
+2170469,Triple Cake Dance,Fox,22
+2146437,HaxMoneyHulkHogan,Ganon,22
+151360,Inky,Sheik,22
+1974143,Jeem,Fox,22
+1940854,JoffDuchar,Fox,22
+834231,Jun,Marth,22
+945542,KOA | youngbool,Falco,22
+928066,Kelpo,Falco,22
+2084281,Keykey,Fox,22
+519985,Marvelboy,Falcon,22
+25810,Melee Stats | Pikachu942,Puff,22
+1871538,Not_DuduTsai,Puff,22
+12365,PW | Vincessant,Peach,22
+875354,Penguin,Link,22
+245346,SIMP | Vagab0nd,Fox,22
+328736,SadSack,Falco,22
+26920,Trash,Fox,22
+11458,Tuesday,IC's,22
+1149773,ali_,Falco,22
+725014,charmell0,Marth,22
+34694,flthd | flatline,Falco,22
+41055,jacket,Falcon,22
+327350,lochist,Falco,22
+1432189,nunoodle,Fox,22
+51373,prof,Sheik,22
+63772,Fern,,23
+1619463,Arctic,,23
+1500084,Ariz,,23
+1442352,BK_Rib,,23
+2215703,DiMaria,,23
+1918774,EWA | Gorgonzola,,23
+1562196,EagleOne,,23
+47497,Ellis,,23
+4107,GG | n0ne,,23
+136990,Holy | key,,23
+552087,Kerblamu,,23
+219838,Lamb's Ear,,23
+6176,Mova,,23
+1796764,Mp drago,,23
+1023,Nintendude,,23
+1989729,Nips,,23
+1946855,PRD | JMi,,23
+49875,Paladin,,23
+2004464,Rama,,23
+764680,STLTS,,23
+362459,SeshLord Ozai,,23
+1013413,WFL | ABC,,23
+128898,ZhÄoshÃ¹,,23
+1081722,kaiyon,,23
+7068,mikey,,23
+2206263,nmble-mann,,23
