@@ -5,7 +5,7 @@
 294260,ABG | salami,Fox,1
 357233,Afron,Luigi,1
 241260,Alex18+,Marth,1
-5618,CRACKSHACK | Quiggles,Fox,1
+5618,CRACKSHACK | CBD Quiggles,Fox,1
 135157,billybopeep,Pikachu,1
 38201,Blue Jay,Falco,1
 65777,bobby big ballz,Falco,1
@@ -20,7 +20,7 @@
 10485,DD,Puff,1
 14617,DiscipleOfBorp,Marth,1
 21215,Dom,Marth,1
-279722,Justus,Fox,1
+279722,EP | Justus,Fox,1
 255496,ericiscool.net,Falco,1
 1016,Fiction,Falco,1
 925369,Fishpaste,Falco,1
@@ -49,7 +49,7 @@
 1077,Revenge | Gahtzu,Falcon,1
 53365,Ringler,DK,1
 1017,S2J,Falcon,1
-64692,Blues Clues,Peach,1
+64692,SANS | Blues Clues,Peach,1
 407878,Slump,Falco,1
 11945,RULES | Strazz,Doc,1
 16066,TG NBR | Panayiotis,Falcon,1
@@ -59,7 +59,7 @@
 51608,Vitro,Marth,1
 38175,W8ASec,Falcon,1
 12137,yingling,Falco,1
-2122811,$W@6 | rocketf20,Puff,2
+2122811,rocketf20,Puff,2
 528737,3OutChange,Marth,2
 2064187,Abhi,Falco,2
 38567,Android 0,Falcon,2
@@ -144,7 +144,7 @@
 219919,Frozone,Falco,4
 22479,Rei,Sheik,4
 2029721,Ghost Rider,Falco,4
-37116,GUG | Kurv,Fox,4
+37116,Kurv,Fox,4
 64260,Tayhow,Fox,4
 230537,hHerb,Falco,4
 420458,Jorge,Fox,4
@@ -210,7 +210,7 @@
 493224,Fitz,Peach,5
 13765,Help,Falco,5
 885830,HorseGirl420,Falco,5
-152430,HWY | ybot,Marth,5
+152430,MIT | ybot,Marth,5
 694497,IMP | Ben,Sheik,5
 276041,Kettering,Falcon,5
 703647,LVD | Super,Falco,5
@@ -218,7 +218,7 @@
 25478,Maruf,Luigi,5
 700566,olé,Fox,5
 26387,Phantom Airline,Marth,5
-132537,RG | Far!,Sheik,5
+132537,Far!,Sheik,5
 682345,Rive,Falcon,5
 2123726,Sax,Falcon,5
 1575919,Snickerdoodle,Falco,5
@@ -349,7 +349,7 @@
 15171,oh,Falco,9
 28588,pem$,Fox,9
 4438,pinecone22,Falco,9
-48322,AHHHHH | Climbers Alice,ICs,10
+48322,Karin Dreijer,ICs,10
 2147839,Aidanafoo,Falcon,10
 1816060,FKA Minerali,Fox,10
 1760355,ArStar,Peach,10
@@ -476,7 +476,7 @@
 4215,rocky,Falco,10
 1075428,sameeyell,Falco,10
 2114057,squillf,Did Not Play,10
-472971,yBaS | MaxJacks,Peach,10
+472971,MaxJacks,Peach,10
 10298,119 | Fabio,Falco,11
 1522245,119 | pyro,Fox,11
 30054,20PcMcnugget,Sheik,11
@@ -582,7 +582,7 @@
 287526,MacTheStampede,Falco,12
 2168813,Master_Hand_9669,Puff,12
 2151985,MilkJustice,Puff,12
-1653242,Jquinnsweg,Fox,12
+1653242,MatouFans,Fox,12
 33655,Mo $,Sheik,12
 1753671,Moonking34,Fox,12
 1691247,TheYoungMC,Peach,12
@@ -904,7 +904,7 @@
 2242538,Erica,Fox,22
 23995,Forrest,Fox,22
 2170469,Triple Cake Dance,Fox,22
-2146437,actually hmhh | LionTimeMachine,Ganon,22
+2146437,gaeming | HaxMoneyHulkHogan,Ganon,22
 151360,Inky,Sheik,22
 1974143,Jeem,Fox,22
 1940854,JoffDuchar,Fox,22
@@ -950,7 +950,7 @@
 764680,STLTS,Falco,23
 362459,SeshLord Ozai,Falco,23
 1013413,WFL | ABC,Puff,23
-128898,Zhaoshu,Marth,23
+128898,Hector,Marth,23
 1081722,kaiyon,Falco,23
 7068,mikey,Marth,23
 2206263,nmble-mann,Falcon,23
@@ -967,7 +967,7 @@
 148736,GThree,Fox,24
 1290774,Honey Nut Cheerios,Fox,24
 152754,Hood,Marth,24
-368021,JitteryInChurch,Falco,24
+368021,Coinee,Falco,24
 15447,Jkiller,Puff,24
 27524,JustRhett,Puff,24
 131130,Leyo,Marth,24
@@ -1007,7 +1007,7 @@
 48946,E,,25
 1533315,Essey,,25
 450784,Fredrick,,25
-135091,GS | SubTails,,25
+135091,SubTails,,25
 920546,Gewl,,25
 185013,Habi,,25
 229925,Happy,,25
@@ -1066,11 +1066,11 @@
 10468,Reesch,,26
 2033482,Reiky,,26
 1026815,Sakm,,26
-2270838,Sol | | Saturn,,26
+2270838,Saturn,,26
 27547,TSBO | HateSauce,,26
 1071935,Teva,,26
 26289,Trill Jake,,26
-1524828,Dhar Mann | Ben Snape,,26
+1524828,Ben Snape,,26
 1591811,Venus,,26
 1658710,boip,,26
 2245020,enterthekiwi,,26
@@ -1123,3 +1123,57 @@
 1222140,mangine,,28
 2244671,scmu,,28
 212497,twitch.tv | emu50,,28
+20991,0kay,,29
+30352,62-bit | Hero,,29
+405647,AG | KU | Shimkoko,,29
+62566,Axis,,29
+788730,CATii,,29
+154482,Easy,,29
+1237306,H0LL0W,,29
+9884,HS | Den,,29
+2288174,JustnThundrLigr,,29
+220806,Kev,,29
+150171,MTM | chickncup,,29
+487623,NAM,,29
+1771213,NeuroDivergent,,29
+752551,NoobyMcCheese,,29
+393258,OkayP.,,29
+215507,Pocodudeface,,29
+41409,PotatoRice,,29
+1650434,Puff,,29
+1939993,Qanic,,29
+2173809,Reapr,,29
+26350,SKY | Cob,,29
+244748,TitusMelee,,29
+1007521,Udon,,29
+28949,BirdPerson,,29
+908879,Yung Silver,,29
+352184,ZBopp,,29
+1300387,Zamorita,,29
+1855805,alexpenguin,,29
+2209284,c_,,29
+951944,poog,,29
+437681,zaubermaus,,29
+126225,Clint Stevens | StepDaddy,,30
+45951,Dacky,,30
+2264502,FZ | boy0boy,,30
+159207,Genjutsu,,30
+506644,Harout,,30
+67740,LIAM#697 | Shleeum,,30
+63831,Lawnt | Walnut,,30
+38778,Mages | CH | Sunnyknight,,30
+55648,Mars,,30
+2222027,Mithrandir,,30
+28720,NB! | Secrets,,30
+543380,Paokir,,30
+25975,Pi#374,,30
+358739,Rasec,,30
+14734,SUEZO | Zook,,30
+2231667,Shwa,,30
+48202,Shy Shai,,30
+1064029,Victawr,,30
+366683,WickedTheKidBroly,,30
+2136594,greenbrown,,30
+535980,meleesadposts,,30
+107560,monted,,30
+63794,tustin,,30
